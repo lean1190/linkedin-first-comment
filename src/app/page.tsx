@@ -3,32 +3,28 @@
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { signInWithLinkedIn } from '@/lib/auth/signin';
 import { supabaseClient } from '@/lib/supabase/client';
+import { SigninForm } from './components/signin-form/signin-form';
 
 export default function Home() {
     useEffect(() => {
-        async function something() {
+        async function redirectIfAuthenticated() {
             const { data, error } = await supabaseClient.auth.getUser();
-            console.log('---> effect', { data, error });
             if (error || !data?.user) {
                 redirect('/');
             }
+
             if (!error && data?.user) {
                 redirect('/p');
             }
         }
-        something();
+
+        redirectIfAuthenticated();
     }, []);
 
     return (
-        <>
-            <nav>
-                <button type="button" onClick={() => signInWithLinkedIn()}>Sign in</button>
-            </nav>
-            <main>
-        Hello content
-            </main>
-        </>
+        <main className="w-full h-full">
+            <SigninForm />
+        </main>
     );
 }

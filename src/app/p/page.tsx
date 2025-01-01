@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { scheduleComment } from '@/lib/comments/schedule';
 // import { inngest } from '@/lib/inngest/client';
 import { supabaseClient } from '@/lib/supabase/client';
+import { PostForm } from './components/post-form';
 
 export default function Platform() {
     const schedule = async () => {
@@ -40,6 +41,7 @@ export default function Platform() {
 
     return (
         <article className="size-full">
+            <PostForm />
             <Form
                 action={schedule}
                 className="flex h-full flex-col items-center justify-center gap-6"

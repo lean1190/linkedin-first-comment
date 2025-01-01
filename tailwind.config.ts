@@ -21,7 +21,7 @@ export default {
         './src/app/**/*.{js,ts,jsx,tsx,mdx}',
         './src/**/*.{js,ts,jsx,tsx,mdx}'
     ],
-    darkMode: ['class', 'class'],
+    darkMode: 'selector',
     theme: {
   	extend: {
   		colors: {
@@ -65,7 +65,10 @@ export default {
   				4: 'hsl(var(--chart-4))',
   				5: 'hsl(var(--chart-5))'
   			}
-  		},
+        },
+        boxShadow: {
+            input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
+        },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

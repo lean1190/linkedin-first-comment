@@ -1,4 +1,15 @@
-import { Inngest } from 'inngest';
+import { EventSchemas, Inngest } from 'inngest';
+import { encryptionMiddleware } from "@inngest/middleware-encryption";
+import { postScheduledEvent } from './events';
 
-// Create a client to send and receive events
-export const inngest = new Inngest({ id: 'my-app' });
+const encryption = encryptionMiddleware({
+    key: process.env.INNGEST_ENCRIPTION_KEY!,
+});
+
+export const inngest = new Inngest({
+    id: 'first-comment',
+    schemas: new EventSchemas().fromZod([
+        postScheduledEvent
+    ]),
+    middleware: [encryption]
+});

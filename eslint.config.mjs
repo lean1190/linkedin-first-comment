@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
+import * as inngest from '@inngest/eslint-plugin';
 import react from 'eslint-plugin-react';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
@@ -19,11 +20,13 @@ const config = [...compat.extends(
     'next/core-web-vitals',
     'next/typescript',
     'plugin:tailwindcss/recommended',
+    'plugin:inngest/recommended'
 ),
 {
     plugins: {
         'simple-import-sort': simpleImportSort,
-        react
+        react,
+        inngest
     },
 
     languageOptions: {

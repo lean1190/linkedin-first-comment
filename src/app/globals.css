@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-
-  height: 100%;
-  width: 100%;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -71,7 +62,12 @@ html, body {
   * {
     @apply border-border;
   }
-  body {
+  html, body {
     @apply bg-background text-foreground;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    height: 100%;
+    width: 100%;
   }
 }
