@@ -1,29 +1,13 @@
 'use client';
 
-import { redirect } from 'next/navigation';
-import { useEffect } from 'react';
-
-import { supabaseClient } from '@/lib/supabase/client';
-import { SigninForm } from './components/signin-form/signin-form';
+import { SigninForm } from './auth/components/signin-form/signin-form';
+import useRedirectIfAuthenticated from './auth/hooks/use-authenticated';
 
 export default function Home() {
-    useEffect(() => {
-        async function redirectIfAuthenticated() {
-            const { data, error } = await supabaseClient.auth.getUser();
-            if (error || !data?.user) {
-                redirect('/');
-            }
-
-            if (!error && data?.user) {
-                redirect('/p');
-            }
-        }
-
-        redirectIfAuthenticated();
-    }, []);
+    useRedirectIfAuthenticated();
 
     return (
-        <main className="w-full h-full">
+        <main className="size-full">
             <SigninForm />
         </main>
     );

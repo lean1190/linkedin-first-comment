@@ -1,13 +1,9 @@
-'use client';
-
-import { signOut } from '@/lib/auth/signout';
+import Nav from './components/nav';
 
 export default function PlatformLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
         <>
-            <nav>
-                <button type="button" onClick={signOut}>Sign out</button>
-            </nav>
+            <Nav />
             <main>{children}</main>
         </>
     );
