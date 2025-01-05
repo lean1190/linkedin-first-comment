@@ -1,35 +1,10 @@
-
 /* eslint-disable react/prop-types */
-
-// import * as React from 'react';
-
-// import { cn } from '@/lib/styles/merge';
-
-// const Textarea = React.forwardRef<
-//   HTMLTextAreaElement,
-//   React.ComponentProps<'textarea'>
-// // eslint-disable-next-line react/prop-types
-// >(({ className, ...props }, ref) => (
-//     <textarea
-//         className={cn(
-//             'flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-//             className
-//         )}
-//         ref={ref}
-//         {...props}
-//     />
-// ));
-// Textarea.displayName = 'Textarea';
-
-// export { Textarea };
-
 
 'use client';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 import * as React from 'react';
 
 import { cn } from '@/lib/styles/merge';
-
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<'textarea'>>(
     ({ className, ...props }, ref) => {
@@ -68,7 +43,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<'tex
             >
                 <textarea
                     className={cn(
-                        `flex h-10 w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-3 py-2 text-sm  file:border-0 file:bg-transparent
+                        `field-sizing-content resize-none flex w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-2 py-2 text-sm file:border-0 file:bg-transparent
           file:text-sm file:font-medium placeholder:text-neutral-400 dark:placeholder-text-neutral-600
           focus-visible:outline-none focus-visible:ring-[2px]  focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600
            disabled:cursor-not-allowed disabled:opacity-50

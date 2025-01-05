@@ -1,11 +1,11 @@
 import { RetryAfterError } from 'inngest';
 
 import { inngest } from '../../inngest/client';
-import { PostEvents } from '../events/types';
+import { PostEvent } from '../events/types';
 
 export const writePost = inngest.createFunction(
     { id: 'write-post' },
-    { event: PostEvents.Scheduled },
+    { event: PostEvent.Scheduled },
     async ({ event, step }) => {
     // You can also sleep until a timestamp within the event data.
     // This lets you pass in a time for you to run the job:

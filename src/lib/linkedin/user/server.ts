@@ -1,9 +1,8 @@
 'use server';
 
 import ky from 'ky';
-import { redirect } from 'next/navigation';
 
-import { NullableSession } from '@/lib/auth/session/types';
+import { NullableSession, NullableUser } from '@/lib/auth/session/types';
 
 import { extractLinkedInProfileImage } from './extract';
 import { Me } from './types';
@@ -26,24 +25,26 @@ export async function getLinkedInMe(session: NullableSession) {
     }).json() as Promise<Me>;
 }
 
-export async function getLinkedInBasicProfile(session: NullableSession) {
+export async function getLinkedInBasicProfile(
+    session: NullableSession,
+    user: NullableUser
+) {
     try {
+        // Cache this and revalidate after login only, it fails a lot
         const me = await getLinkedInMe(session);
 
         return {
             name: `${me.localizedFirstName} ${me.localizedLastName}`,
             headline: me.localizedHeadline,
-            image: await extractLinkedInProfileImage(session)
+            image: await extractLinkedInProfileImage(user)
         };
     } catch (error: unknown) {
-        if ((error as Error)?.message.includes('401 Unauthorized')) {
-            redirect('/');
-        }
+        console.warn('Me call failed', (error as Error).message);
 
         return {
-            name: 'Error',
-            headline: 'Error',
-            image: 'http://error'
+            name: 'John Doe',
+            headline: 'This is an example headline',
+            image: '/favicon.ico'
         };
     }
 }

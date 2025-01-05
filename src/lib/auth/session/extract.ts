@@ -1,9 +1,9 @@
-import { NullableSession } from './types';
+import { NullableUser } from './types';
 
-export function extractUserEmail(session: NullableSession) {
-    return session?.user?.email;
+export function extractUserEmail(user: NullableUser) {
+    return user?.email;
 }
 
-export function extractUserId(session: NullableSession) {
-    return session?.user?.id;
+export function extractUserId(user: NullableUser) {
+    return user?.id;
 }
