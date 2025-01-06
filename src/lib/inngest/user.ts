@@ -1,9 +1,9 @@
-import { getClientUser } from '../auth/session/client';
 import { extractUserEmail, extractUserId } from '../auth/session/extract';
+import { NullableUser } from '../auth/session/types';
 
-export async function getEventUser() {
+export async function getEventUser(user: NullableUser) {
     return {
-        external_id: extractUserId(await getClientUser()),
-        email: extractUserEmail(await getClientUser())
+        external_id: extractUserId(user),
+        email: extractUserEmail(user)
     };
 }

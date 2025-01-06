@@ -20,6 +20,8 @@ export async function getLinkedInMe(session: NullableSession) {
     const token = session?.provider_token;
 
     return ky.get('https://api.linkedin.com/v2/me', {
+        cache: 'force-cache',
+        next: { revalidate: 360000 },
         headers: linkedInHeaders(token ?? ''),
         credentials: 'include'
     }).json() as Promise<Me>;

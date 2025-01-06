@@ -41,6 +41,7 @@ export default function PostForm({ profile }: Props) {
     ), [selectedViewport]);
 
     const submitPost = useCallback(async (_: void | null, form: FormData) => {
+        const repost = form.get('repost') as string;
         const schedule = {
             name: PostEvent.Scheduled,
             data: {
@@ -48,7 +49,7 @@ export default function PostForm({ profile }: Props) {
                 post: {
                     content: form.get('content') as string,
                     scheduleUtc: new UTCDate(form.get('schedule') as string).toISOString(),
-                    repostScheduleUtc: new UTCDate(form.get('repost') as string).toISOString()
+                    repostScheduleUtc: repost ? new UTCDate(repost).toISOString() : undefined
                 },
                 comment: {
                     content: form.get('comment') as string

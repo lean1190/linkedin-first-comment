@@ -11,19 +11,18 @@ import { PostEvent } from '../events/types';
 
 export const schedulePost = actionClient
     .schema(postScheduledEvent)
-    .action(async ({ parsedInput: { data: { author, post, comment } } }) => {
+    .action(async ({ parsedInput: { data: { post, comment } } }) => {
         try {
             const user = await getServerUser();
-            const session = await getServerSession();
             const urn = getLinkedInUrn(await extractLinkedInId(user));
-            const token = extractLinkedInAccessToken(session);
+            const token = await extractLinkedInAccessToken(await getServerSession());
 
-            console.log('---> urn', urn, token);
+            console.log('---> urn', { urn, token, post, comment });
 
             await inngest.send({
                 name: PostEvent.Scheduled,
-                data: { author, post, comment },
-                user: getEventUser()
+                data: { post, comment },
+                user: await getEventUser(user)
             });
             console.warn('---> result');
         } catch (error) {

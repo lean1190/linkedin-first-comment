@@ -6,10 +6,6 @@ import { PostEvent } from './types';
 const postScheduledEvent = z.object({
     name: z.literal(PostEvent.Scheduled),
     data: z.object({
-        author: z.object({
-            // urn: z.string(),
-            // token: z.string()
-        }),
         post: z.object({
             content: z.string(),
             scheduleUtc: z.string().datetime(),
