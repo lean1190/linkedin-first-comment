@@ -14,7 +14,6 @@ import { LabelInputContainer } from '@/components/ui/label-input-container';
 import { Textarea } from '@/components/ui/textarea';
 import { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import { schedulePost } from '@/lib/posts/actions/schedule';
-import { PostEvent } from '@/lib/posts/events/types';
 
 import Author from './author';
 
@@ -43,21 +42,13 @@ export default function PostForm({ profile }: Props) {
     const submitPost = useCallback(async (_: void | null, form: FormData) => {
         const repost = form.get('repost') as string;
         const schedule = {
-            name: PostEvent.Scheduled,
-            data: {
-                author: {},
-                post: {
-                    content: form.get('content') as string,
-                    scheduleUtc: new UTCDate(form.get('schedule') as string).toISOString(),
-                    repostScheduleUtc: repost ? new UTCDate(repost).toISOString() : undefined
-                },
-                comment: {
-                    content: form.get('comment') as string
-                }
-            }
+            content: form.get('content') as string,
+            scheduleUtc: new UTCDate(form.get('schedule') as string).toISOString(),
+            repostScheduleUtc: repost ? new UTCDate(repost).toISOString() : undefined,
+            comment: form.get('comment') as string
         };
 
-        console.log('----> form', _, form, schedule);
+        console.log('----> form', _, schedule);
 
         schedulePost(schedule);
     }, []);

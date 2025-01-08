@@ -8,7 +8,7 @@ interface Props {
 export function SigninForm({ loading }: Props) {
     return (
         <article className="z-10 flex size-full flex-col items-center justify-center">
-            <div className="mb-8"><Title /></div>
+            <Title />
             <SigninButton loading={loading} />
         </article>
     );

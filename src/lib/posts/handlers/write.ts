@@ -1,24 +1,32 @@
 import { RetryAfterError } from 'inngest';
 
+import { writeLinkedInPost } from '@/lib/linkedin/posts/write';
+
 import { inngest } from '../../inngest/client';
 import { PostEvent } from '../events/types';
 
-export const writePost = inngest.createFunction(
-    { id: 'write-post' },
+export const writePostEventHandler = inngest.createFunction(
+    { id: 'write-post', retries: 5 },
     { event: PostEvent.Scheduled },
     async ({ event, step }) => {
-    // You can also sleep until a timestamp within the event data.
-    // This lets you pass in a time for you to run the job:
-        await step.sleepUntil('wait-for-post', event.data.post.scheduleUtc);
+        await step.sleepUntil('wait-for-post-schedule', event.data.post.scheduleUtc);
 
         await step.run('write-comment', async () => {
             // This runs at the specified time.
-
-            // Write post to linkedin
-
-            // If failed to write the comment
-            const success = false;
-            if (!success) {
+            try {
+                console.log('---> write', {
+                    post: event.data.post,
+                    token: event.data.author.token,
+                    urn: event.data.author.urn
+                });
+                // Write post to linkedin
+                await writeLinkedInPost({
+                    post: event.data.post,
+                    token: event.data.author.token,
+                    urn: event.data.author.urn
+                });
+            } catch (error) {
+                console.error('---> event handler', error);
                 throw new RetryAfterError('Writing comment failed, retrying in 1 minute', 60000);
             }
         });

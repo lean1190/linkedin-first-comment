@@ -6,22 +6,29 @@ import { getEventUser } from '@/lib/inngest/user';
 import { extractLinkedInAccessToken, extractLinkedInId, getLinkedInUrn } from '@/lib/linkedin/user/extract';
 import { actionClient } from '@/lib/safe-action/client';
 
-import { postScheduledEvent } from '../events/schedule';
+import { postSchema } from '../events/schedule';
 import { PostEvent } from '../events/types';
 
 export const schedulePost = actionClient
-    .schema(postScheduledEvent)
-    .action(async ({ parsedInput: { data: { post, comment } } }) => {
+    .schema(postSchema)
+    .action(async ({ parsedInput: post }) => {
         try {
             const user = await getServerUser();
-            const urn = getLinkedInUrn(await extractLinkedInId(user));
-            const token = await extractLinkedInAccessToken(await getServerSession());
+            const author = {
+                urn: getLinkedInUrn(await extractLinkedInId(user)) as string,
+                token: await extractLinkedInAccessToken(await getServerSession()) as string
+            };
 
-            console.log('---> urn', { urn, token, post, comment });
+            console.log('---> action', { post, author });
 
+            if (!author.urn || !author.token) {
+                throw Error('Authentication failed');
+            }
+
+            console.log('---> sending event');
             await inngest.send({
                 name: PostEvent.Scheduled,
-                data: { post, comment },
+                data: { post, author },
                 user: await getEventUser(user)
             });
             console.warn('---> result');
