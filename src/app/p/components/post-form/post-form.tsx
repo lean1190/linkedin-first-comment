@@ -12,12 +12,11 @@ import { FormSeparator } from '@/components/ui/form-separator';
 import { Input } from '@/components/ui/input';
 import { LabelInputContainer } from '@/components/ui/label-input-container';
 import { Textarea } from '@/components/ui/textarea';
-import { formatDateForSchedule } from '@/lib/date/format';
-import { getTimeZoneDetails } from '@/lib/date/timezone';
 import { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import Author from './author';
 import usePostForm, { formSchema } from './hooks/use-post-form';
+import Timezone from './timezone';
 
 interface Props {
     profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
@@ -132,10 +131,8 @@ export default function PostForm({ profile }: Props) {
             <FormSeparator size="lg" />
 
             <section>
-                <div className="mb-4 text-center text-sm text-linkedin-low-emphasis">
-                    <span>{formatDateForSchedule(watch('schedule'))}</span>
-                    <span>{' '}{getTimeZoneDetails().timeZoneName}</span>
-                    {selectedViewport === 'desktop' ? <span>, based on your location</span> : null}
+                <div className="mx-auto mb-4 w-fit">
+                    <Timezone schedule={watch('schedule')} viewport={selectedViewport} />
                 </div>
                 <button
                     className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
