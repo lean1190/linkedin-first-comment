@@ -1,62 +1,49 @@
 'use client';
 
-import { UTCDate } from '@date-fns/utc';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@radix-ui/react-label';
 import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
-import clsx from 'clsx';
 import Image from 'next/image';
-import { useActionState, useCallback, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { BottomGradient } from '@/components/ui/bottom-gradient';
 import { FormSeparator } from '@/components/ui/form-separator';
 import { Input } from '@/components/ui/input';
 import { LabelInputContainer } from '@/components/ui/label-input-container';
 import { Textarea } from '@/components/ui/textarea';
+import { formatDateForSchedule } from '@/lib/date/format';
+import { getTimeZoneDetails } from '@/lib/date/timezone';
 import { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
-import { schedulePost } from '@/lib/posts/actions/schedule';
 
 import Author from './author';
+import usePostForm, { formSchema } from './hooks/use-post-form';
 
 interface Props {
     profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
 }
-type Viewport = 'mobile' | 'desktop';
 
 export default function PostForm({ profile }: Props) {
-    const [selectedViewport, setSelectedViewport] = useState<Viewport>('desktop');
+    const {
+        formStyle,
+        viewportStyle,
+        submitPost,
+        selectedViewport,
+        setSelectedViewport,
+        scheduleValidation
+    } = usePostForm();
 
-    const viewportStyle = useCallback((viewport: Viewport) => clsx(
-        'cursor-pointer rounded p-1 transition',
-        'hover:bg-neutral-600',
-        { 'bg-black': viewport === selectedViewport }
-    ), [selectedViewport]);
-
-    const formStyle = useMemo(() => clsx(
-        'relative mx-auto rounded-xl bg-[#1b1f23] px-4 py-6 transition-all',
-        {
-            'max-w-[555px]': selectedViewport === 'desktop',
-            'max-w-[409px]': selectedViewport === 'mobile'
-        }
-    ), [selectedViewport]);
-
-    const submitPost = useCallback(async (_: void | null, form: FormData) => {
-        const repost = form.get('repost') as string;
-        const schedule = {
-            content: form.get('content') as string,
-            scheduleUtc: new UTCDate(form.get('schedule') as string).toISOString(),
-            repostScheduleUtc: repost ? new UTCDate(repost).toISOString() : undefined,
-            comment: form.get('comment') as string
-        };
-
-        console.log('----> form', _, schedule);
-
-        schedulePost(schedule);
-    }, []);
-
-    const [, formAction, pending] = useActionState(submitPost, null);
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { isSubmitted }
+    } = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema)
+    });
 
     return (
-        <form action={formAction} className={formStyle}>
+        <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
             <section className="absolute right-4 top-2 flex gap-1 font-light text-linkedin-low-emphasis">
                 <span className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
                     <IconDeviceMobile size={20} />
@@ -71,7 +58,12 @@ export default function PostForm({ profile }: Props) {
             </section>
 
             <section className="text-sm">
-                <Textarea name="content" placeholder="Write your post here" required disabled={pending} />
+                <Textarea
+                    {...register('content')}
+                    placeholder="Write your post here"
+                    required
+                    disabled={isSubmitted}
+                />
             </section>
 
             <section className="flex items-center justify-between py-2">
@@ -99,7 +91,12 @@ export default function PostForm({ profile }: Props) {
                     </div>
                 </div>
                 <LabelInputContainer className="pl-9">
-                    <Textarea name="comment" placeholder="📌 Your 1st comment goes here" required disabled={pending} />
+                    <Textarea
+                        {...register('comment')}
+                        placeholder="📌 Your 1st comment goes here"
+                        required
+                        disabled={isSubmitted}
+                    />
                 </LabelInputContainer>
             </section>
 
@@ -108,24 +105,44 @@ export default function PostForm({ profile }: Props) {
             <section className={`${selectedViewport === 'desktop' ? 'flex-row gap-8' : 'flex-col'} flex transition-all`}>
                 <LabelInputContainer className="mb-4 w-full">
                     <Label htmlFor="schedule" className="text-sm">Publish post at</Label>
-                    <Input id="schedule" name="schedule" type="datetime-local" required disabled={pending} />
+                    <Input
+                        id="schedule"
+                        {...register('schedule')}
+                        type="datetime-local"
+                        required
+                        disabled={isSubmitted}
+                        min={scheduleValidation.min || undefined}
+                        max={scheduleValidation.max || undefined}
+                    />
                 </LabelInputContainer>
 
                 <LabelInputContainer className="mb-4 w-full">
                     <Label htmlFor="repost" className="text-sm text-linkedin-low-emphasis">Repost at (optional)</Label>
-                    <Input id="repost" name="repost" type="datetime-local" disabled={pending} />
+                    <Input
+                        id="repost"
+                        {...register('repost')}
+                        type="datetime-local"
+                        disabled={isSubmitted}
+                        min={scheduleValidation.min || undefined}
+                        max={scheduleValidation.max || undefined}
+                    />
                 </LabelInputContainer>
             </section>
 
             <FormSeparator size="lg" />
 
             <section>
+                <div className="mb-4 text-center text-sm text-linkedin-low-emphasis">
+                    <span>{formatDateForSchedule(watch('schedule'))}</span>
+                    <span>{' '}{getTimeZoneDetails().timeZoneName}</span>
+                    {selectedViewport === 'desktop' ? <span>, based on your location</span> : null}
+                </div>
                 <button
                     className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                     type="submit"
-                    disabled={pending}
+                    disabled={isSubmitted}
                 >
-                    <strong>{pending ? 'Scheduling...' : 'Schedule post and be #1'}</strong>
+                    <strong>{isSubmitted ? 'Scheduling...' : 'Schedule post and be #1'}</strong>
                     <BottomGradient />
                 </button>
             </section>

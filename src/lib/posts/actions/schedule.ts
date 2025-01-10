@@ -19,8 +19,6 @@ export const schedulePost = actionClient
                 token: await extractLinkedInAccessToken(await getServerSession()) as string
             };
 
-            console.log('---> action', { post, author });
-
             if (!author.urn || !author.token) {
                 throw Error('Authentication failed');
             }
