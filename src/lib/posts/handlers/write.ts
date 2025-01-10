@@ -19,12 +19,12 @@ export const writePostEventHandler = inngest.createFunction(
                     authorUrn: event.data.author.urn
                 });
             } catch (error) {
-                console.error('---> write-post error', error);
+                console.error('step:write-post error', error);
                 throw new RetryAfterError('Writing post failed, retrying in 1 minute', 60000);
             }
         });
 
-        const postUrn = (postResponse as Record<string, string>)?.postUrn;
+        const postUrn = postResponse?.postUrn;
         if (!postUrn) {
             return;
         }
@@ -38,8 +38,8 @@ export const writePostEventHandler = inngest.createFunction(
                     postUrn
                 });
             } catch (error) {
-                console.error('---> write-first-comment error', error);
-                // throw error;
+                console.error('step:write-first-comment error', error);
+                throw error;
             }
         });
 
@@ -57,7 +57,7 @@ export const writePostEventHandler = inngest.createFunction(
                     postUrn
                 });
             } catch (error) {
-                console.error('---> reshare-post error', error);
+                console.error('step:reshare-post error', error);
                 throw error;
             }
         });

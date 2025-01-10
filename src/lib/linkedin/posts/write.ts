@@ -39,7 +39,7 @@ export async function writeLinkedInPost({ post, token, authorUrn }: {
                 }
             ]
         }
-    }).json();
+    }).json() as Promise<{ postUrn: string }>;
 }
 
 export async function writeLinkedInFirstComment({
@@ -53,13 +53,15 @@ export async function writeLinkedInFirstComment({
     postUrn: string,
     authorUrn: string
 }) {
-    return ky.post(`https://api.linkedin.com/v2/socialActions/${encodeURIComponent(postUrn)}/comments`, {
-        headers: linkedInHeaders(token ?? ''),
-        credentials: 'include',
-        json: {
+    return fetch(`https://api.linkedin.com/v2/socialActions/${encodeURIComponent(postUrn)}/comments`, {
+        method: 'POST',
+        body: JSON.stringify({
             actor: authorUrn,
-            message: { text: comment }
-        }
+            object: postUrn,
+            message: { text: comment },
+            content: []
+        }),
+        headers: linkedInHeaders(token ?? '')
     });
 }
 
