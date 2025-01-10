@@ -13,7 +13,7 @@ import { FormViewport } from '../types';
 export const formSchema = z.object({
     content: z.string(),
     schedule: z.string(),
-    repost: z.string().optional(),
+    reshare: z.string().optional(),
     comment: z.string()
 }).required();
 
@@ -34,12 +34,12 @@ export default function usePostForm() {
     const submitPost = useCallback(({
         content,
         schedule,
-        repost,
+        reshare,
         comment
     }: z.infer<typeof formSchema>) => schedulePost({
         content,
         scheduleUtc: new UTCDate(schedule).toISOString(),
-        repostScheduleUtc: repost ? new UTCDate(repost).toISOString() : undefined,
+        reshareScheduleUtc: reshare ? new UTCDate(reshare).toISOString() : undefined,
         comment
     }), []);
 

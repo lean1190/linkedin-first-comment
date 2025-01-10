@@ -1,6 +1,7 @@
 export const linkedInHeaders = (token: string) => ({
     Authorization: `Bearer ${token}`,
     Accept: '*/*',
+    'User-Agent': 'First Comment',
     'Content-Type': 'application/json',
     'LinkedIn-Version': '202411',
     'X-Restli-Protocol-Version': '2.0.0',

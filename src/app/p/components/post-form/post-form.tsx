@@ -37,7 +37,7 @@ export default function PostForm({ profile }: Props) {
         register,
         handleSubmit,
         watch,
-        formState: { isSubmitted }
+        formState: { isSubmitting }
     } = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
     });
@@ -62,7 +62,7 @@ export default function PostForm({ profile }: Props) {
                     {...register('content')}
                     placeholder="Write your post here"
                     required
-                    disabled={isSubmitted}
+                    disabled={isSubmitting}
                 />
             </section>
 
@@ -95,7 +95,7 @@ export default function PostForm({ profile }: Props) {
                         {...register('comment')}
                         placeholder="📌 Your 1st comment goes here"
                         required
-                        disabled={isSubmitted}
+                        disabled={isSubmitting}
                     />
                 </LabelInputContainer>
             </section>
@@ -110,7 +110,7 @@ export default function PostForm({ profile }: Props) {
                         {...register('schedule')}
                         type="datetime-local"
                         required
-                        disabled={isSubmitted}
+                        disabled={isSubmitting}
                         min={scheduleValidation.min || undefined}
                         max={scheduleValidation.max || undefined}
                     />
@@ -120,9 +120,9 @@ export default function PostForm({ profile }: Props) {
                     <Label htmlFor="repost" className="text-sm text-linkedin-low-emphasis">Repost at (optional)</Label>
                     <Input
                         id="repost"
-                        {...register('repost')}
+                        {...register('reshare')}
                         type="datetime-local"
-                        disabled={isSubmitted}
+                        disabled={isSubmitting}
                         min={scheduleValidation.min || undefined}
                         max={scheduleValidation.max || undefined}
                     />
@@ -140,9 +140,9 @@ export default function PostForm({ profile }: Props) {
                 <button
                     className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                     type="submit"
-                    disabled={isSubmitted}
+                    disabled={isSubmitting}
                 >
-                    <strong>{isSubmitted ? 'Scheduling...' : 'Schedule post and be #1'}</strong>
+                    <strong>{isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}</strong>
                     <BottomGradient />
                 </button>
             </section>

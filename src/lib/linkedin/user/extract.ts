@@ -11,11 +11,3 @@ export function extractLinkedInId(user: NullableUser) {
 export function extractLinkedInProfileImage(user: NullableUser) {
     return user?.user_metadata?.picture as string;
 }
-
-export function getLinkedInUrn(id?: string) {
-    return `urn:li:person:${id}`;
-}
-
-export function getEncodedLinkedInUrn(id?: string) {
-    return encodeURI(getLinkedInUrn(id));
-}

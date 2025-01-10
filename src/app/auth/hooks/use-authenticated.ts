@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
 import { supabaseClient } from '@/lib/supabase/client';
 
 export default function useRedirectIfAuthenticated() {
@@ -10,13 +11,21 @@ export default function useRedirectIfAuthenticated() {
 
     useEffect(() => {
         async function redirectIfAuthenticated() {
-            const { data, error } = await supabaseClient.auth.getUser();
-            if (error || !data?.user) {
+            const supabaseUser = await supabaseClient.auth.getUser();
+            const supabaseSession = await supabaseClient.auth.getSession();
+
+            const anyError = !!supabaseUser.error || !!supabaseSession.error;
+            const hasUser = !!supabaseUser.data?.user;
+            const token = extractLinkedInAccessToken(supabaseSession?.data?.session);
+
+            // TODO
+            console.log('---> this check needs to be added to the auth middleware');
+            if (anyError || !hasUser || !token) {
                 setLoading(false);
                 redirect('/');
             }
 
-            if (!error && data?.user) {
+            if (!anyError && hasUser && token) {
                 redirect('/p');
             }
         }

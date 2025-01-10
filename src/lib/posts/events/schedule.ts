@@ -6,7 +6,7 @@ import { PostEvent } from './types';
 const postSchema = z.object({
     content: z.string(),
     scheduleUtc: z.string().datetime(),
-    repostScheduleUtc: z.string().datetime().optional(),
+    reshareScheduleUtc: z.string().datetime().optional(),
     comment: z.string()
 });
 
