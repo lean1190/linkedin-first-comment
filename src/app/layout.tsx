@@ -3,6 +3,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import { getVercelUrl } from '@/lib/environments/is-dev';
+
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
     variable: '--font-geist-sans',
@@ -15,8 +17,17 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-    title: 'First Comment For LinkedIn',
-    description: 'Be Always #1'
+    title: 'Be Always #1',
+    description: 'Schedule the First Comment on LinkedIn',
+    icons: { icon: '/favicon.ico' },
+    metadataBase: new URL(getVercelUrl()),
+    openGraph: {
+        images: ['/favicon.ico'],
+        url: 'https://leanvilas.com',
+        locale: 'en_US',
+        type: 'website'
+    },
+    authors: [{ name: 'Lean Vilas' }]
 };
 
 export default function RootLayout({
