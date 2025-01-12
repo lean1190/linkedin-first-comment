@@ -1,16 +1,14 @@
-import { relative } from 'path';
+import { relative } from 'node:path';
 
 const buildEslintCommand = (filenames) => {
-    const fileCommands = filenames
-        .map((f) => relative(process.cwd(), f))
-        .join(' --file ');
+  const fileCommands = filenames.map((f) => relative(process.cwd(), f)).join(' --file ');
 
-    return `next lint --fix --file ${fileCommands}`;
+  return `next lint --fix --file ${fileCommands}`;
 };
 
 const config = {
-    '*.{js,jsx,ts,tsx}': [buildEslintCommand],
-    '*.{ts,tsx}': [() => 'npx tsc --skipLibCheck --noEmit']
+  '*.{js,jsx,ts,tsx}': [buildEslintCommand],
+  '*.{ts,tsx}': [() => 'npx tsc --skipLibCheck --noEmit']
 };
 
 export default config;

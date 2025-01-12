@@ -11,22 +11,22 @@ import { postSchema } from '../events/schedule';
 import { PostEvent } from '../events/types';
 
 export const schedulePost = actionClient
-    .schema(postSchema)
-    .action(async ({ parsedInput: post }) => {
-        const user = await getServerUser();
-        const session = await getServerSession();
-        const author = {
-            urn: getLinkedInAuthorUrn(await extractLinkedInId(user)) as string,
-            token: extractLinkedInAccessToken(session) as string
-        };
+  .schema(postSchema)
+  .action(async ({ parsedInput: post }) => {
+    const user = await getServerUser();
+    const session = await getServerSession();
+    const author = {
+      urn: getLinkedInAuthorUrn(await extractLinkedInId(user)) as string,
+      token: extractLinkedInAccessToken(session) as string
+    };
 
-        if (!author.urn || !author.token) {
-            throw Error('Authentication failed');
-        }
+    if (!author.urn || !author.token) {
+      throw Error('Authentication failed');
+    }
 
-        await inngest.send({
-            name: PostEvent.Scheduled,
-            data: { post, author },
-            user: await getEventUser(user)
-        });
+    await inngest.send({
+      name: PostEvent.Scheduled,
+      data: { post, author },
+      user: await getEventUser(user)
     });
+  });

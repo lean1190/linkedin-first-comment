@@ -1,3 +1,3 @@
 export function getLinkedInAuthorUrn(id?: string) {
-    return `urn:li:person:${id}`;
+  return `urn:li:person:${id}`;
 }
