@@ -16,13 +16,13 @@ export function getTimeZoneDetails(timeZone = Intl.DateTimeFormat().resolvedOpti
 }
 
 export function transformDateToTimezone({
-  dateString = new Date().toISOString(),
+  dateString,
   targetTimezone
 }: {
   dateString?: string;
   targetTimezone: string;
 }) {
-  const date = new Date(dateString);
+  const date = new Date(dateString || new Date().toISOString());
 
   const formatter = new Intl.DateTimeFormat('en-US', {
     timeZone: targetTimezone,
