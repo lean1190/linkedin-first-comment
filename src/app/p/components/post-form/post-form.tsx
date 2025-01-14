@@ -7,13 +7,13 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
-import { BottomGradient } from '@/components/ui/bottom-gradient';
 import { FormSeparator } from '@/components/ui/form-separator';
 import { Input } from '@/components/ui/input';
 import { LabelInputContainer } from '@/components/ui/label-input-container';
 import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
+import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
 import Author from './author';
 import usePostForm, { formSchema } from './hooks/use-post-form';
 import Timezone from './timezone';
@@ -36,7 +36,7 @@ export default function PostForm({ profile }: Props) {
     register,
     handleSubmit,
     watch,
-    formState: { isSubmitting }
+    formState: { isSubmitting, isValid }
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
   });
@@ -140,18 +140,14 @@ export default function PostForm({ profile }: Props) {
 
       <FormSeparator size="lg" />
 
-      <section>
+      <section className="flex flex-col items-center">
         <div className="mx-auto mb-4 w-fit">
           <Timezone schedule={watch('schedule')} viewport={selectedViewport} />
         </div>
-        <button
-          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-          type="submit"
-          disabled={isSubmitting}
-        >
-          <strong>{isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}</strong>
-          <BottomGradient />
-        </button>
+
+        <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>
+          {isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
+        </ButtonBorderGradient>
       </section>
     </form>
   );
