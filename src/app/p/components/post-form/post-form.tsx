@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
+import { countCharacters, countWords } from '@/lib/posts/words';
 import { useMemo } from 'react';
 import Author from './author';
 import usePostForm, { formSchema } from './hooks/use-post-form';
@@ -42,7 +43,10 @@ export default function PostForm({ profile }: Props) {
     resolver: zodResolver(formSchema)
   });
 
-  const schedule = useMemo(() => watch('schedule'), [watch]);
+  const content = watch('content');
+  const schedule = watch('schedule');
+  const words = countWords(content);
+  const chars = countCharacters(content);
 
   return (
     <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
@@ -59,13 +63,19 @@ export default function PostForm({ profile }: Props) {
         <Author profile={profile} />
       </section>
 
-      <section className="text-sm">
+      <section className="text-sm relative">
         <Textarea
           {...register('content')}
           placeholder="Write your post here"
           required
           disabled={isSubmitting}
         />
+        <div className="absolute right-0 -mr-[150px] top-0 py-1 px-2 transition text-xs bg-gradient-to-r from-[#1b1f23] to-black rounded-3xl border border-slate-400">
+          <span className="text-white">
+            {words} {words === 1 ? 'word' : 'words'}
+          </span>
+          <span className="text-linkedin-low-emphasis"> | {chars} characters</span>
+        </div>
       </section>
 
       <section className="flex items-center justify-between py-2">
