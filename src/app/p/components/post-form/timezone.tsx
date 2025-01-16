@@ -1,4 +1,4 @@
-import { IconSquareRoundedChevronDown } from '@tabler/icons-react';
+import { IconCaretDownFilled } from '@tabler/icons-react';
 import { useMemo } from 'react';
 
 import { formatDateForSchedule } from '@/lib/date/format';
@@ -64,11 +64,11 @@ export default function Timezone({ schedule, viewport }: Props) {
   );
 
   return (
-    <details className="text-sm text-linkedin-low-emphasis [&_i]:open:-rotate-180">
+    <details className="text-sm text-linkedin-low-emphasis transition-all [&_i]:open:-rotate-180">
       <summary className="flex cursor-pointer items-center gap-1">
         <TimezoneLine schedule={schedule} showLocation={viewport === 'desktop'} />
         <i className="transition-all">
-          <IconSquareRoundedChevronDown size={15} />
+          <IconCaretDownFilled size={15} />
         </i>
       </summary>
       <div className="py-4 font-thin">

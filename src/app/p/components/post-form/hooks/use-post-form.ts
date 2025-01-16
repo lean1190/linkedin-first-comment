@@ -12,10 +12,10 @@ import type { FormViewport } from '../types';
 
 export const formSchema = z
   .object({
-    content: z.string(),
-    schedule: z.string(),
+    content: z.string().nonempty(),
+    schedule: z.string().nonempty(),
     reshare: z.string().optional(),
-    comment: z.string()
+    comment: z.string().nonempty()
   })
   .required();
 
@@ -25,6 +25,7 @@ export default function usePostForm() {
   useEffect(() => {
     const now = new Date();
     const formatForInput = (date: Date) => format(date, "yyyy-MM-dd'T'HH:mm");
+
     setScheduleLimits(() => ({
       min: formatForInput(now),
       max: formatForInput(add(now, { days: 7 }))

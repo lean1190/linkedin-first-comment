@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
+import { useMemo } from 'react';
 import Author from './author';
 import usePostForm, { formSchema } from './hooks/use-post-form';
 import Timezone from './timezone';
@@ -40,6 +41,8 @@ export default function PostForm({ profile }: Props) {
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
   });
+
+  const schedule = useMemo(() => watch('schedule'), [watch]);
 
   return (
     <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
@@ -132,7 +135,7 @@ export default function PostForm({ profile }: Props) {
             {...register('reshare')}
             type="datetime-local"
             disabled={isSubmitting}
-            min={scheduleValidation.min || undefined}
+            min={schedule || undefined}
             max={scheduleValidation.max || undefined}
           />
         </LabelInputContainer>
@@ -142,7 +145,7 @@ export default function PostForm({ profile }: Props) {
 
       <section className="flex flex-col items-center">
         <div className="mx-auto mb-4 w-fit">
-          <Timezone schedule={watch('schedule')} viewport={selectedViewport} />
+          <Timezone schedule={schedule} viewport={selectedViewport} />
         </div>
 
         <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>
