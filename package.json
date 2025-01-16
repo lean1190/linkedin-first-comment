@@ -58,6 +58,7 @@
     "@types/react-dom": "19",
     "cross-env": "7.0.3",
     "husky": "9.1.7",
+    "lint-staged": "^15.4.0",
     "npm-check-updates": "17.1.13",
     "postcss": "8",
     "supabase": "2.2.1",
