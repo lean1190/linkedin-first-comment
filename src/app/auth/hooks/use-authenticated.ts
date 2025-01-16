@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
+import { getAuthErrorPath, isUnauthorized } from '@/lib/auth/functions/unauthorized';
 import { supabaseClient } from '@/lib/supabase/client';
 
 export default function useRedirectIfAuthenticated() {
@@ -15,17 +15,19 @@ export default function useRedirectIfAuthenticated() {
       const supabaseSession = await supabaseClient.auth.getSession();
 
       const anyError = !!supabaseUser.error || !!supabaseSession.error;
-      const hasUser = !!supabaseUser.data?.user;
-      const token = extractLinkedInAccessToken(supabaseSession?.data?.session);
+      const errorPath = getAuthErrorPath(
+        isUnauthorized({
+          user: supabaseUser?.data?.user,
+          session: supabaseSession?.data?.session
+        })
+      );
 
-      // TODO
-      console.log('---> this check needs to be added to the auth middleware');
-      if (anyError || !hasUser || !token) {
+      if (anyError || errorPath) {
         setLoading(false);
-        redirect('/');
+        redirect(errorPath ?? '/');
       }
 
-      if (!anyError && hasUser && token) {
+      if (!anyError && !errorPath) {
         redirect('/p');
       }
     }

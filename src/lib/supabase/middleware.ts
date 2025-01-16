@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
+import { getAuthErrorPath, isUnauthorized } from '../auth/functions/unauthorized';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -31,10 +32,16 @@ export async function updateSession(request: NextRequest) {
     data: { user }
   } = await supabase.auth.getUser();
 
-  if (!user && request.nextUrl.pathname !== '/') {
-    // no user, potentially respond by redirecting the user to the signin page
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  const errorPath = getAuthErrorPath(isUnauthorized({ user, session }));
+  const urlIsNotSignin = request.nextUrl.pathname !== '/';
+
+  if (errorPath && urlIsNotSignin) {
     const url = request.nextUrl.clone();
-    url.pathname = '/';
+    url.pathname = errorPath;
 
     return NextResponse.redirect(url);
   }
