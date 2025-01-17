@@ -14,11 +14,10 @@ import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
-import { countCharacters, countWords } from '@/lib/posts/words';
-import { useMemo } from 'react';
-import Author from './author';
+import Author from './components/author';
+import Success from './components/success/success';
+import Timezone from './components/timezone';
 import usePostForm, { formSchema } from './hooks/use-post-form';
-import Timezone from './timezone';
 
 interface Props {
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
@@ -35,133 +34,128 @@ export default function PostForm({ profile }: Props) {
   } = usePostForm();
 
   const {
+    getValues,
     register,
     handleSubmit,
-    watch,
-    formState: { isSubmitting, isValid }
+    formState: { isSubmitting, isSubmitSuccessful, isValid }
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
   });
 
-  const content = watch('content');
-  const schedule = watch('schedule');
-  const words = countWords(content);
-  const chars = countCharacters(content);
+  const schedule = getValues('schedule');
 
   return (
-    <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
-      <section className="absolute right-4 top-2 flex gap-1 font-light text-linkedin-low-emphasis">
-        <span className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
-          <IconDeviceMobile size={20} />
-        </span>
-        <span className={viewportStyle('desktop')} onClick={() => setSelectedViewport('desktop')}>
-          <IconDeviceDesktop size={20} />
-        </span>
-      </section>
-
-      <section className="mb-2 pr-9">
-        <Author profile={profile} />
-      </section>
-
-      <section className="text-sm relative">
-        <Textarea
-          {...register('content')}
-          placeholder="Write your post here"
-          required
-          disabled={isSubmitting}
-        />
-        <div className="absolute right-0 -mr-[150px] top-0 py-1 px-2 transition text-xs bg-gradient-to-r from-[#1b1f23] to-black rounded-3xl border border-slate-400">
-          <span className="text-white">
-            {words} {words === 1 ? 'word' : 'words'}
+    <>
+      <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
+        <section className="absolute right-4 top-2 flex gap-1 font-light text-linkedin-low-emphasis">
+          <span className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
+            <IconDeviceMobile size={20} />
           </span>
-          <span className="text-linkedin-low-emphasis"> | {chars} characters</span>
-        </div>
-      </section>
+          <span className={viewportStyle('desktop')} onClick={() => setSelectedViewport('desktop')}>
+            <IconDeviceDesktop size={20} />
+          </span>
+        </section>
 
-      <section className="flex items-center justify-between py-2">
-        <div className="flex items-center gap-1">
-          <div className="flex">
-            <Image src="/like.svg" alt="Like" width={16} height={16} />
-            <Image className="-ml-1" src="/heart.svg" alt="Insight" width={16} height={16} />
-            <Image className="-ml-1" src="/insight.svg" alt="Heart" width={16} height={16} />
-          </div>
-          <div className="text-xs font-light text-linkedin-low-emphasis">You and 1830 others</div>
-        </div>
-        <div className="text-xs font-light text-linkedin-low-emphasis">
-          215 comments • 19 reposts
-        </div>
-      </section>
+        <section className="mb-2 pr-9">
+          <Author profile={profile} />
+        </section>
 
-      <FormSeparator size="sm" />
-
-      <section className="w-full pr-4">
-        <div className="mb-2 flex items-start justify-between">
-          <div
-            className={`transition-all ${selectedViewport === 'desktop' ? 'max-w-[485px]' : 'max-w-[339px]'}`}
-          >
-            <Author profile={profile} size="sm" showTime={false} />
-          </div>
-          <div className="flex items-center gap-2 text-xs font-light text-linkedin-low-emphasis">
-            <span>1s</span>
-            <span className="text-sm">•••</span>
-          </div>
-        </div>
-        <LabelInputContainer className="pl-9">
+        <section className="text-sm relative">
           <Textarea
-            {...register('comment')}
-            placeholder="📌 Your 1st comment goes here"
+            {...register('content')}
+            placeholder="Write your post here"
             required
             disabled={isSubmitting}
           />
-        </LabelInputContainer>
-      </section>
+        </section>
 
-      <FormSeparator size="lg" />
+        <section className="flex items-center justify-between py-2">
+          <div className="flex items-center gap-1">
+            <div className="flex">
+              <Image src="/like.svg" alt="Like" width={16} height={16} />
+              <Image className="-ml-1" src="/heart.svg" alt="Insight" width={16} height={16} />
+              <Image className="-ml-1" src="/insight.svg" alt="Heart" width={16} height={16} />
+            </div>
+            <div className="text-xs font-light text-linkedin-low-emphasis">You and 1830 others</div>
+          </div>
+          <div className="text-xs font-light text-linkedin-low-emphasis">
+            215 comments • 19 reposts
+          </div>
+        </section>
 
-      <section
-        className={`${selectedViewport === 'desktop' ? 'flex-row gap-8' : 'flex-col'} flex transition-all`}
-      >
-        <LabelInputContainer className="mb-4 w-full">
-          <Label htmlFor="schedule" className="text-sm">
-            Publish post at
-          </Label>
-          <Input
-            id="schedule"
-            {...register('schedule')}
-            type="datetime-local"
-            required
-            disabled={isSubmitting}
-            min={scheduleValidation.min || undefined}
-            max={scheduleValidation.max || undefined}
-          />
-        </LabelInputContainer>
+        <FormSeparator size="sm" />
 
-        <LabelInputContainer className="mb-4 w-full">
-          <Label htmlFor="repost" className="text-sm text-linkedin-low-emphasis">
-            Repost at (optional)
-          </Label>
-          <Input
-            id="repost"
-            {...register('reshare')}
-            type="datetime-local"
-            disabled={isSubmitting}
-            min={schedule || undefined}
-            max={scheduleValidation.max || undefined}
-          />
-        </LabelInputContainer>
-      </section>
+        <section className="w-full pr-4">
+          <div className="mb-2 flex items-start justify-between">
+            <div
+              className={`transition-all ${selectedViewport === 'desktop' ? 'max-w-[485px]' : 'max-w-[339px]'}`}
+            >
+              <Author profile={profile} size="sm" showTime={false} />
+            </div>
+            <div className="flex items-center gap-2 text-xs font-light text-linkedin-low-emphasis">
+              <span>1s</span>
+              <span className="text-sm">•••</span>
+            </div>
+          </div>
+          <LabelInputContainer className="pl-9">
+            <Textarea
+              {...register('comment')}
+              placeholder="📌 Your 1st comment goes here"
+              required
+              disabled={isSubmitting}
+            />
+          </LabelInputContainer>
+        </section>
 
-      <FormSeparator size="lg" />
+        <FormSeparator size="lg" />
 
-      <section className="flex flex-col items-center">
-        <div className="mx-auto mb-4 w-fit">
-          <Timezone schedule={schedule} viewport={selectedViewport} />
-        </div>
+        <section
+          className={`${selectedViewport === 'desktop' ? 'flex-row gap-8' : 'flex-col'} flex transition-all`}
+        >
+          <LabelInputContainer className="mb-4 w-full">
+            <Label htmlFor="schedule" className="text-sm">
+              Publish post at
+            </Label>
+            <Input
+              id="schedule"
+              {...register('schedule')}
+              type="datetime-local"
+              required
+              disabled={isSubmitting}
+              min={scheduleValidation.min || undefined}
+              max={scheduleValidation.max || undefined}
+            />
+          </LabelInputContainer>
 
-        <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>
-          {isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
-        </ButtonBorderGradient>
-      </section>
-    </form>
+          <LabelInputContainer className="mb-4 w-full">
+            <Label htmlFor="repost" className="text-sm text-linkedin-low-emphasis">
+              Repost at (optional)
+            </Label>
+            <Input
+              id="repost"
+              {...register('reshare')}
+              type="datetime-local"
+              disabled={isSubmitting}
+              min={schedule || undefined}
+              max={scheduleValidation.max || undefined}
+            />
+          </LabelInputContainer>
+        </section>
+
+        <FormSeparator size="lg" />
+
+        <section className="flex flex-col items-center">
+          <div className="mx-auto mb-4 w-fit">
+            <Timezone schedule={schedule} viewport={selectedViewport} />
+          </div>
+
+          <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>
+            {isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
+          </ButtonBorderGradient>
+        </section>
+      </form>
+
+      <Success profile={profile} post={getValues()} show={isSubmitSuccessful} />
+    </>
   );
 }

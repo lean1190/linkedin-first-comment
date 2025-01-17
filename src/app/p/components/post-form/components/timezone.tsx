@@ -4,14 +4,14 @@ import { useMemo } from 'react';
 import { formatDateForSchedule } from '@/lib/date/format';
 import { getTimeZoneDetails, transformDateToTimezone } from '@/lib/date/timezone';
 
-import type { FormViewport } from './types';
+import type { FormViewport } from '../types';
 
 interface Props {
   schedule?: string;
   viewport: FormViewport;
 }
 
-const TimezoneLine = ({
+export const TimezoneLine = ({
   schedule,
   timezone,
   showLocation

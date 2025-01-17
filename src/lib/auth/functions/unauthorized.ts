@@ -24,3 +24,15 @@ export function isUnauthorized({
 export function getAuthErrorPath(check: AuthorizationCheck): string | null {
   return check.unauthorized ? `/?error=${check.reason}` : null;
 }
+
+export function parseUrl(input: string): {
+  pathname: string;
+  queryParams: URLSearchParams;
+} {
+  const url = new URL(input, 'http://placeholder');
+
+  return {
+    pathname: url.pathname,
+    queryParams: new URLSearchParams(url.search)
+  };
+}

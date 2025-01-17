@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAuthErrorPath, isUnauthorized } from '../auth/functions/unauthorized';
+import { getAuthErrorPath, isUnauthorized, parseUrl } from '../auth/functions/unauthorized';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -41,7 +41,10 @@ export async function updateSession(request: NextRequest) {
 
   if (errorPath && urlIsNotSignin) {
     const url = request.nextUrl.clone();
-    url.pathname = errorPath;
+    const { pathname, queryParams } = parseUrl(errorPath);
+
+    url.pathname = pathname;
+    queryParams.forEach((value, key) => url.searchParams.set(key, value));
 
     return NextResponse.redirect(url);
   }
