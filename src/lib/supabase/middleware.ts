@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAuthErrorPath, isUnauthorized, parseUrl } from '../auth/functions/unauthorized';
+import { checkUnauthorized } from '../auth/errors/unauthorized';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -36,12 +36,12 @@ export async function updateSession(request: NextRequest) {
     data: { session }
   } = await supabase.auth.getSession();
 
-  const errorPath = getAuthErrorPath(isUnauthorized({ user, session }));
+  const unauthorized = checkUnauthorized({ user, session });
   const urlIsNotSignin = request.nextUrl.pathname !== '/';
 
-  if (errorPath && urlIsNotSignin) {
+  if (unauthorized && urlIsNotSignin) {
     const url = request.nextUrl.clone();
-    const { pathname, queryParams } = parseUrl(errorPath);
+    const { pathname, queryParams } = unauthorized.redirectPath;
 
     url.pathname = pathname;
     queryParams.forEach((value, key) => url.searchParams.set(key, value));

@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { getAuthErrorPath, isUnauthorized } from '@/lib/auth/functions/unauthorized';
+import { checkUnauthorized } from '@/lib/auth/errors/unauthorized';
 import { supabaseClient } from '@/lib/supabase/client';
 
 export default function useRedirectIfAuthenticated() {
@@ -15,21 +15,20 @@ export default function useRedirectIfAuthenticated() {
       const supabaseSession = await supabaseClient.auth.getSession();
 
       const anyError = !!supabaseUser.error || !!supabaseSession.error;
-      const errorPath = getAuthErrorPath(
-        isUnauthorized({
-          user: supabaseUser?.data?.user,
-          session: supabaseSession?.data?.session
-        })
-      );
+      const unauthorized = checkUnauthorized({
+        user: supabaseUser?.data?.user,
+        session: supabaseSession?.data?.session
+      });
 
-      if (anyError || errorPath) {
-        setLoading(false);
-        redirect(errorPath ?? '/');
+      if (anyError || unauthorized) {
+        redirect(unauthorized?.redirectPath.errorPath ?? '/');
       }
 
-      if (!anyError && !errorPath) {
+      if (!anyError && !unauthorized) {
         redirect('/p');
       }
+
+      setLoading(false);
     }
 
     redirectIfAuthenticated();

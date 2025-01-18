@@ -1,11 +1,8 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@radix-ui/react-label';
 import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
 import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import type { z } from 'zod';
 
 import { FormSeparator } from '@/components/ui/form-separator';
 import { Input } from '@/components/ui/input';
@@ -14,33 +11,30 @@ import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
+import { useState } from 'react';
 import Author from './components/author';
 import Success from './components/success/success';
 import Timezone from './components/timezone';
-import usePostForm, { formSchema } from './hooks/use-post-form';
+import usePostForm from './hooks/use-post-form';
+import useStyles from './hooks/use-styles';
+import type { FormViewport } from './types';
 
 interface Props {
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
 }
 
 export default function PostForm({ profile }: Props) {
-  const {
-    formStyle,
-    viewportStyle,
-    submitPost,
-    selectedViewport,
-    setSelectedViewport,
-    scheduleValidation
-  } = usePostForm();
+  const [selectedViewport, setSelectedViewport] = useState<FormViewport>('desktop');
+
+  const { formStyle, viewportStyle } = useStyles(selectedViewport);
+  const { submitPost, scheduleValidation, form } = usePostForm();
 
   const {
     getValues,
     register,
     handleSubmit,
     formState: { isSubmitting, isSubmitSuccessful, isValid }
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
-  });
+  } = form;
 
   const schedule = getValues('schedule');
 

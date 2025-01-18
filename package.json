@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "test": "vitest run --coverage",
     "events:dev": "npx inngest-cli@latest dev",
     "supabase:types": "source .env.local && supabase gen types typescript --project-id $SUPABASE_PROJECT_ID --schema public > src/lib/supabase/types.ts",
     "check:all": "npx @biomejs/biome check --write .",
@@ -56,6 +57,7 @@
     "@types/node": "20",
     "@types/react": "19",
     "@types/react-dom": "19",
+    "@vitest/coverage-v8": "^3.0.2",
     "cross-env": "7.0.3",
     "husky": "9.1.7",
     "lint-staged": "^15.4.0",
@@ -63,6 +65,7 @@
     "postcss": "8",
     "supabase": "2.2.1",
     "tailwindcss": "3.4.1",
-    "typescript": "5"
+    "typescript": "5",
+    "vitest": "^3.0.2"
   }
 }

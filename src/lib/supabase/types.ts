@@ -3,84 +3,36 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
-      Comments: {
-        Row: {
-          author: string;
-          content: string;
-          created_at: string;
-          id: string;
-          post: string | null;
-        };
-        Insert: {
-          author?: string;
-          content: string;
-          created_at?: string;
-          id?: string;
-          post?: string | null;
-        };
-        Update: {
-          author?: string;
-          content?: string;
-          created_at?: string;
-          id?: string;
-          post?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'Comments_author_fkey';
-            columns: ['author'];
-            isOneToOne: false;
-            referencedRelation: 'Users';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'Comments_post_fkey';
-            columns: ['post'];
-            isOneToOne: false;
-            referencedRelation: 'Posts';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
       Posts: {
         Row: {
+          author: string | null;
+          comment: string;
           content: string;
           created_at: string;
           id: string;
           post_at_utc: string;
           repost_at_utc: string | null;
+          status: Database['public']['Enums']['post_status'];
         };
         Insert: {
+          author?: string | null;
+          comment: string;
           content: string;
           created_at?: string;
           id?: string;
           post_at_utc: string;
           repost_at_utc?: string | null;
+          status?: Database['public']['Enums']['post_status'];
         };
         Update: {
+          author?: string | null;
+          comment?: string;
           content?: string;
           created_at?: string;
           id?: string;
           post_at_utc?: string;
           repost_at_utc?: string | null;
-        };
-        Relationships: [];
-      };
-      Users: {
-        Row: {
-          created_at: string;
-          id: string;
-          timezone: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: string;
-          timezone: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          timezone?: string;
+          status?: Database['public']['Enums']['post_status'];
         };
         Relationships: [];
       };
@@ -92,7 +44,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      post_status: 'draft' | 'posted' | 'reposted';
     };
     CompositeTypes: {
       [_ in never]: never;

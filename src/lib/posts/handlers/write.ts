@@ -1,4 +1,4 @@
-import { RetryAfterError } from 'inngest';
+import { NonRetriableError, RetryAfterError } from 'inngest';
 
 import {
   reshareLinkedInPost,
@@ -10,7 +10,7 @@ import { inngest } from '../../inngest/client';
 import { PostEvent } from '../events/types';
 
 export const writePostEventHandler = inngest.createFunction(
-  { id: 'write-post', retries: 5 },
+  { id: 'write-post', retries: 3 },
   { event: PostEvent.Scheduled },
   async ({ event, step }) => {
     await step.sleepUntil('wait-for-post-schedule', event.data.post.scheduleUtc);
@@ -30,7 +30,9 @@ export const writePostEventHandler = inngest.createFunction(
 
     const postUrn = postResponse?.postUrn;
     if (!postUrn) {
-      return;
+      throw new NonRetriableError(
+        'The scheduled post was created but its URN could not be retrieved'
+      );
     }
 
     await step.run('write-first-comment', async () => {

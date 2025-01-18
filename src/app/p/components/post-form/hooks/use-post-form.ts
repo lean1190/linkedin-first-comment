@@ -1,14 +1,13 @@
 'use client';
 
 import { UTCDate } from '@date-fns/utc';
-import clsx from 'clsx';
 import { add, format } from 'date-fns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 
 import { schedulePost } from '@/lib/posts/actions/schedule';
-
-import type { FormViewport } from '../types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
 export const formSchema = z
   .object({
@@ -20,54 +19,36 @@ export const formSchema = z
   .required();
 
 export default function usePostForm() {
-  const [scheduleLimits, setScheduleLimits] = useState({ min: '', max: '' });
+  const form = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema) });
+  const [scheduleValidation, setScheduleValidation] = useState({ min: '', max: '' });
 
   useEffect(() => {
     const now = new Date();
     const formatForInput = (date: Date) => format(date, "yyyy-MM-dd'T'HH:mm");
 
-    setScheduleLimits(() => ({
+    setScheduleValidation(() => ({
       min: formatForInput(now),
       max: formatForInput(add(now, { days: 7 }))
     }));
   }, []);
 
-  const [selectedViewport, setSelectedViewport] = useState<FormViewport>('desktop');
-
   const submitPost = useCallback(
-    ({ content, schedule, reshare, comment }: z.infer<typeof formSchema>) =>
-      schedulePost({
-        content,
-        scheduleUtc: new UTCDate(schedule).toISOString(),
-        reshareScheduleUtc: reshare ? new UTCDate(reshare).toISOString() : undefined,
-        comment
-      }),
-    []
+    async ({ content, schedule, reshare, comment }: z.infer<typeof formSchema>) => {
+      try {
+        const result = await schedulePost({
+          content,
+          scheduleUtc: new UTCDate(schedule).toISOString(),
+          reshareScheduleUtc: reshare ? new UTCDate(reshare).toISOString() : undefined,
+          comment
+        });
+        form.reset();
+        console.log('---> Action result', result);
+      } catch (error) {
+        console.error('---> Action error', error);
+      }
+    },
+    [form.reset]
   );
 
-  const viewportStyle = useCallback(
-    (viewport: FormViewport) =>
-      clsx('cursor-pointer rounded p-1 transition', 'hover:bg-neutral-600', {
-        'bg-black': viewport === selectedViewport
-      }),
-    [selectedViewport]
-  );
-
-  const formStyle = useMemo(
-    () =>
-      clsx('relative mx-auto rounded-xl bg-[#1b1f23] px-4 py-6 transition-all', {
-        'max-w-[555px]': selectedViewport === 'desktop',
-        'max-w-[409px]': selectedViewport === 'mobile'
-      }),
-    [selectedViewport]
-  );
-
-  return {
-    formStyle,
-    submitPost,
-    viewportStyle,
-    selectedViewport,
-    setSelectedViewport,
-    scheduleValidation: scheduleLimits
-  };
+  return { submitPost, scheduleValidation, form };
 }
