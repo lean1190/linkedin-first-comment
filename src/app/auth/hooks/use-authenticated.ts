@@ -21,14 +21,13 @@ export default function useRedirectIfAuthenticated() {
       });
 
       if (anyError || unauthorized) {
+        setLoading(false);
         redirect(unauthorized?.redirectPath.errorPath ?? '/');
       }
 
       if (!anyError && !unauthorized) {
         redirect('/p');
       }
-
-      setLoading(false);
     }
 
     redirectIfAuthenticated();
