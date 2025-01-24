@@ -1,7 +1,14 @@
 'use client';
 
 import { Label } from '@radix-ui/react-label';
-import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
+import {
+  type Icon,
+  IconCircleCheck,
+  IconDeviceDesktop,
+  IconDeviceMobile,
+  type IconProps,
+  IconRefresh
+} from '@tabler/icons-react';
 import Image from 'next/image';
 
 import { FormSeparator } from '@/components/ui/form-separator';
@@ -11,7 +18,8 @@ import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
-import { useState } from 'react';
+import { createOrUpdateDraftAction } from '@/lib/posts/actions/create';
+import { type ForwardRefExoticComponent, type RefAttributes, useEffect, useState } from 'react';
 import Author from './components/author';
 import Success from './components/success/success';
 import Timezone from './components/timezone';
@@ -25,29 +33,51 @@ interface Props {
 
 export default function PostForm({ profile }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<FormViewport>('desktop');
-
-  const { formStyle, viewportStyle } = useStyles(selectedViewport);
-  const { submitPost, scheduleValidation, form } = usePostForm();
+  const { formStyle, viewportStyle, statusLine } = useStyles(selectedViewport);
+  const { submitPost, resetForm, mapFormToAction, updateDraft, scheduleValidation, form } =
+    usePostForm();
 
   const {
-    getValues,
+    watch,
     register,
     handleSubmit,
     formState: { isSubmitting, isSubmitSuccessful, isValid }
   } = form;
 
-  const schedule = getValues('schedule');
+  const formData = watch();
+
+  useEffect(() => {
+    if (isValid && !isSubmitting && !isSubmitSuccessful && updateDraft.isIdle) {
+      console.log('---> running effect');
+      // updateDraft.execute(mapFormToAction(formData));
+    }
+  }, [
+    // formData,
+    isValid,
+    isSubmitting,
+    isSubmitSuccessful,
+    // updateDraft.execute,
+    updateDraft.isIdle
+    // mapFormToAction
+  ]);
 
   return (
     <>
       <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
-        <section className="absolute right-4 top-2 flex gap-1 font-light text-linkedin-low-emphasis">
-          <span className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
-            <IconDeviceMobile size={20} />
-          </span>
-          <span className={viewportStyle('desktop')} onClick={() => setSelectedViewport('desktop')}>
-            <IconDeviceDesktop size={20} />
-          </span>
+        <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light text-linkedin-low-emphasis">
+          <div className="mr-2">{statusLine(updateDraft)}</div>
+
+          <div className="flex items-center gap-1">
+            <div className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
+              <IconDeviceMobile size={20} />
+            </div>
+            <div
+              className={viewportStyle('desktop')}
+              onClick={() => setSelectedViewport('desktop')}
+            >
+              <IconDeviceDesktop size={20} />
+            </div>
+          </div>
         </section>
 
         <section className="mb-2 pr-9">
@@ -130,7 +160,7 @@ export default function PostForm({ profile }: Props) {
               {...register('reshare')}
               type="datetime-local"
               disabled={isSubmitting}
-              min={schedule || undefined}
+              min={formData.schedule || undefined}
               max={scheduleValidation.max || undefined}
             />
           </LabelInputContainer>
@@ -140,7 +170,7 @@ export default function PostForm({ profile }: Props) {
 
         <section className="flex flex-col items-center">
           <div className="mx-auto mb-4 w-fit">
-            <Timezone schedule={schedule} viewport={selectedViewport} />
+            <Timezone schedule={formData.schedule} viewport={selectedViewport} />
           </div>
 
           <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>
@@ -149,7 +179,7 @@ export default function PostForm({ profile }: Props) {
         </section>
       </form>
 
-      <Success profile={profile} post={getValues()} show={isSubmitSuccessful} />
+      <Success profile={profile} post={formData} show={isSubmitSuccessful} onClose={resetForm} />
     </>
   );
 }

@@ -1,16 +1,16 @@
 import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
-import type { CurrentUserSession, NullableSession, NullableUser } from '../session/types';
+import type { CurrentUserSession } from '../session/types';
 
 export class AuthenticationError extends Error {
-  reason: string;
+  type: string;
 
-  constructor(message: string, reason: string) {
+  constructor(message: string, type: string) {
     super(message);
-    this.reason = reason;
+    this.type = type;
   }
 
   public get redirectPath() {
-    const errorPath = `/?error=${this.reason}`;
+    const errorPath = `/?error=${this.type}`;
     const url = new URL(errorPath, 'http://placeholder');
 
     return {

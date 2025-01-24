@@ -5,32 +5,32 @@ export type Database = {
     Tables: {
       Posts: {
         Row: {
-          author: string | null;
-          comment: string;
+          author: string;
+          comment: string | null;
           content: string;
           created_at: string;
           id: string;
-          post_at_utc: string;
+          post_at_utc: string | null;
           repost_at_utc: string | null;
           status: Database['public']['Enums']['post_status'];
         };
         Insert: {
-          author?: string | null;
-          comment: string;
+          author?: string;
+          comment?: string | null;
           content: string;
           created_at?: string;
           id?: string;
-          post_at_utc: string;
+          post_at_utc?: string | null;
           repost_at_utc?: string | null;
           status?: Database['public']['Enums']['post_status'];
         };
         Update: {
-          author?: string | null;
-          comment?: string;
+          author?: string;
+          comment?: string | null;
           content?: string;
           created_at?: string;
           id?: string;
-          post_at_utc?: string;
+          post_at_utc?: string | null;
           repost_at_utc?: string | null;
           status?: Database['public']['Enums']['post_status'];
         };

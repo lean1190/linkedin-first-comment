@@ -15,18 +15,19 @@ interface Props {
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
   post: z.infer<typeof formSchema>;
   show: boolean;
+  onClose: VoidFunction;
 }
 
 const gif = random(1, 3);
 
-export default function Success({ profile, post, show }: Props) {
+export default function Success({ profile, post, show, onClose }: Props) {
   return (
     <article className="max-w-full sm:max-w-lg mx-auto">
       <Modal>
         <ModalTrigger forceOpen={show} className="pointer-events-none cursor-auto">
           <span />
         </ModalTrigger>
-        <ModalBody>
+        <ModalBody onClose={onClose}>
           <BackgroundGradient className="rounded-3xl bg-white dark:bg-zinc-900">
             <ModalContent>
               <Author profile={profile} />

@@ -72,24 +72,25 @@ export const ModalTrigger = ({
 
 export const ModalBody = ({
   children,
-  className
+  className,
+  onClose = () => {}
 }: {
   children: ReactNode;
   className?: string;
+  onClose?: VoidFunction;
 }) => {
-  const { open } = useModal();
+  const { open, setOpen } = useModal();
+  const modalRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(modalRef as RefObject<HTMLDivElement>, () => setOpen(false));
 
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
+      onClose();
     }
-  }, [open]);
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const { setOpen } = useModal();
-  useOutsideClick(modalRef as RefObject<HTMLDivElement>, () => setOpen(false));
+  }, [open, onClose]);
 
   return (
     <AnimatePresence>
