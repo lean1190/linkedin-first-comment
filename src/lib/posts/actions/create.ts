@@ -3,12 +3,12 @@
 import { actionClient } from '@/lib/server-actions/client';
 
 import { flattenValidationErrors } from 'next-safe-action';
-import { createOrUpdatePost } from '../database/create';
-import { draftPostSchema } from '../events/post';
+import { createPost } from '../database/create';
+import { postSchema } from '../events/post';
 import { validate } from './validation';
 
-export const createOrUpdateDraftAction = actionClient
-  .schema(draftPostSchema, {
+export const createPostAction = actionClient
+  .schema(postSchema, {
     handleValidationErrorsShape: async (ve) => flattenValidationErrors(ve).fieldErrors
   })
   .action(async ({ parsedInput: post }) => {
@@ -16,9 +16,5 @@ export const createOrUpdateDraftAction = actionClient
       author: { id }
     } = await validate();
 
-    return createOrUpdatePost({
-      authorId: id,
-      post,
-      status: 'draft'
-    });
+    return createPost({ authorId: id, post });
   });

@@ -1,15 +1,12 @@
 import { z } from 'zod';
 
-export const postSchema = z.object({
-  content: z.string(),
-  scheduleUtc: z.string().datetime(),
-  reshareScheduleUtc: z.string().datetime().optional(),
-  comment: z.string()
-});
+const postStatus = ['draft', 'scheduled', 'posted', 'reposted'] as const;
 
-export const draftPostSchema = z.object({
+export const postSchema = z.object({
+  id: z.string().optional(),
   content: z.string(),
-  scheduleUtc: z.string().datetime().optional(),
-  reshareScheduleUtc: z.string().datetime().optional(),
-  comment: z.string().optional()
+  scheduleUtc: z.string().datetime().nullable(),
+  reshareScheduleUtc: z.string().datetime().nullable(),
+  comment: z.string().nullable(),
+  status: z.enum(postStatus)
 });

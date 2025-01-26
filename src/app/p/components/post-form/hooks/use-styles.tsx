@@ -50,7 +50,7 @@ export default function useStyles(viewport: FormViewport) {
       return (
         <span className="flex items-center gap-1">
           <IconCircleCheck size={18} />
-          <span className="text-xs">Ready</span>
+          <span className="text-xs">Ready to write</span>
         </span>
       );
     },

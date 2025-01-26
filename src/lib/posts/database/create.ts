@@ -1,32 +1,25 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import type { Tables } from '@/lib/supabase/types';
 import type { z } from 'zod';
-import type { draftPostSchema, postSchema } from '../events/post';
+import type { postSchema } from '../events/post';
 
-type ConditionalPost<Status extends Tables<'Posts'>['status']> = Status extends 'draft'
-  ? z.infer<typeof draftPostSchema>
-  : z.infer<typeof postSchema>;
-
-export async function createOrUpdatePost<Status extends Tables<'Posts'>['status']>({
+export async function createPost({
   authorId,
-  post,
-  status
+  post
 }: {
   authorId: string;
-  post: ConditionalPost<Status>;
-  status: Status;
+  post: z.infer<typeof postSchema>;
 }) {
   const { data, error } = await (await createClient())
     .from('Posts')
-    .upsert({
+    .insert({
       author: authorId,
       content: post.content,
-      comment: post.comment ?? null,
-      post_at_utc: post.scheduleUtc ?? null,
-      repost_at_utc: post.reshareScheduleUtc ?? null,
-      status
+      comment: post.comment,
+      post_at_utc: post.scheduleUtc,
+      repost_at_utc: post.reshareScheduleUtc,
+      status: post.status
     })
     .select();
 

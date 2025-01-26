@@ -4,9 +4,8 @@ import { Modal, ModalBody, ModalContent, ModalTrigger } from '@/components/ui/an
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import { random } from '@/lib/random/number';
 import Image from 'next/image';
-import React from 'react';
 import type { z } from 'zod';
-import type { formSchema } from '../../hooks/use-post-form';
+import type { formSchema } from '../../schemas';
 import Author from '../author';
 import { TimezoneLine } from '../timezone';
 import { BackgroundGradient } from './background-gradient';

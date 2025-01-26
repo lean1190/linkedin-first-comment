@@ -1,14 +1,7 @@
 'use client';
 
 import { Label } from '@radix-ui/react-label';
-import {
-  type Icon,
-  IconCircleCheck,
-  IconDeviceDesktop,
-  IconDeviceMobile,
-  type IconProps,
-  IconRefresh
-} from '@tabler/icons-react';
+import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
 import Image from 'next/image';
 
 import { FormSeparator } from '@/components/ui/form-separator';
@@ -18,54 +11,83 @@ import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
-import { createOrUpdateDraftAction } from '@/lib/posts/actions/create';
-import { type ForwardRefExoticComponent, type RefAttributes, useEffect, useState } from 'react';
+import type { Tables } from '@/lib/supabase/types';
+import { useEffect, useState } from 'react';
 import Author from './components/author';
 import Success from './components/success/success';
 import Timezone from './components/timezone';
+import useDraft from './hooks/use-draft';
 import usePostForm from './hooks/use-post-form';
 import useStyles from './hooks/use-styles';
 import type { FormViewport } from './types';
 
 interface Props {
+  post?: Tables<'Posts'>;
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
 }
 
-export default function PostForm({ profile }: Props) {
+export default function PostForm({ post, profile }: Props) {
+  const [postId, setPostId] = useState<string | undefined>(undefined);
   const [selectedViewport, setSelectedViewport] = useState<FormViewport>('desktop');
-  const { formStyle, viewportStyle, statusLine } = useStyles(selectedViewport);
-  const { submitPost, resetForm, mapFormToAction, updateDraft, scheduleValidation, form } =
-    usePostForm();
 
-  const {
-    watch,
-    register,
-    handleSubmit,
-    formState: { isSubmitting, isSubmitSuccessful, isValid }
-  } = form;
+  const { formStyle, viewportStyle, statusLine } = useStyles(selectedViewport);
+  const { createDraft, updateDraft, isPending, hasSucceeded } = useDraft();
+  const { submitPost, resetForm, scheduleValidation, form } = usePostForm();
+
+  const { watch, register, handleSubmit, formState } = form;
 
   const formData = watch();
 
   useEffect(() => {
-    if (isValid && !isSubmitting && !isSubmitSuccessful && updateDraft.isIdle) {
-      console.log('---> running effect');
-      // updateDraft.execute(mapFormToAction(formData));
+    if (!post?.id) {
+      return;
     }
-  }, [
-    // formData,
-    isValid,
-    isSubmitting,
-    isSubmitSuccessful,
-    // updateDraft.execute,
-    updateDraft.isIdle
-    // mapFormToAction
-  ]);
+
+    setPostId(post.id);
+    if (post.content) {
+      form.setValue('content', post.content);
+    }
+    if (post.comment) {
+      form.setValue('comment', post.comment);
+    }
+    if (post.post_at_utc) {
+      form.setValue('schedule', post.post_at_utc);
+    }
+    if (post.repost_at_utc) {
+      form.setValue('reshare', post.repost_at_utc);
+    }
+  }, [post, form.setValue]);
+
+  useEffect(() => {
+    if (postId) {
+      return;
+    }
+
+    const create = async () => {
+      await createDraft.func({ postId, formData });
+      const id = createDraft.action.result?.data?.[0].id;
+      console.log('---> Create result', id, createDraft.action.result);
+      if (id) {
+        setPostId(id);
+      }
+    };
+
+    create();
+  }, [postId, formData, createDraft]);
+
+  useEffect(() => {
+    if (!postId) {
+      return;
+    }
+
+    updateDraft.func({ postId, formData, formState });
+  }, [postId, formData, formState, updateDraft.func]);
 
   return (
     <>
       <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
         <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light text-linkedin-low-emphasis">
-          <div className="mr-2">{statusLine(updateDraft)}</div>
+          <div className="mr-2">{statusLine({ isPending, hasSucceeded })}</div>
 
           <div className="flex items-center gap-1">
             <div className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
@@ -89,7 +111,7 @@ export default function PostForm({ profile }: Props) {
             {...register('content')}
             placeholder="Write your post here"
             required
-            disabled={isSubmitting}
+            disabled={formState.isSubmitting}
           />
         </section>
 
@@ -126,7 +148,7 @@ export default function PostForm({ profile }: Props) {
               {...register('comment')}
               placeholder="📌 Your 1st comment goes here"
               required
-              disabled={isSubmitting}
+              disabled={formState.isSubmitting}
             />
           </LabelInputContainer>
         </section>
@@ -145,7 +167,7 @@ export default function PostForm({ profile }: Props) {
               {...register('schedule')}
               type="datetime-local"
               required
-              disabled={isSubmitting}
+              disabled={formState.isSubmitting}
               min={scheduleValidation.min || undefined}
               max={scheduleValidation.max || undefined}
             />
@@ -159,7 +181,7 @@ export default function PostForm({ profile }: Props) {
               id="repost"
               {...register('reshare')}
               type="datetime-local"
-              disabled={isSubmitting}
+              disabled={formState.isSubmitting}
               min={formData.schedule || undefined}
               max={scheduleValidation.max || undefined}
             />
@@ -173,13 +195,21 @@ export default function PostForm({ profile }: Props) {
             <Timezone schedule={formData.schedule} viewport={selectedViewport} />
           </div>
 
-          <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>
-            {isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
+          <ButtonBorderGradient
+            type="submit"
+            disabled={formState.isSubmitting || !formState.isValid}
+          >
+            {formState.isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
           </ButtonBorderGradient>
         </section>
       </form>
 
-      <Success profile={profile} post={formData} show={isSubmitSuccessful} onClose={resetForm} />
+      <Success
+        profile={profile}
+        post={formData}
+        show={formState.isSubmitSuccessful}
+        onClose={resetForm}
+      />
     </>
   );
 }

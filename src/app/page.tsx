@@ -3,7 +3,7 @@
 import { SigninForm } from './auth/components/signin-form/signin-form';
 import useRedirectIfAuthenticated from './auth/hooks/use-authenticated';
 
-export default function Home() {
+export default function HomePage() {
   const loading = useRedirectIfAuthenticated();
 
   return (

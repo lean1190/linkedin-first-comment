@@ -44,7 +44,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      post_status: 'draft' | 'posted' | 'reposted';
+      post_status: 'draft' | 'posted' | 'reposted' | 'scheduled';
     };
     CompositeTypes: {
       [_ in never]: never;

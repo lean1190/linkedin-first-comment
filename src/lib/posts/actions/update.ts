@@ -1,43 +1,26 @@
 'use server';
 
-import { inngest } from '@/lib/inngest/client';
-import { getEventUser } from '@/lib/inngest/user';
-import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
 import { actionClient } from '@/lib/server-actions/client';
+
 import { ServerActionError } from '@/lib/server-actions/errors';
 import { hasId } from '@/lib/supabase/id';
 import { flattenValidationErrors } from 'next-safe-action';
 import { updatePost } from '../database/update';
 import { postSchema } from '../events/post';
-import { PostEvent } from '../events/types';
 import { validate } from './validation';
 
-export const schedulePostAction = actionClient
+export const updatePostAction = actionClient
   .schema(postSchema, {
     handleValidationErrorsShape: async (ve) => flattenValidationErrors(ve).fieldErrors
   })
   .action(async ({ parsedInput: post }) => {
     const {
-      user,
-      author: { urn, id },
-      session
+      author: { id }
     } = await validate();
 
     if (!hasId(post)) {
       throw new ServerActionError('Post Id is not set', 'IdMissing');
     }
 
-    await updatePost({
-      authorId: id,
-      post: { ...post, status: 'scheduled' }
-    });
-
-    await inngest.send({
-      name: PostEvent.Scheduled,
-      user: await getEventUser(user),
-      data: {
-        post,
-        author: { id, urn, token: extractLinkedInAccessToken(session) as string }
-      }
-    });
+    return updatePost({ authorId: id, post });
   });
