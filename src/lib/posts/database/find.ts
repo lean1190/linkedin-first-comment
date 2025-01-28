@@ -10,3 +10,9 @@ export async function findPostById(id: string) {
 
   return posts?.[0];
 }
+
+export async function findPostsByAuthor(id: string) {
+  const result = await (await createClient()).from('Posts').select().eq('author', id);
+
+  return handleDatabaseResponse(result);
+}

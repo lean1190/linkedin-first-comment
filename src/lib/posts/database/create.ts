@@ -3,7 +3,7 @@
 import { handleDatabaseResponse } from '@/lib/supabase/response-handler';
 import { createClient } from '@/lib/supabase/server';
 import type { z } from 'zod';
-import type { postSchema } from '../events/post';
+import type { postSchema } from '../schemas/post';
 
 export async function createPost({
   authorId,

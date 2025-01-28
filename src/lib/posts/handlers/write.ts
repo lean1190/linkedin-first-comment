@@ -7,7 +7,7 @@ import {
 } from '@/lib/linkedin/posts/write';
 
 import { inngest } from '../../inngest/client';
-import { PostEvent } from '../events/types';
+import { PostEvent } from '../events';
 
 export const writePostEventHandler = inngest.createFunction(
   { id: 'write-post', retries: 3 },

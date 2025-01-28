@@ -4,7 +4,7 @@ import { actionClient } from '@/lib/server-actions/client';
 import { hasId } from '@/lib/supabase/id';
 import { flattenValidationErrors, returnValidationErrors } from 'next-safe-action';
 import { updatePost } from '../database/update';
-import { postSchema } from '../events/post';
+import { postSchema } from '../schemas/post';
 import { validateSession } from './validation';
 
 export const updatePostAction = actionClient

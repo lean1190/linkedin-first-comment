@@ -1,7 +1,7 @@
 import ky from 'ky';
 import type { z } from 'zod';
 
-import type { postScheduledEvent } from '@/lib/posts/events/schedule';
+import type { postScheduledEvent } from '@/lib/posts/schemas/schedule';
 
 import { linkedInHeaders } from '../headers';
 

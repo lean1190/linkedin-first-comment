@@ -1,7 +1,7 @@
 import { encryptionMiddleware } from '@inngest/middleware-encryption';
 import { EventSchemas, Inngest } from 'inngest';
 
-import { postScheduledEvent } from '../posts/events/schedule';
+import { postScheduledEvent } from '../posts/schemas/schedule';
 
 const encryption = encryptionMiddleware({
   key: process.env.INNGEST_ENCRIPTION_KEY ?? ''
