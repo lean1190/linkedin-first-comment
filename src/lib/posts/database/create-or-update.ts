@@ -2,21 +2,29 @@
 
 import { handleDatabaseResponse } from '@/lib/supabase/response-handler';
 import { createClient } from '@/lib/supabase/server';
-import type { WithRequired } from '@/lib/types';
-import type { z } from 'zod';
-import type { postSchema } from '../events/post';
 import { mapPostToUpdate } from './map';
+import type { PostUpdate } from './types';
 
-export async function updatePost({
+export async function createOrUpdatePost({
   authorId,
   post
 }: {
   authorId: string;
-  post: WithRequired<Partial<z.infer<typeof postSchema>>, 'id' | 'content'>;
+  post: PostUpdate;
 }) {
   const result = await (await createClient())
     .from('Posts')
-    .update(mapPostToUpdate(post))
+    .upsert(
+      {
+        ...mapPostToUpdate(post),
+        id: post.id,
+        author: authorId
+      },
+      {
+        onConflict: 'id',
+        ignoreDuplicates: false
+      }
+    )
     .eq('author', authorId)
     .eq('id', post.id)
     .select();

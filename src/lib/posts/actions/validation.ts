@@ -5,7 +5,7 @@ import { extractLinkedInId } from '@/lib/linkedin/user/extract';
 import { ServerActionError } from '@/lib/server-actions/errors';
 import type { User } from '@supabase/supabase-js';
 
-export async function validate() {
+export async function validateSession() {
   const user = await getServerUser();
   const session = await getServerSession();
   const unauthorized = checkUnauthorized({ user, session });

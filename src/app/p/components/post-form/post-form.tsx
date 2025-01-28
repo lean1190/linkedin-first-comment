@@ -3,6 +3,7 @@
 import { Label } from '@radix-ui/react-label';
 import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useWatch } from 'react-hook-form';
 
 import { FormSeparator } from '@/components/ui/form-separator';
 import { Input } from '@/components/ui/input';
@@ -11,77 +12,57 @@ import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
-import type { Tables } from '@/lib/supabase/types';
+import type { PostWithId } from '@/lib/posts/database/types';
 import { useEffect, useState } from 'react';
+import type { z } from 'zod';
 import Author from './components/author';
 import Success from './components/success/success';
 import Timezone from './components/timezone';
 import useDraft from './hooks/use-draft';
 import usePostForm from './hooks/use-post-form';
 import useStyles from './hooks/use-styles';
+import type { formSchema } from './schemas';
 import type { FormViewport } from './types';
 
 interface Props {
-  post?: Tables<'Posts'>;
+  post: PostWithId;
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
 }
 
 export default function PostForm({ post, profile }: Props) {
-  const [postId, setPostId] = useState<string | undefined>(undefined);
   const [selectedViewport, setSelectedViewport] = useState<FormViewport>('desktop');
 
   const { formStyle, viewportStyle, statusLine } = useStyles(selectedViewport);
-  const { createDraft, updateDraft, isPending, hasSucceeded } = useDraft();
+  const { createOrUpdateDraft, isPending, hasSucceeded } = useDraft();
   const { submitPost, resetForm, scheduleValidation, form } = usePostForm();
 
-  const { watch, register, handleSubmit, formState } = form;
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitting, isSubmitSuccessful, isValid }
+  } = form;
 
-  const formData = watch();
+  const formData = useWatch(form);
 
   useEffect(() => {
-    if (!post?.id) {
+    if (!post.id) {
       return;
     }
 
-    setPostId(post.id);
-    if (post.content) {
-      form.setValue('content', post.content);
-    }
-    if (post.comment) {
-      form.setValue('comment', post.comment);
-    }
-    if (post.post_at_utc) {
-      form.setValue('schedule', post.post_at_utc);
-    }
-    if (post.repost_at_utc) {
-      form.setValue('reshare', post.repost_at_utc);
-    }
-  }, [post, form.setValue]);
+    setValue('id', post.id);
+    if (post.content) setValue('content', post.content);
+    if (post.comment) setValue('comment', post.comment);
+    if (post.post_at_utc) setValue('schedule', post.post_at_utc);
+    if (post.repost_at_utc) setValue('reshare', post.repost_at_utc);
+  }, [post, setValue]);
 
   useEffect(() => {
-    if (postId) {
-      return;
-    }
-
-    const create = async () => {
-      await createDraft.func({ postId, formData });
-      const id = createDraft.action.result?.data?.[0].id;
-      console.log('---> Create result', id, createDraft.action.result);
-      if (id) {
-        setPostId(id);
-      }
-    };
-
-    create();
-  }, [postId, formData, createDraft]);
-
-  useEffect(() => {
-    if (!postId) {
-      return;
-    }
-
-    updateDraft.func({ postId, formData, formState });
-  }, [postId, formData, formState, updateDraft.func]);
+    createOrUpdateDraft({
+      formData,
+      formState: { isSubmitting, isSubmitSuccessful }
+    });
+  }, [formData, isSubmitting, isSubmitSuccessful, createOrUpdateDraft]);
 
   return (
     <>
@@ -111,7 +92,7 @@ export default function PostForm({ post, profile }: Props) {
             {...register('content')}
             placeholder="Write your post here"
             required
-            disabled={formState.isSubmitting}
+            disabled={isSubmitting}
           />
         </section>
 
@@ -148,7 +129,7 @@ export default function PostForm({ post, profile }: Props) {
               {...register('comment')}
               placeholder="📌 Your 1st comment goes here"
               required
-              disabled={formState.isSubmitting}
+              disabled={isSubmitting}
             />
           </LabelInputContainer>
         </section>
@@ -167,7 +148,7 @@ export default function PostForm({ post, profile }: Props) {
               {...register('schedule')}
               type="datetime-local"
               required
-              disabled={formState.isSubmitting}
+              disabled={isSubmitting}
               min={scheduleValidation.min || undefined}
               max={scheduleValidation.max || undefined}
             />
@@ -181,7 +162,7 @@ export default function PostForm({ post, profile }: Props) {
               id="repost"
               {...register('reshare')}
               type="datetime-local"
-              disabled={formState.isSubmitting}
+              disabled={isSubmitting}
               min={formData.schedule || undefined}
               max={scheduleValidation.max || undefined}
             />
@@ -195,19 +176,16 @@ export default function PostForm({ post, profile }: Props) {
             <Timezone schedule={formData.schedule} viewport={selectedViewport} />
           </div>
 
-          <ButtonBorderGradient
-            type="submit"
-            disabled={formState.isSubmitting || !formState.isValid}
-          >
-            {formState.isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
+          <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>
+            {isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
           </ButtonBorderGradient>
         </section>
       </form>
 
       <Success
         profile={profile}
-        post={formData}
-        show={formState.isSubmitSuccessful}
+        post={formData as z.infer<typeof formSchema>}
+        show={isSubmitSuccessful}
         onClose={resetForm}
       />
     </>

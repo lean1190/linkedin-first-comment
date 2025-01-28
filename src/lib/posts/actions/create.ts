@@ -5,7 +5,7 @@ import { actionClient } from '@/lib/server-actions/client';
 import { flattenValidationErrors } from 'next-safe-action';
 import { createPost } from '../database/create';
 import { postSchema } from '../events/post';
-import { validate } from './validation';
+import { validateSession } from './validation';
 
 export const createPostAction = actionClient
   .schema(postSchema, {
@@ -14,7 +14,7 @@ export const createPostAction = actionClient
   .action(async ({ parsedInput: post }) => {
     const {
       author: { id }
-    } = await validate();
+    } = await validateSession();
 
     return createPost({ authorId: id, post });
   });

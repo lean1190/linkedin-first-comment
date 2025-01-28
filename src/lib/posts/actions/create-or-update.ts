@@ -3,11 +3,11 @@
 import { actionClient } from '@/lib/server-actions/client';
 import { hasId } from '@/lib/supabase/id';
 import { flattenValidationErrors, returnValidationErrors } from 'next-safe-action';
-import { updatePost } from '../database/update';
+import { createOrUpdatePost } from '../database/create-or-update';
 import { postSchema } from '../events/post';
 import { validateSession } from './validation';
 
-export const updatePostAction = actionClient
+export const createOrUpdatePostAction = actionClient
   .schema(postSchema, {
     handleValidationErrorsShape: async (ve) => flattenValidationErrors(ve).fieldErrors
   })
@@ -20,5 +20,5 @@ export const updatePostAction = actionClient
       returnValidationErrors(postSchema, { id: { _errors: ['Id is required'] } });
     }
 
-    return updatePost({ authorId: id, post });
+    return createOrUpdatePost({ authorId: id, post });
   });

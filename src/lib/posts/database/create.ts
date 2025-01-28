@@ -1,5 +1,6 @@
 'use server';
 
+import { handleDatabaseResponse } from '@/lib/supabase/response-handler';
 import { createClient } from '@/lib/supabase/server';
 import type { z } from 'zod';
 import type { postSchema } from '../events/post';
@@ -11,7 +12,7 @@ export async function createPost({
   authorId: string;
   post: z.infer<typeof postSchema>;
 }) {
-  const { data, error } = await (await createClient())
+  const result = await (await createClient())
     .from('Posts')
     .insert({
       author: authorId,
@@ -23,9 +24,5 @@ export async function createPost({
     })
     .select();
 
-  if (error) {
-    throw error;
-  }
-
-  return data;
+  return handleDatabaseResponse(result);
 }
