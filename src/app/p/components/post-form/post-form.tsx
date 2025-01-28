@@ -25,7 +25,7 @@ import type { formSchema } from './schemas';
 import type { FormViewport } from './types';
 
 interface Props {
-  post: PostWithId;
+  post: Awaited<PostWithId>;
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
 }
 
