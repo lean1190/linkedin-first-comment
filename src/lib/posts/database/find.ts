@@ -12,7 +12,11 @@ export async function findPostById(id: string) {
 }
 
 export async function findPostsByAuthor(id: string) {
-  const result = await (await createClient()).from('Posts').select().eq('author', id);
+  const result = await (await createClient())
+    .from('Posts')
+    .select()
+    .eq('author', id)
+    .order('created_at', { ascending: false });
 
   return handleDatabaseResponse(result);
 }
