@@ -52,8 +52,6 @@ export const ModalTrigger = ({
     if (forceOpen) {
       setOpen(true);
     }
-
-    return () => setOpen(false);
   }, [forceOpen, setOpen]);
 
   return (
@@ -81,16 +79,18 @@ export const ModalBody = ({
 }) => {
   const { open, setOpen } = useModal();
   const modalRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(modalRef as RefObject<HTMLDivElement>, () => setOpen(false));
+  useOutsideClick(modalRef as RefObject<HTMLDivElement>, () => {
+    onClose();
+    setOpen(false);
+  });
 
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
-      onClose();
     }
-  }, [open, onClose]);
+  }, [open]);
 
   return (
     <AnimatePresence>

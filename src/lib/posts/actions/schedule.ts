@@ -6,6 +6,7 @@ import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
 import { actionClient } from '@/lib/server-actions/client';
 import { hasId } from '@/lib/supabase/id';
 import { flattenValidationErrors, returnValidationErrors } from 'next-safe-action';
+import { revalidatePath } from 'next/cache';
 import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
 import { postSchema } from '../schemas/post';
@@ -39,4 +40,6 @@ export const schedulePostAction = actionClient
         author: { id, urn, token: extractLinkedInAccessToken(session) as string }
       }
     });
+
+    revalidatePath('/p');
   });

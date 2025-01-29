@@ -5,13 +5,12 @@ import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useWatch } from 'react-hook-form';
 
+import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
 import { FormSeparator } from '@/components/ui/form-separator';
 import { Input } from '@/components/ui/input';
 import { LabelInputContainer } from '@/components/ui/label-input-container';
 import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
-
-import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
 import type { PostWithId } from '@/lib/posts/database/types';
 import { useEffect, useState } from 'react';
 import type { z } from 'zod';
@@ -40,6 +39,7 @@ export default function PostForm({ post, profile }: Props) {
     register,
     handleSubmit,
     setValue,
+    trigger: validateForm,
     formState: { isSubmitting, isSubmitSuccessful, isValid }
   } = form;
 
@@ -55,7 +55,8 @@ export default function PostForm({ post, profile }: Props) {
     if (post.comment) setValue('comment', post.comment);
     if (post.post_at_utc) setValue('schedule', post.post_at_utc);
     if (post.repost_at_utc) setValue('reshare', post.repost_at_utc);
-  }, [post, setValue]);
+    validateForm();
+  }, [post, setValue, validateForm]);
 
   useEffect(() => {
     createOrUpdateDraft({

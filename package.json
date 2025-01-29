@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "test": "vitest run --coverage",
+    "test": "vitest run --coverage --coverage.all=false",
     "events:dev": "npx inngest-cli@latest dev",
     "supabase:types": "source .env.local && supabase gen types typescript --project-id $SUPABASE_PROJECT_ID --schema public > src/lib/supabase/types.ts",
     "check:all": "npx @biomejs/biome check --write .",
