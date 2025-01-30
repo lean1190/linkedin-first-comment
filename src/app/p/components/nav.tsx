@@ -3,6 +3,7 @@
 import { signOut } from '@/lib/auth/signout';
 import { cn } from '@/lib/styles/merge';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { JSX } from 'react';
 
 interface NavItem {
@@ -16,11 +17,17 @@ interface Props {
   className?: string;
 }
 
+const highlight = (
+  <span className="absolute w-full mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-400 to-transparent h-[1.5px]" />
+);
+
 export default function Nav({ items, className }: Props) {
+  const pathname = usePathname();
+
   return (
     <nav
       className={cn(
-        'flex max-w-fit mx-auto border border-transparent dark:border-white/[0.2] rounded-full dark:bg-black bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-[5000] pr-2 pl-8 py-2  items-center justify-center space-x-4',
+        'flex gap-4 max-w-fit mx-auto border border-white/[0.2] rounded-full bg-black pr-2 pl-8 py-2 items-center justify-center',
         className
       )}
     >
@@ -29,20 +36,20 @@ export default function Nav({ items, className }: Props) {
           key={item.name}
           href={item.link}
           className={cn(
-            'relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500'
+            'relative text-center text-neutral-50 items-center flex hover:text-neutral-300 transition-colors'
           )}
         >
           {item.icon ? <span>{item.icon}</span> : null}
           <span className="text-sm">{item.name}</span>
+          {item.link === pathname ? highlight : null}
         </Link>
       ))}
       <button
         type="button"
         onClick={signOut}
-        className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
+        className="border text-sm font-medium relative hover:border-neutral-300 transition border-white/[0.2] text-white px-4 py-2 rounded-full"
       >
         <span>Sign out</span>
-        <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
       </button>
     </nav>
   );
