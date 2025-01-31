@@ -1,3 +1,5 @@
+'use client';
+
 import { AuthenticationErrorType } from '@/lib/auth/errors/unauthorized';
 import { useSearchParams } from 'next/navigation';
 
