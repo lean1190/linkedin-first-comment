@@ -6,13 +6,16 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { schedulePostAction } from '@/lib/posts/actions/schedule';
+import { useRouter } from 'next/navigation';
 import type { z } from 'zod';
+import { NavLink } from '../../nav/items';
 import { mapFormToAction } from '../lib/map';
 import { formSchema } from '../schemas';
 
 const formatForInput = (date: Date) => format(date, "yyyy-MM-dd'T'HH:mm");
 
 export default function usePostForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema) });
 
   const now = new Date();
@@ -23,7 +26,8 @@ export default function usePostForm() {
 
   const resetForm = useCallback(() => {
     form.reset();
-  }, [form.reset]);
+    router.replace(NavLink.Platform);
+  }, [form.reset, router.replace]);
 
   const submitPost = useCallback(async (formData: z.infer<typeof formSchema>) => {
     const result = await schedulePostAction({

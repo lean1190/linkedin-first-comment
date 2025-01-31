@@ -12,6 +12,7 @@ import { LabelInputContainer } from '@/components/ui/label-input-container';
 import { Textarea } from '@/components/ui/textarea';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { PostWithId } from '@/lib/posts/database/types';
+import useWindowSize from '@/lib/screen/use-window-size';
 import { useEffect, useState } from 'react';
 import type { z } from 'zod';
 import Author from './components/author';
@@ -30,7 +31,7 @@ interface Props {
 
 export default function PostForm({ post, profile }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<FormViewport>('desktop');
-
+  const { isTiny: isTinyDevice } = useWindowSize();
   const { formStyle, viewportStyle, statusLine } = useStyles(selectedViewport);
   const { createOrUpdateDraft, isPending, hasSucceeded } = useDraft();
   const { submitPost, resetForm, scheduleValidation, form } = usePostForm();
@@ -44,6 +45,12 @@ export default function PostForm({ post, profile }: Props) {
   } = form;
 
   const formData = useWatch(form);
+
+  useEffect(() => {
+    if (isTinyDevice) {
+      setSelectedViewport('mobile');
+    }
+  }, [isTinyDevice]);
 
   useEffect(() => {
     if (!post.id) {
@@ -71,7 +78,7 @@ export default function PostForm({ post, profile }: Props) {
         <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light text-linkedin-low-emphasis">
           <div className="mr-2">{statusLine({ isPending, hasSucceeded })}</div>
 
-          <div className="flex items-center gap-1">
+          <div className="hidden sm:flex items-center gap-1">
             <div className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
               <IconDeviceMobile size={20} />
             </div>
@@ -116,7 +123,7 @@ export default function PostForm({ post, profile }: Props) {
         <section className="w-full pr-4">
           <div className="mb-2 flex items-start justify-between">
             <div
-              className={`transition-all ${selectedViewport === 'desktop' ? 'max-w-[485px]' : 'max-w-[339px]'}`}
+              className={`transition-all min-w-0 ${selectedViewport === 'desktop' ? 'max-w-[485px]' : 'max-w-[339px]'}`}
             >
               <Author profile={profile} size="sm" showTime={false} />
             </div>
