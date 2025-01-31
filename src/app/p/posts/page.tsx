@@ -9,12 +9,24 @@ import Link from 'next/link';
 
 const statusBadgeStyles = (status: Tables<'Posts'>['status']) =>
   clsx(
-    'border py-1 px-2 capitalize text-xs rounded',
+    'border py-1 px-2 capitalize text-xs rounded-full',
     { 'border-gray-700': status === 'draft' },
     { 'border-blue-700': status === 'scheduled' },
     { 'border-green-700': status === 'posted' },
     { 'border-green-900': status === 'reposted' }
   );
+
+const ArrowButton = ({ text }: { text: string }) => (
+  <Button size="sm" className="group">
+    {text}{' '}
+    <span
+      aria-hidden="true"
+      className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200"
+    >
+      →
+    </span>
+  </Button>
+);
 
 export default async function PostsPage() {
   const user = await getServerUser();
@@ -26,7 +38,7 @@ export default async function PostsPage() {
 
   return (
     <article className="size-full mx-auto rounded-xl bg-[#1b1f23] p-8 w-full sm:max-w-screen-md">
-      <h2 className="text-3xl mb-8">Your posts</h2>
+      <h2 className="text-3xl mb-8">{!posts?.length ? 'No posts yet' : 'Your posts'}</h2>
       <section>
         {posts ? (
           <ul className="divide-y divide-gray-700">
@@ -44,23 +56,17 @@ export default async function PostsPage() {
                 </div>
 
                 {post.status === 'draft' ? (
-                  <Link href={`/p?id=${post.id}`} className="group">
-                    <Button size="sm">
-                      Continue writing{' '}
-                      <span
-                        aria-hidden="true"
-                        className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200"
-                      >
-                        →
-                      </span>
-                    </Button>
+                  <Link href={`/p?id=${post.id}`}>
+                    <ArrowButton text="Continue writing" />
                   </Link>
                 ) : null}
               </li>
             ))}
           </ul>
         ) : (
-          'No posts yet'
+          <Link href="/p">
+            <ArrowButton text="Start writing" />
+          </Link>
         )}
       </section>
     </article>

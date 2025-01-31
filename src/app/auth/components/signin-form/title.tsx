@@ -3,7 +3,7 @@ import { SparklesCore } from '@/components/ui/sparkles';
 export default function Title() {
   return (
     <div className="flex w-full flex-col items-center justify-center overflow-hidden rounded-md">
-      <h1 className="relative z-20 text-center text-3xl font-bold tracking-tighter md:text-7xl lg:text-9xl">
+      <h1 className="relative z-20 text-center text-5xl font-bold tracking-tighter md:text-7xl lg:text-9xl">
         Be always #1
       </h1>
       <div className="relative h-40 w-[40rem]">

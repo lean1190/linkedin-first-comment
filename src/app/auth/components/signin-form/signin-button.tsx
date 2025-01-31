@@ -27,7 +27,7 @@ export default function SigninButton({ loading }: Props) {
             <IconBrandLinkedin className="size-6 text-neutral-800 dark:text-neutral-300" />
           )}
         </span>
-        <span className="text-lg font-extralight text-neutral-700 dark:text-neutral-300">
+        <span className="sm:text-lg font-extralight text-neutral-700 dark:text-neutral-300">
           {loading || pending ? 'Loading...' : 'Sign in with LinkedIn'}
         </span>
       </ButtonBorderGradient>
