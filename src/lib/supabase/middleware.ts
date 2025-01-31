@@ -1,3 +1,4 @@
+import { NavLink } from '@/app/p/components/nav/items';
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 import { checkUnauthorized } from '../auth/errors/unauthorized';
@@ -37,7 +38,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getSession();
 
   const unauthorized = checkUnauthorized({ user, session });
-  const urlIsNotSignin = request.nextUrl.pathname !== '/';
+  const urlIsNotSignin = request.nextUrl.pathname !== NavLink.Root;
 
   if (unauthorized && urlIsNotSignin) {
     const url = request.nextUrl.clone();

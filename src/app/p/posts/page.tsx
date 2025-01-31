@@ -40,7 +40,7 @@ export default async function PostsPage() {
     <article className="size-full mx-auto rounded-xl bg-[#1b1f23] p-8 w-full sm:max-w-screen-md">
       <h2 className="text-3xl mb-8">{!posts?.length ? 'No posts yet' : 'Your posts'}</h2>
       <section>
-        {posts ? (
+        {posts?.length ? (
           <ul className="divide-y divide-gray-700">
             {posts.map((post) => (
               <li key={post.id} className="py-4">

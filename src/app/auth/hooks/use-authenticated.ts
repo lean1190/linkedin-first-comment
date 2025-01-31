@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { NavLink } from '@/app/p/components/nav/items';
-import { checkUnauthorized } from '@/lib/auth/errors/unauthorized';
+import { AuthenticationErrorType, checkUnauthorized } from '@/lib/auth/errors/unauthorized';
 import { supabaseClient } from '@/lib/supabase/client';
 
 export default function useRedirectIfAuthenticated() {
@@ -23,7 +23,12 @@ export default function useRedirectIfAuthenticated() {
 
       if (anyError || unauthorized) {
         setLoading(false);
-        redirect(unauthorized?.redirectPath.errorPath ?? NavLink.Root);
+
+        if (unauthorized?.type === AuthenticationErrorType.SessionExpired) {
+          redirect(unauthorized.redirectPath.errorPath);
+        } else {
+          redirect(NavLink.Root);
+        }
       }
 
       if (!anyError && !unauthorized) {

@@ -1,6 +1,11 @@
 import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
 import type { CurrentUserSession } from '../session/types';
 
+export enum AuthenticationErrorType {
+  Unauthorized = 'Unauthorized',
+  SessionExpired = 'SessionExpired'
+}
+
 export class AuthenticationError extends Error {
   type: string;
 
@@ -33,6 +38,6 @@ export function checkUnauthorized({
 
   return new AuthenticationError(
     'User is not properly authenticated',
-    !user ? 'Unauthorized' : 'SessionExpired'
+    !user ? AuthenticationErrorType.Unauthorized : AuthenticationErrorType.SessionExpired
   );
 }
