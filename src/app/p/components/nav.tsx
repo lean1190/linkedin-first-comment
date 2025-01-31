@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { signOut } from '@/lib/auth/signout';
 import { cn } from '@/lib/styles/merge';
 import Link from 'next/link';
@@ -44,13 +45,13 @@ export default function Nav({ items, className }: Props) {
           {item.link === pathname ? highlight : null}
         </Link>
       ))}
-      <button
+      <Button
         type="button"
         onClick={signOut}
         className="border text-sm font-medium relative hover:border-neutral-300 transition border-white/[0.2] text-white px-4 py-2 rounded-full"
       >
         <span>Sign out</span>
-      </button>
+      </Button>
     </nav>
   );
 }

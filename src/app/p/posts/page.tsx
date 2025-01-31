@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { getServerUser } from '@/lib/auth/session/server';
 import { findPostsByAuthor } from '@/lib/posts/database/find';
 import { hasId } from '@/lib/supabase/id';
@@ -30,21 +31,21 @@ export default async function PostsPage() {
         {posts ? (
           <ul className="divide-y divide-gray-700">
             {posts.map((post) => (
-              <li key={post.id} className="py-4 flex justify-between items-center gap-4">
-                <div className="flex flex-col items-start gap-y-2 min-w-0 text-sm">
-                  <div className="text-linkedin-low-emphasis">
-                    Created {formatRelative(post.created_at, new Date())}{' '}
+              <li key={post.id} className="py-4">
+                <div className="flex justify-between items-start gap-4 mb-2">
+                  <div className="flex flex-col items-start gap-y-2 min-w-0 text-sm">
+                    <div className="text-linkedin-low-emphasis">
+                      Created {formatRelative(post.created_at, new Date())}{' '}
+                    </div>
+                    <div className="truncate max-w-full">{post.content}</div>
                   </div>
-                  <div className="truncate max-w-full">{post.content}</div>
+
+                  <div className={`w-fit ${statusBadgeStyles(post.status)}`}>{post.status}</div>
                 </div>
 
-                <div className="flex flex-col items-end gap-y-2 min-w-32">
-                  <div className={`w-fit ${statusBadgeStyles(post.status)}`}>{post.status}</div>
-                  {post.status === 'draft' ? (
-                    <Link
-                      href={`/p?id=${post.id}`}
-                      className="text-sm group text-gray-200 hover:text-sky-600 transition ease-in-out duration-200"
-                    >
+                {post.status === 'draft' ? (
+                  <Link href={`/p?id=${post.id}`} className="group">
+                    <Button size="sm">
                       Continue writing{' '}
                       <span
                         aria-hidden="true"
@@ -52,9 +53,9 @@ export default async function PostsPage() {
                       >
                         →
                       </span>
-                    </Link>
-                  ) : null}
-                </div>
+                    </Button>
+                  </Link>
+                ) : null}
               </li>
             ))}
           </ul>
