@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import SigninButton from './signin-button';
 import SigninError from './signin-error';
 import Terms from './terms';
@@ -13,7 +14,9 @@ export function SigninForm({ loading }: Props) {
       <Title />
       <SigninButton loading={loading} />
       <Terms />
-      <SigninError />
+      <Suspense fallback={null}>
+        <SigninError />
+      </Suspense>
     </article>
   );
 }
