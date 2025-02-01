@@ -1,6 +1,11 @@
 import { IconBrandLinkedin } from '@tabler/icons-react';
+import Image from 'next/image';
 import Link from 'next/link';
+import logo from '../../../../public/logo.png';
 import {
+  aboutLink,
+  leanvilasLink,
+  limitationsLink,
   linkedinProfileLink,
   privacyPolicyLink,
   termsAndConditionsLink
@@ -8,12 +13,19 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900">
+    <footer className="bg-black">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <Link href="https://leanvilas.com/" className="flex items-center">
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <Link href={leanvilasLink} className="flex items-center">
+              <span className="flex items-center gap-2 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                <Image
+                  alt="First Comment Logo"
+                  className="w-8 h-8 max-w-8 max-h-8 min-h-8 min-w-8"
+                  src={logo}
+                  width={32}
+                  height={32}
+                />
                 First Comment
               </span>
             </Link>
@@ -26,6 +38,7 @@ export default function Footer() {
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <Link
+                    target="_blank"
                     href="mailto:me@leanvilas.com?subject=First Comment: I have a question"
                     className="hover:underline"
                   >
@@ -33,12 +46,12 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link href="https://flowbite.com/" className="hover:underline">
+                  <Link target="_blank" href={aboutLink} className="hover:underline">
                     About
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link href="https://flowbite.com/" className="hover:underline">
+                  <Link target="_blank" href={limitationsLink} className="hover:underline">
                     Limitations
                   </Link>
                 </li>
@@ -50,7 +63,7 @@ export default function Footer() {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <Link href={linkedinProfileLink} className="hover:underline ">
+                  <Link target="_blank" href={linkedinProfileLink} className="hover:underline ">
                     LinkedIn
                   </Link>
                 </li>
@@ -62,12 +75,12 @@ export default function Footer() {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <Link href={privacyPolicyLink} className="hover:underline">
+                  <Link target="_blank" href={privacyPolicyLink} className="hover:underline">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href={termsAndConditionsLink} className="hover:underline">
+                  <Link target="_blank" href={termsAndConditionsLink} className="hover:underline">
                     Terms &amp; Conditions
                   </Link>
                 </li>
@@ -79,13 +92,14 @@ export default function Footer() {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © {new Date().getFullYear()}{' '}
-            <Link href="https://flowbite.com/" className="hover:underline">
+            <Link target="_blank" href={leanvilasLink} className="hover:underline">
               First Comment™
             </Link>
             . All Rights Reserved.
           </span>
           <div className="flex mt-4 sm:justify-center sm:mt-0">
             <Link
+              target="_blank"
               href={linkedinProfileLink}
               className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
             >

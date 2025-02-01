@@ -1,5 +1,10 @@
 export const termsAndConditionsLink =
-  'https://docs.google.com/document/d/1KDnu3je8eVxjDMYLc4lIMOevS8woJswO9QMa3mr_USY/edit?usp=sharing';
+  'https://utopian-milk-855.notion.site/Terms-Conditions-18da581976df8015a511eef390fd9bc9?pvs=4';
 export const privacyPolicyLink =
-  'https://docs.google.com/document/d/1xjg0vza2iiA4w3WO9kPcK9PbYPFFRPWNQVCG1VqOa-0/edit?usp=sharing';
+  'https://utopian-milk-855.notion.site/Privacy-Policy-18da581976df806091f9c608060af879?pvs=4';
+export const aboutLink =
+  'https://utopian-milk-855.notion.site/About-18da581976df80bb893ddd2e29706ec6?pvs=4';
+export const limitationsLink =
+  'https://utopian-milk-855.notion.site/Limitations-18da581976df80cfad15f36ce7247211?pvs=4';
 export const linkedinProfileLink = 'https://www.linkedin.com/in/leanvilas/';
+export const leanvilasLink = 'https://leanvilas.com/';

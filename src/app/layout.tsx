@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { getVercelUrl } from '@/lib/environments/is-dev';
+import { leanvilasLink } from './constants/links';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(getVercelUrl()),
   openGraph: {
     images: ['/favicon.ico'],
-    url: 'https://leanvilas.com',
+    url: leanvilasLink,
     locale: 'en_US',
     type: 'website'
   },
