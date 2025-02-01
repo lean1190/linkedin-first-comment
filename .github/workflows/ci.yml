@@ -50,3 +50,7 @@ jobs:
         run: npm ci
       - name: Run
         run: npm run build
+        env:
+          INNGEST_ENCRIPTION_KEY: ${{ secrets.INNGEST_ENCRIPTION_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
