@@ -3,12 +3,11 @@ import { useMemo } from 'react';
 
 import { formatDateForSchedule } from '@/lib/date/format';
 import { getTimeZoneDetails, transformDateToTimezone } from '@/lib/date/timezone';
-
-import type { FormViewport } from '../types';
+import type { ContainerViewport } from './post-form/types';
 
 interface Props {
   schedule?: string;
-  viewport: FormViewport;
+  viewport: ContainerViewport;
 }
 
 export const TimezoneLine = ({

@@ -1,11 +1,11 @@
 import { IconCircleCheck, IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
-import type { FormViewport } from '../types';
+import type { ContainerViewport } from '../types';
 
-export default function useStyles(viewport: FormViewport) {
+export default function useStyles(viewport: ContainerViewport) {
   const viewportStyle = useCallback(
-    (v: FormViewport) =>
+    (v: ContainerViewport) =>
       clsx('cursor-pointer rounded p-1 transition', 'hover:bg-neutral-600', {
         'bg-black': v === viewport
       }),

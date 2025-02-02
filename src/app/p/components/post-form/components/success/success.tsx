@@ -5,9 +5,9 @@ import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import { random } from '@/lib/random/number';
 import Image from 'next/image';
 import type { z } from 'zod';
+import Author from '../../../author';
+import { TimezoneLine } from '../../../timezone';
 import type { formSchema } from '../../schemas';
-import Author from '../author';
-import { TimezoneLine } from '../timezone';
 import { BackgroundGradient } from './background-gradient';
 
 interface Props {

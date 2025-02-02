@@ -15,14 +15,14 @@ import type { PostWithId } from '@/lib/posts/database/types';
 import useWindowSize from '@/lib/screen/use-window-size';
 import { useEffect, useState } from 'react';
 import type { z } from 'zod';
-import Author from './components/author';
+import Author from '../author';
+import Timezone from '../timezone';
 import Success from './components/success/success';
-import Timezone from './components/timezone';
 import useDraft from './hooks/use-draft';
 import usePostForm from './hooks/use-post-form';
 import useStyles from './hooks/use-styles';
 import type { formSchema } from './schemas';
-import type { FormViewport } from './types';
+import type { ContainerViewport } from './types';
 
 interface Props {
   post: Awaited<PostWithId>;
@@ -30,7 +30,7 @@ interface Props {
 }
 
 export default function PostForm({ post, profile }: Props) {
-  const [selectedViewport, setSelectedViewport] = useState<FormViewport>('desktop');
+  const [selectedViewport, setSelectedViewport] = useState<ContainerViewport>('desktop');
   const { isTiny: isTinyDevice } = useWindowSize();
   const { formStyle, viewportStyle, statusLine } = useStyles(selectedViewport);
   const { createOrUpdateDraft, isPending, hasSucceeded } = useDraft();
