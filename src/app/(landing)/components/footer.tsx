@@ -21,7 +21,8 @@ export default function Footer() {
                 <Image
                   alt="First Comment Logo"
                   className="w-8 h-8 max-w-8 max-h-8 min-h-8 min-w-8"
-                  src={'/logo.png'}
+                  src="/logo.png"
+                  overrideSrc="/logo.png"
                   width={32}
                   height={32}
                 />
