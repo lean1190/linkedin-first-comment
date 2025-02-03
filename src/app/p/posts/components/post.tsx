@@ -1,26 +1,31 @@
 'use client';
+
+import { ArrowButton } from '@/components/ui/arrow-button';
 import { FormSeparator } from '@/components/ui/form-separator';
 import { LabelInputContainer } from '@/components/ui/label-input-container';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
-import type { PostWithId } from '@/lib/posts/database/types';
+import type { PostDetail } from '@/lib/posts/database/types';
 import useWindowSize from '@/lib/screen/use-window-size';
 import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
+import { isPast } from 'date-fns';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Author from '../components/author';
-import type { ContainerViewport } from '../components/post-form/types';
-import Timezone from '../components/timezone';
-import useStyles from './hooks/use-styles';
+import Author from '../../components/author';
+import { NavLink } from '../../components/nav/items';
+import usePostStyles from '../../components/post-form/hooks/use-post-styles';
+import type { ContainerViewport } from '../../components/post-form/types';
+import Timezone from '../../components/timezone';
 
 interface Props {
-  post: Awaited<PostWithId>;
+  post: Awaited<PostDetail>;
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
 }
 
-export default function ReadPage({ post, profile }: Props) {
+export default function Post({ post, profile }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<ContainerViewport>('desktop');
   const { isTiny: isTinyDevice } = useWindowSize();
-  const { containerStyle, viewportStyle } = useStyles(selectedViewport);
+  const { containerStyle, viewportStyle } = usePostStyles(selectedViewport);
 
   useEffect(() => {
     if (isTinyDevice) {
@@ -30,7 +35,10 @@ export default function ReadPage({ post, profile }: Props) {
 
   return (
     <article className={containerStyle}>
-      <section className="w-full pt-3 pb-2 max-w-full justify-end items-center flex font-light text-linkedin-low-emphasis">
+      <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light text-linkedin-low-emphasis">
+        <Link href={NavLink.Posts} className="text-sm">
+          <ArrowButton text="Back" right={false} />
+        </Link>
         <div className="hidden sm:flex items-center gap-1">
           <div className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
             <IconDeviceMobile size={20} />
@@ -45,7 +53,7 @@ export default function ReadPage({ post, profile }: Props) {
         <Author profile={profile} />
       </section>
 
-      <section className="text-sm relative">{post.content}</section>
+      <section className="text-sm">{post.content}</section>
 
       <section className="flex items-center justify-between py-2">
         <div className="flex items-center gap-1">
@@ -75,22 +83,17 @@ export default function ReadPage({ post, profile }: Props) {
             <span className="text-sm">•••</span>
           </div>
         </div>
-        <LabelInputContainer className="pl-9">{post.comment}</LabelInputContainer>
+        <LabelInputContainer className="pl-10 text-sm">{post.comment}</LabelInputContainer>
       </section>
 
       <FormSeparator size="lg" />
 
-      <section
-        className={`${selectedViewport === 'desktop' ? 'flex-row gap-8' : 'flex-col'} flex transition-all`}
-      >
-        Posted at
-      </section>
-
-      <FormSeparator size="lg" />
-
-      <section className="flex flex-col items-center">
-        <div className="mx-auto mb-4 w-fit">
-          <Timezone schedule={post.post_at_utc as string} viewport={selectedViewport} />
+      <section>
+        <div className="text-sm">
+          {isPast(post.post_at_utc) ? 'Posted at' : 'Will be posted at'}
+        </div>
+        <div>
+          <Timezone schedule={post.post_at_utc} viewport={selectedViewport} />
         </div>
       </section>
     </article>

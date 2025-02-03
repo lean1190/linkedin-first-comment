@@ -21,3 +21,25 @@ export function createServerActionError({
 }): ServerActionError {
   return new ServerActionError(message, type);
 }
+
+export function handleServerActionResult<T, K>(result?: {
+  data?: T;
+  serverError?: string;
+  validationErrors?: K;
+}) {
+  if (result?.validationErrors) {
+    throw createServerActionError({
+      type: 'ValidationError',
+      message: JSON.stringify(result?.validationErrors)
+    });
+  }
+
+  if (result?.serverError) {
+    throw createServerActionError({
+      type: 'ServerError',
+      message: result?.serverError
+    });
+  }
+
+  return result?.data;
+}

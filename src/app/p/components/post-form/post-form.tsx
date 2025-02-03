@@ -20,7 +20,7 @@ import Timezone from '../timezone';
 import Success from './components/success/success';
 import useDraft from './hooks/use-draft';
 import usePostForm from './hooks/use-post-form';
-import useStyles from './hooks/use-styles';
+import usePostStyles from './hooks/use-post-styles';
 import type { formSchema } from './schemas';
 import type { ContainerViewport } from './types';
 
@@ -32,9 +32,9 @@ interface Props {
 export default function PostForm({ post, profile }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<ContainerViewport>('desktop');
   const { isTiny: isTinyDevice } = useWindowSize();
-  const { formStyle, viewportStyle, statusLine } = useStyles(selectedViewport);
+  const { containerStyle, viewportStyle, statusLine } = usePostStyles(selectedViewport);
   const { createOrUpdateDraft, isPending, hasSucceeded } = useDraft();
-  const { submitPost, resetForm, scheduleValidation, form } = usePostForm();
+  const { submitPost, resetForm, scheduleValidation, submitPostError, form } = usePostForm();
 
   const {
     register,
@@ -74,7 +74,7 @@ export default function PostForm({ post, profile }: Props) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitPost)} className={formStyle}>
+      <form onSubmit={handleSubmit(submitPost)} className={containerStyle}>
         <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light text-linkedin-low-emphasis">
           <div className="mr-2">{statusLine({ isPending, hasSucceeded })}</div>
 
@@ -188,12 +188,18 @@ export default function PostForm({ post, profile }: Props) {
             {isSubmitting ? 'Scheduling...' : 'Schedule post and be #1'}
           </ButtonBorderGradient>
         </section>
+
+        {submitPostError ? (
+          <section className="mt-2 text-center w-full text-sm text-red-300">
+            {submitPostError}
+          </section>
+        ) : null}
       </form>
 
       <Success
         profile={profile}
         post={formData as z.infer<typeof formSchema>}
-        show={isSubmitSuccessful}
+        show={isSubmitSuccessful && !submitPostError}
         onClose={resetForm}
       />
     </>

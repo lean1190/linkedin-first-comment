@@ -1,4 +1,5 @@
-import { Button } from '@/components/ui/button';
+import { pageContainerWidthDesktop, pageContainerWidthMobile } from '@/app/constants/containers';
+import { ArrowButton } from '@/components/ui/arrow-button';
 import { getServerUser } from '@/lib/auth/session/server';
 import { findPostsByAuthor } from '@/lib/posts/database/find';
 import { hasId } from '@/lib/supabase/id';
@@ -6,6 +7,7 @@ import type { Tables } from '@/lib/supabase/types';
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
 import Link from 'next/link';
+import { NavLink } from '../components/nav/items';
 
 const statusBadgeStyles = (status: Tables<'Posts'>['status']) =>
   clsx(
@@ -16,18 +18,6 @@ const statusBadgeStyles = (status: Tables<'Posts'>['status']) =>
     { 'border-green-900': status === 'reposted' }
   );
 
-const ArrowButton = ({ text }: { text: string }) => (
-  <Button size="sm" className="group">
-    {text}{' '}
-    <span
-      aria-hidden="true"
-      className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform ease-in-out duration-200"
-    >
-      →
-    </span>
-  </Button>
-);
-
 export default async function PostsPage() {
   const user = await getServerUser();
   if (!hasId(user)) {
@@ -37,7 +27,9 @@ export default async function PostsPage() {
   const posts = await findPostsByAuthor(user.id);
 
   return (
-    <article className="size-full mx-auto rounded-xl bg-[#1b1f23] p-8 w-full sm:max-w-screen-md">
+    <article
+      className={`size-full mx-auto rounded-xl bg-[#1b1f23] p-8 w-full ${pageContainerWidthMobile} ${pageContainerWidthDesktop}`}
+    >
       <h2 className="text-3xl mb-8">{!posts?.length ? 'No posts yet' : 'Your posts'}</h2>
       <section>
         {posts?.length ? (
@@ -56,10 +48,14 @@ export default async function PostsPage() {
                 </div>
 
                 {post.status === 'draft' ? (
-                  <Link href={`/p?id=${post.id}`}>
+                  <Link href={`${NavLink.Platform}?id=${post.id}`}>
                     <ArrowButton text="Continue writing" />
                   </Link>
-                ) : null}
+                ) : (
+                  <Link href={`${NavLink.Posts}/${post.id}`}>
+                    <ArrowButton text="Read" />
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

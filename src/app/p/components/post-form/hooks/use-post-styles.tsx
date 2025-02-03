@@ -1,9 +1,10 @@
+import { pageContainerWidthDesktop, pageContainerWidthMobile } from '@/app/constants/containers';
 import { IconCircleCheck, IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 import type { ContainerViewport } from '../types';
 
-export default function useStyles(viewport: ContainerViewport) {
+export default function usePostStyles(viewport: ContainerViewport) {
   const viewportStyle = useCallback(
     (v: ContainerViewport) =>
       clsx('cursor-pointer rounded p-1 transition', 'hover:bg-neutral-600', {
@@ -12,11 +13,11 @@ export default function useStyles(viewport: ContainerViewport) {
     [viewport]
   );
 
-  const formStyle = useMemo(
+  const containerStyle = useMemo(
     () =>
       clsx('mx-auto rounded-xl bg-[#1b1f23] px-4 pb-6 transition-all', {
-        'max-w-[555px]': viewport === 'desktop',
-        'max-w-[409px]': viewport === 'mobile'
+        [pageContainerWidthDesktop]: viewport === 'desktop',
+        [pageContainerWidthMobile]: viewport === 'mobile'
       }),
     [viewport]
   );
@@ -57,5 +58,5 @@ export default function useStyles(viewport: ContainerViewport) {
     []
   );
 
-  return { viewportStyle, statusLine, formStyle };
+  return { viewportStyle, statusLine, containerStyle };
 }

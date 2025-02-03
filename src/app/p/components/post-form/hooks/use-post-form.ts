@@ -2,21 +2,23 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { add, format } from 'date-fns';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { schedulePostAction } from '@/lib/posts/actions/schedule';
-import { useRouter } from 'next/navigation';
+import { handleServerActionResult } from '@/lib/server-actions/errors';
+import { redirect } from 'next/navigation';
 import type { z } from 'zod';
 import { NavLink } from '../../nav/items';
+import { PostFormActionError } from '../lib/errors';
 import { mapFormToAction } from '../lib/map';
 import { formSchema } from '../schemas';
 
 const formatForInput = (date: Date) => format(date, "yyyy-MM-dd'T'HH:mm");
 
 export default function usePostForm() {
-  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema) });
+  const [submitPostError, setSubmitPostError] = useState<string>('');
 
   const now = new Date();
   const scheduleValidation = {
@@ -25,18 +27,23 @@ export default function usePostForm() {
   };
 
   const resetForm = useCallback(() => {
+    const id = form.getValues().id;
     form.reset();
-    router.replace(NavLink.Platform);
-  }, [form.reset, router.replace]);
+    redirect(`${NavLink.Posts}/${id}`);
+  }, [form.reset, form.getValues]);
 
   const submitPost = useCallback(async (formData: z.infer<typeof formSchema>) => {
-    const result = await schedulePostAction({
-      ...mapFormToAction(formData),
-      status: 'scheduled'
-    });
-
-    if (result?.serverError) {
-      console.error(result?.serverError);
+    try {
+      handleServerActionResult(
+        await schedulePostAction({
+          ...mapFormToAction(formData),
+          status: 'scheduled'
+        })
+      );
+    } catch (_) {
+      const error = new PostFormActionError();
+      setSubmitPostError(error.message);
+      throw error;
     }
   }, []);
 
@@ -44,6 +51,7 @@ export default function usePostForm() {
     submitPost,
     resetForm,
     form,
-    scheduleValidation
+    scheduleValidation,
+    submitPostError
   };
 }

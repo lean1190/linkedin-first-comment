@@ -28,11 +28,6 @@ export const schedulePostAction = actionClient
       returnValidationErrors(postSchema, { id: { _errors: ['Id is required'] } });
     }
 
-    await updatePost({
-      authorId: id,
-      post: { ...post, status: 'scheduled' }
-    });
-
     await inngest.send({
       name: PostEvent.Scheduled,
       user: await getEventUser(user),
@@ -40,6 +35,11 @@ export const schedulePostAction = actionClient
         post,
         author: { id, urn, token: extractLinkedInAccessToken(session) as string }
       }
+    });
+
+    await updatePost({
+      authorId: id,
+      post: { ...post, status: 'scheduled' }
     });
 
     revalidatePath(NavLink.Platform);
