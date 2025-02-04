@@ -3,8 +3,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import { leanvilasLink } from '@/lib/constants/links';
 import { getVercelUrl } from '@/lib/environments/is-dev';
-import { leanvilasLink } from './constants/links';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',

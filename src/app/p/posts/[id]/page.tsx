@@ -3,7 +3,7 @@ import { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import { findPostById } from '@/lib/posts/database/find';
 import { isCompletePost } from '@/lib/posts/validations';
 import { redirect } from 'next/navigation';
-import Post from '../components/post';
+import Post from './components/post';
 
 export default async function ReadPage({
   params

@@ -1,5 +1,10 @@
 'use client';
 
+import Author from '@/app/p/components/author';
+import { NavLink } from '@/app/p/components/nav/items';
+import usePostStyles from '@/app/p/components/post-form/hooks/use-post-styles';
+import type { ContainerViewport } from '@/app/p/components/post-form/types';
+import Timezone from '@/app/p/components/timezone';
 import { ArrowButton } from '@/components/ui/arrow-button';
 import { FormSeparator } from '@/components/ui/form-separator';
 import { LabelInputContainer } from '@/components/ui/label-input-container';
@@ -11,11 +16,6 @@ import { isPast } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Author from '../../components/author';
-import { NavLink } from '../../components/nav/items';
-import usePostStyles from '../../components/post-form/hooks/use-post-styles';
-import type { ContainerViewport } from '../../components/post-form/types';
-import Timezone from '../../components/timezone';
 
 interface Props {
   post: Awaited<PostDetail>;

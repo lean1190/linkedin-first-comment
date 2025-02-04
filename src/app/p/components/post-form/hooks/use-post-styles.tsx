@@ -1,4 +1,4 @@
-import { pageContainerWidthDesktop, pageContainerWidthMobile } from '@/app/constants/containers';
+import { pageContainerWidthDesktop, pageContainerWidthMobile } from '@/lib/constants/containers';
 import { IconCircleCheck, IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
