@@ -5,3 +5,7 @@ export const authorSchema = z.object({
   urn: z.string(),
   token: z.string()
 });
+
+export const postCanceledAuthorSchema = z.object({
+  id: z.string()
+});

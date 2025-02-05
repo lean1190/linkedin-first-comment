@@ -7,7 +7,7 @@ import { linkedInHeaders } from '../headers';
 
 type Post = z.infer<typeof postScheduledEvent>['data']['post'];
 
-export async function writeLinkedInPost({
+export async function publishLinkedInPost({
   post,
   token,
   authorUrn
@@ -46,7 +46,7 @@ export async function writeLinkedInPost({
   }).json() as Promise<{ postUrn: string }>;
 }
 
-export async function writeLinkedInFirstComment({
+export async function publishLinkedInFirstComment({
   comment,
   token,
   postUrn,

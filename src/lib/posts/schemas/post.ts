@@ -10,3 +10,7 @@ export const postSchema = z.object({
   comment: z.string().nullable(),
   status: z.enum(postStatus)
 });
+
+export const postCanceledSchema = z.object({
+  id: z.string()
+});

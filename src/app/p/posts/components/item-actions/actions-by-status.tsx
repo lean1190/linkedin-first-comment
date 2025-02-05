@@ -1,6 +1,7 @@
 'use client';
 
 import { NavLink } from '@/app/p/components/nav/items';
+import { cancelPostAction } from '@/lib/posts/actions/cancel';
 import { deletePostAction } from '@/lib/posts/actions/delete';
 import type { Post } from '@/lib/posts/database/types';
 import { IconBook, IconPencil, IconTrashX } from '@tabler/icons-react';
@@ -15,6 +16,7 @@ interface Props {
 export default function ActionsByStatus({ post }: Props) {
   const { actionStyles, onlyActionStyles, linkStyles } = useActionStyles();
   const { execute: deletePost } = useAction(deletePostAction);
+  const { execute: cancelPost } = useAction(cancelPostAction);
 
   if (post.status === 'draft') {
     return (
@@ -39,7 +41,7 @@ export default function ActionsByStatus({ post }: Props) {
             <IconBook size={18} /> Read
           </Link>
         </li>
-        <li onClick={() => deletePost(post.id)} className={onlyActionStyles}>
+        <li onClick={() => cancelPost(post.id)} className={onlyActionStyles}>
           <IconTrashX size={18} /> Cancel post
         </li>
       </>

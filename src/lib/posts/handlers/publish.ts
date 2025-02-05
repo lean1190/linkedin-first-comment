@@ -1,17 +1,23 @@
 import { NonRetriableError, RetryAfterError } from 'inngest';
 
 import {
-  reshareLinkedInPost,
-  writeLinkedInFirstComment,
-  writeLinkedInPost
+  publishLinkedInFirstComment,
+  publishLinkedInPost,
+  reshareLinkedInPost
 } from '@/lib/linkedin/posts/write';
 
 import { inngest } from '../../inngest/client';
 import { PostEvent } from '../events';
 
-export const writePostEventHandler = inngest.createFunction(
-  { id: 'write-post', retries: 3 },
-  { event: PostEvent.Scheduled },
+export const publishPostEventHandler = inngest.createFunction(
+  {
+    id: 'publish-post',
+    retries: 3,
+    cancelOn: [{ event: PostEvent.Canceled, match: 'data.post.id' }]
+  },
+  {
+    event: PostEvent.Scheduled
+  },
   async ({ event, step }) => {
     if (!event.data.post.scheduleUtc) {
       throw new NonRetriableError('There is no schedule');
@@ -19,15 +25,15 @@ export const writePostEventHandler = inngest.createFunction(
 
     await step.sleepUntil('wait-for-post-schedule', event.data.post.scheduleUtc);
 
-    const postResponse = await step.run('write-post', async () => {
+    const postResponse = await step.run('publish-post', async () => {
       try {
-        return writeLinkedInPost({
+        return publishLinkedInPost({
           post: event.data.post,
           token: event.data.author.token,
           authorUrn: event.data.author.urn
         });
       } catch (error) {
-        console.error('step:write-post error', error);
+        console.error('step:publish-post error', error);
         throw new RetryAfterError('Writing post failed, retrying in 1 minute', 60000);
       }
     });
@@ -43,16 +49,16 @@ export const writePostEventHandler = inngest.createFunction(
       throw new NonRetriableError('There is no comment');
     }
 
-    await step.run('write-first-comment', async () => {
+    await step.run('publish-first-comment', async () => {
       try {
-        await writeLinkedInFirstComment({
+        await publishLinkedInFirstComment({
           comment: event.data.post.comment ?? '',
           token: event.data.author.token,
           authorUrn: event.data.author.urn,
           postUrn
         });
       } catch (error) {
-        console.error('step:write-first-comment error', error);
+        console.error('step:publish-first-comment error', error);
         throw error;
       }
     });

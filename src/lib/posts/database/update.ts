@@ -23,3 +23,20 @@ export async function updatePost({
 
   return handleDatabaseResponse(result);
 }
+
+export async function updatePostStatus({
+  authorId,
+  post
+}: {
+  authorId: string;
+  post: WithRequired<Partial<z.infer<typeof postSchema>>, 'id' | 'status'>;
+}) {
+  const result = await (await createClient())
+    .from('Posts')
+    .update({ status: post.status })
+    .eq('author', authorId)
+    .eq('id', post.id)
+    .select();
+
+  return handleDatabaseResponse(result);
+}
