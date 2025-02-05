@@ -1,7 +1,7 @@
 import type { Post } from '@/lib/posts/database/types';
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
-import Actions from './actions';
+import Actions from './item-actions/actions';
 
 const statusBadgeStyles = (status: Post['status']) =>
   clsx(
