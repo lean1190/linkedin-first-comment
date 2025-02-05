@@ -13,7 +13,7 @@ export default function SigninError() {
     <div className={errorStyle}>
       <p>Your LinkedIn session expired, you will have to sign in again.</p>
       <p>
-        No worries, <strong>your draft was saved</strong>. Sorry for the trouble
+        No worries, <strong>your draft was saved</strong>. Sorry for the trouble.
       </p>
     </div>
   ) : error === AuthenticationErrorType.Unauthorized ? (

@@ -1,9 +1,10 @@
 import { serve } from 'inngest/next';
 
 import { inngest } from '@/lib/inngest/client';
-import { publishPostEventHandler } from '@/lib/posts/handlers/publish';
+import { activatePostEventHandler } from '@/lib/posts/handlers/activate';
+import { schedulePostEventHandler } from '@/lib/posts/handlers/schedule';
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [publishPostEventHandler]
+  functions: [schedulePostEventHandler, activatePostEventHandler]
 });

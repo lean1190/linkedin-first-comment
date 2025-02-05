@@ -11,6 +11,12 @@ export const postSchema = z.object({
   status: z.enum(postStatus)
 });
 
-export const postCanceledSchema = z.object({
+export const postIdSchema = z.object({
   id: z.string()
+});
+
+export const activatePostSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  comment: z.string()
 });

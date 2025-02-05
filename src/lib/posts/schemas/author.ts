@@ -6,6 +6,6 @@ export const authorSchema = z.object({
   token: z.string()
 });
 
-export const postCanceledAuthorSchema = z.object({
+export const authorIdSchema = z.object({
   id: z.string()
 });

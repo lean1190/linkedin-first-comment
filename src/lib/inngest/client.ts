@@ -1,8 +1,9 @@
 import { encryptionMiddleware } from '@inngest/middleware-encryption';
 import { EventSchemas, Inngest } from 'inngest';
 
-import { postCanceledEvent } from '../posts/schemas/cancel';
-import { postScheduledEvent } from '../posts/schemas/schedule';
+import { postActivatedEvent } from '../posts/schemas/activated';
+import { postCanceledEvent } from '../posts/schemas/canceled';
+import { postScheduledEvent } from '../posts/schemas/scheduled';
 
 const encryption = encryptionMiddleware({
   key: process.env.INNGEST_ENCRIPTION_KEY ?? ''
@@ -10,6 +11,6 @@ const encryption = encryptionMiddleware({
 
 export const inngest = new Inngest({
   id: 'first-comment',
-  schemas: new EventSchemas().fromZod([postScheduledEvent, postCanceledEvent]),
+  schemas: new EventSchemas().fromZod([postScheduledEvent, postCanceledEvent, postActivatedEvent]),
   middleware: [encryption]
 });

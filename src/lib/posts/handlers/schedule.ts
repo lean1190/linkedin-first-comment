@@ -7,13 +7,17 @@ import {
 } from '@/lib/linkedin/posts/write';
 
 import { inngest } from '../../inngest/client';
+import { updatePostStatus } from '../database/update';
 import { PostEvent } from '../events';
 
-export const publishPostEventHandler = inngest.createFunction(
+export const schedulePostEventHandler = inngest.createFunction(
   {
     id: 'publish-post',
     retries: 3,
-    cancelOn: [{ event: PostEvent.Canceled, match: 'data.post.id' }]
+    cancelOn: [
+      { event: PostEvent.Canceled, match: 'data.post.id' },
+      { event: PostEvent.Activated, match: 'data.post.id' }
+    ]
   },
   {
     event: PostEvent.Scheduled
@@ -27,11 +31,18 @@ export const publishPostEventHandler = inngest.createFunction(
 
     const postResponse = await step.run('publish-post', async () => {
       try {
-        return publishLinkedInPost({
+        const response = await publishLinkedInPost({
           post: event.data.post,
           token: event.data.author.token,
           authorUrn: event.data.author.urn
         });
+
+        await updatePostStatus({
+          authorId: event.data.author.id,
+          post: { id: event.data.post.id as string, status: 'posted' }
+        });
+
+        return response;
       } catch (error) {
         console.error('step:publish-post error', error);
         throw new RetryAfterError('Writing post failed, retrying in 1 minute', 60000);
@@ -75,6 +86,11 @@ export const publishPostEventHandler = inngest.createFunction(
           token: event.data.author.token,
           authorUrn: event.data.author.urn,
           postUrn
+        });
+
+        await updatePostStatus({
+          authorId: event.data.author.id,
+          post: { id: event.data.post.id as string, status: 'reposted' }
         });
       } catch (error) {
         console.error('step:reshare-post error', error);

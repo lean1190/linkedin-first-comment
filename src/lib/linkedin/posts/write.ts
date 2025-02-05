@@ -1,7 +1,7 @@
 import ky from 'ky';
 import type { z } from 'zod';
 
-import type { postScheduledEvent } from '@/lib/posts/schemas/schedule';
+import type { postScheduledEvent } from '@/lib/posts/schemas/scheduled';
 
 import { linkedInHeaders } from '../headers';
 
@@ -12,7 +12,7 @@ export async function publishLinkedInPost({
   token,
   authorUrn
 }: {
-  post: Post;
+  post: Pick<Post, 'content'>;
   token: string;
   authorUrn: string;
 }) {
