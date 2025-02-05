@@ -13,12 +13,14 @@ interface Props {
 export const TimezoneLine = ({
   schedule,
   timezone,
-  showLocation
+  showLocation,
+  className = ''
 }: Pick<Props, 'schedule'> & {
   timezone?: string;
   showLocation: boolean;
+  className?: string;
 }) => (
-  <div>
+  <div className={className}>
     <span>{formatDateForSchedule(schedule)}</span>
     <span> {getTimeZoneDetails(timezone).timeZoneName}</span>
     {showLocation ? <span>, based on your location</span> : null}

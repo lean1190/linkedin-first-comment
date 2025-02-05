@@ -90,7 +90,7 @@ export default function Post({ post, profile }: Props) {
 
       <section>
         <div className="text-sm">
-          {isPast(post.post_at_utc) ? 'Posted at' : 'Will be posted at'}
+          {isPast(post.post_at_utc) ? 'Posted on' : 'Will be posted on'}
         </div>
         <div>
           <Timezone schedule={post.post_at_utc} viewport={selectedViewport} />

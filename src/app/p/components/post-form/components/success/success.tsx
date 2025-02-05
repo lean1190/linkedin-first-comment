@@ -36,21 +36,26 @@ export default function Success({ profile, post, show, onClose }: Props) {
               </p>
 
               {post?.schedule ? (
-                <div className="text-sm text-linkedin-low-emphasis flex items-center gap-1">
-                  It will be posted on
-                  <TimezoneLine schedule={post.schedule} showLocation={false} />
+                <div className="text-sm text-linkedin-low-emphasis">
+                  <span className="mr-1">It will be posted on</span>
+                  <TimezoneLine schedule={post.schedule} showLocation={false} className="inline" />
                 </div>
               ) : null}
 
               {post?.reshare ? (
-                <div className="text-sm text-linkedin-low-emphasis flex items-center gap-1">
-                  And reposted on
-                  <TimezoneLine schedule={post.reshare} showLocation={false} />
+                <div className="text-sm text-linkedin-low-emphasis">
+                  <span className="mr-1">And reposted on</span>
+                  <TimezoneLine schedule={post.reshare} showLocation={false} className="inline" />
                 </div>
               ) : null}
 
               <div className="w-full max-h-96 h-80 relative mt-8">
-                <Image alt="Celebration Gif" src={`/gifs/celebration${gif}.gif`} fill={true} />
+                <Image
+                  alt="Celebration Gif"
+                  src={`/gifs/celebration${gif}.gif`}
+                  fill={true}
+                  sizes="(max-width: 640px) 295px, (min-width: 641px) 670px"
+                />
               </div>
             </ModalContent>
           </BackgroundGradient>
