@@ -10,6 +10,7 @@ import { FormSeparator } from '@/components/ui/form-separator';
 import { Input } from '@/components/ui/input';
 import { LabelInputContainer } from '@/components/ui/label-input-container';
 import { Textarea } from '@/components/ui/textarea';
+import { formatDateForInput } from '@/lib/date/format';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { PostWithId } from '@/lib/posts/database/types';
 import useWindowSize from '@/lib/screen/use-window-size';
@@ -60,8 +61,8 @@ export default function PostForm({ post, profile }: Props) {
     setValue('id', post.id);
     if (post.content) setValue('content', post.content);
     if (post.comment) setValue('comment', post.comment);
-    if (post.post_at_utc) setValue('schedule', post.post_at_utc);
-    if (post.repost_at_utc) setValue('reshare', post.repost_at_utc);
+    if (post.post_at_utc) setValue('schedule', formatDateForInput(post.post_at_utc));
+    if (post.repost_at_utc) setValue('reshare', formatDateForInput(post.repost_at_utc));
     validateForm();
   }, [post, setValue, validateForm]);
 

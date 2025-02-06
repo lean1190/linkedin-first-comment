@@ -1,10 +1,11 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { add, format } from 'date-fns';
+import { add } from 'date-fns';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { formatDateForInput } from '@/lib/date/format';
 import { schedulePostAction } from '@/lib/posts/actions/schedule';
 import { handleServerActionResult } from '@/lib/server-actions/errors';
 import { redirect } from 'next/navigation';
@@ -14,16 +15,14 @@ import { PostFormActionError } from '../lib/errors';
 import { mapFormToAction } from '../lib/map';
 import { formSchema } from '../schemas';
 
-const formatForInput = (date: Date) => format(date, "yyyy-MM-dd'T'HH:mm");
-
 export default function usePostForm() {
   const form = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema) });
   const [submitPostError, setSubmitPostError] = useState<string>('');
 
   const now = new Date();
   const scheduleValidation = {
-    min: formatForInput(now),
-    max: formatForInput(add(now, { days: 7 }))
+    min: formatDateForInput(now),
+    max: formatDateForInput(add(now, { days: 7 }))
   };
 
   const resetForm = useCallback(() => {

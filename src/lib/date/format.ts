@@ -50,6 +50,12 @@ export function formatDateForSchedule(date?: Date | string) {
   return format(formatDate, 'EEE, MMM d, hh:mm a');
 }
 
+export function formatDateForInput(date?: Date | string) {
+  const formatDate = !date ? new Date() : typeof date === 'string' ? new Date(date) : date;
+
+  return format(formatDate, "yyyy-MM-dd'T'HH:mm");
+}
+
 export function toUtcISOStringDate(date?: Date | string) {
   return date ? new UTCDate(date).toISOString() : null;
 }

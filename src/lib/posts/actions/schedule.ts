@@ -11,6 +11,7 @@ import { revalidatePath } from 'next/cache';
 import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
 import { postSchema } from '../schemas/post';
+import { mapFormPostToDatabase } from './map';
 import { validateSession } from './validation';
 
 export const schedulePostAction = actionClient
@@ -39,7 +40,10 @@ export const schedulePostAction = actionClient
 
     await updatePost({
       authorId: id,
-      post: { ...post, status: 'scheduled' }
+      post: {
+        ...mapFormPostToDatabase(post),
+        status: 'scheduled'
+      }
     });
 
     revalidatePath(NavLink.Platform);
