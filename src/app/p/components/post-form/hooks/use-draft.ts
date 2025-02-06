@@ -28,8 +28,8 @@ export default function useDraft() {
         });
       }
     },
-    2000,
-    { maxWait: 5000, leading: false }
+    1000,
+    { maxWait: 2000, leading: false }
   );
 
   return {
