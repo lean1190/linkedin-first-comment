@@ -6,11 +6,11 @@ import { getEventUser } from '@/lib/inngest/user';
 import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
 import { actionClient } from '@/lib/server-actions/client';
 import { createServerActionError } from '@/lib/server-actions/errors';
-import { sleep } from '@/lib/timeout/sleep';
 import { flattenValidationErrors } from 'next-safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { findPostById } from '../database/find';
+import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
 import { isReadyPost } from '../validations';
 import { validateSession } from './validation';
@@ -44,6 +44,10 @@ export const postNowAction = actionClient
       }
     });
 
-    await sleep(3000);
+    await updatePost({
+      authorId: id,
+      post: { id: postId, status: 'posted' }
+    });
+
     revalidatePath(NavLink.Posts);
   });

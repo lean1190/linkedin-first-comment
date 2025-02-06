@@ -8,7 +8,6 @@ import type { Post } from '@/lib/posts/database/types';
 import {
   IconBook,
   IconBrandLinkedin,
-  IconLoader,
   IconPencil,
   IconSend2,
   IconTrashX
@@ -26,7 +25,7 @@ export default function ActionsByStatus({ post }: Props) {
   const { actionStyles, onlyActionStyles, linkStyles } = useActionStyles();
   const { execute: deletePost } = useAction(deletePostAction);
   const { execute: cancelPost } = useAction(cancelPostAction);
-  const { execute: postNow, isExecuting: postNowIsExecuting } = useAction(postNowAction);
+  const { execute: postNow } = useAction(postNowAction);
 
   const readItem = useMemo(
     () => (
@@ -42,15 +41,10 @@ export default function ActionsByStatus({ post }: Props) {
   const postNowItem = useMemo(
     () => (
       <li onClick={() => postNow(post.id)} className={onlyActionStyles}>
-        {postNowIsExecuting ? (
-          <IconLoader size={18} className="animate-spin" />
-        ) : (
-          <IconSend2 size={18} />
-        )}{' '}
-        Post now
+        <IconSend2 size={18} /> Post now
       </li>
     ),
-    [post, postNow, postNowIsExecuting, onlyActionStyles]
+    [post, postNow, onlyActionStyles]
   );
 
   if (post.status === 'draft') {
