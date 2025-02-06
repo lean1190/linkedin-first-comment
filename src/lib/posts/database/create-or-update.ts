@@ -2,7 +2,6 @@
 
 import { handleDatabaseResponse } from '@/lib/supabase/response-handler';
 import { createClient } from '@/lib/supabase/server';
-import { mapPostToUpdate } from './map';
 import type { PostUpdate } from './types';
 
 export async function createOrUpdatePost({
@@ -16,7 +15,7 @@ export async function createOrUpdatePost({
     .from('Posts')
     .upsert(
       {
-        ...mapPostToUpdate(post),
+        ...post,
         id: post.id,
         author: authorId
       },

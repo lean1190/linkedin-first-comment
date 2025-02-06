@@ -7,6 +7,7 @@ export function mapFormToAction({ id, content, schedule, reshare, comment }: For
     content,
     scheduleUtc: toUtcISOStringDate(schedule),
     reshareScheduleUtc: toUtcISOStringDate(reshare),
-    comment: comment ?? null
+    comment: comment ?? null,
+    urn: null
   };
 }

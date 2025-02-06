@@ -2,8 +2,9 @@ import { NonRetriableError, RetryAfterError } from 'inngest';
 
 import { publishLinkedInFirstComment, publishLinkedInPost } from '@/lib/linkedin/posts/write';
 
+import { UTCDate } from '@date-fns/utc';
 import { inngest } from '../../inngest/client';
-import { updatePostStatus } from '../database/update';
+import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
 
 export const activatePostEventHandler = inngest.createFunction(
@@ -18,14 +19,19 @@ export const activatePostEventHandler = inngest.createFunction(
           authorUrn: event.data.author.urn
         });
 
-        await updatePostStatus({
+        await updatePost({
           authorId: event.data.author.id,
-          post: { id: event.data.post.id, status: 'posted' }
+          post: {
+            id: event.data.post.id,
+            status: 'posted',
+            post_at_utc: new UTCDate().toISOString(),
+            repost_at_utc: null
+          }
         });
 
         return response;
       } catch (error) {
-        console.error('step:activate-post error', error);
+        console.error('step:publish-post error', error);
         throw new RetryAfterError('Writing post failed, retrying in 1 minute', 60000);
       }
     });
@@ -41,7 +47,7 @@ export const activatePostEventHandler = inngest.createFunction(
       throw new NonRetriableError('There is no comment');
     }
 
-    await step.run('activate-first-comment', async () => {
+    await step.run('publish-first-comment', async () => {
       try {
         await publishLinkedInFirstComment({
           comment: event.data.post.comment ?? '',
@@ -49,8 +55,13 @@ export const activatePostEventHandler = inngest.createFunction(
           authorUrn: event.data.author.urn,
           postUrn
         });
+
+        await updatePost({
+          authorId: event.data.author.id,
+          post: { id: event.data.post.id as string, urn: postUrn }
+        });
       } catch (error) {
-        console.error('step:activate-first-comment error', error);
+        console.error('step:publish-first-comment error', error);
         throw error;
       }
     });

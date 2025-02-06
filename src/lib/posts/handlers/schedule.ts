@@ -7,7 +7,7 @@ import {
 } from '@/lib/linkedin/posts/write';
 
 import { inngest } from '../../inngest/client';
-import { updatePostStatus } from '../database/update';
+import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
 
 export const schedulePostEventHandler = inngest.createFunction(
@@ -27,6 +27,10 @@ export const schedulePostEventHandler = inngest.createFunction(
       throw new NonRetriableError('There is no schedule');
     }
 
+    if (!event.data.post.id) {
+      throw new NonRetriableError('The post has no id');
+    }
+
     await step.sleepUntil('wait-for-post-schedule', event.data.post.scheduleUtc);
 
     const postResponse = await step.run('publish-post', async () => {
@@ -37,7 +41,7 @@ export const schedulePostEventHandler = inngest.createFunction(
           authorUrn: event.data.author.urn
         });
 
-        await updatePostStatus({
+        await updatePost({
           authorId: event.data.author.id,
           post: { id: event.data.post.id as string, status: 'posted' }
         });
@@ -68,6 +72,11 @@ export const schedulePostEventHandler = inngest.createFunction(
           authorUrn: event.data.author.urn,
           postUrn
         });
+
+        await updatePost({
+          authorId: event.data.author.id,
+          post: { id: event.data.post.id as string, urn: postUrn }
+        });
       } catch (error) {
         console.error('step:publish-first-comment error', error);
         throw error;
@@ -88,7 +97,7 @@ export const schedulePostEventHandler = inngest.createFunction(
           postUrn
         });
 
-        await updatePostStatus({
+        await updatePost({
           authorId: event.data.author.id,
           post: { id: event.data.post.id as string, status: 'reposted' }
         });

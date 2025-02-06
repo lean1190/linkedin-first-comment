@@ -1,7 +1,9 @@
-import type { CompletePost, Post } from './database/types';
+import type { CompletedPost, Post, ReadyPost } from './database/types';
 
-export function isCompletePost(post?: Post): post is CompletePost {
-  return (
-    !!post && !!post.content && !!post.comment && !!post.post_at_utc && post.status !== 'draft'
-  );
+export function isReadyPost(post?: Post): post is ReadyPost {
+  return !!post && !!post.content && !!post.comment && !!post.post_at_utc;
+}
+
+export function isCompletedPost(post?: Post): post is CompletedPost {
+  return isReadyPost(post) && post.status !== 'draft';
 }

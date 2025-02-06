@@ -1,4 +1,8 @@
-export function getTimeZoneDetails(timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone) {
+export function getCurrentTimezone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+export function getTimeZoneDetails(timeZone = getCurrentTimezone()) {
   const date = new Date();
   const options: Intl.DateTimeFormatOptions = {
     timeZone,

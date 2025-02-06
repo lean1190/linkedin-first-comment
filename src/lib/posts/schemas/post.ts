@@ -8,6 +8,7 @@ export const postSchema = z.object({
   scheduleUtc: z.string().datetime().nullable(),
   reshareScheduleUtc: z.string().datetime().nullable(),
   comment: z.string().nullable(),
+  urn: z.string().nullable(),
   status: z.enum(postStatus)
 });
 

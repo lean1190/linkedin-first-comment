@@ -7,7 +7,7 @@ import { actionClient } from '@/lib/server-actions/client';
 import { flattenValidationErrors } from 'next-safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { updatePostStatus } from '../database/update';
+import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
 import { validateSession } from './validation';
 
@@ -30,7 +30,7 @@ export const cancelPostAction = actionClient
       }
     });
 
-    await updatePostStatus({
+    await updatePost({
       authorId,
       post: { id: postId, status: 'draft' }
     });

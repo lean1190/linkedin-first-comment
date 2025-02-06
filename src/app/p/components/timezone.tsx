@@ -2,7 +2,11 @@ import { IconCaretDownFilled } from '@tabler/icons-react';
 import { useMemo } from 'react';
 
 import { formatDateForSchedule } from '@/lib/date/format';
-import { getTimeZoneDetails, transformDateToTimezone } from '@/lib/date/timezone';
+import {
+  getCurrentTimezone,
+  getTimeZoneDetails,
+  transformDateToTimezone
+} from '@/lib/date/timezone';
 import type { ContainerViewport } from './post-form/types';
 
 interface Props {
@@ -28,6 +32,15 @@ export const TimezoneLine = ({
 );
 
 export default function Timezone({ schedule, viewport }: Props) {
+  const timeLocal = useMemo(
+    () =>
+      transformDateToTimezone({
+        dateString: schedule,
+        targetTimezone: getCurrentTimezone()
+      }),
+    [schedule]
+  );
+
   const timeInPacific = useMemo(
     () =>
       transformDateToTimezone({
@@ -67,7 +80,7 @@ export default function Timezone({ schedule, viewport }: Props) {
   return (
     <details className="text-sm text-linkedin-low-emphasis transition-all [&_i]:open:-rotate-180">
       <summary className="flex cursor-pointer items-center gap-1">
-        <TimezoneLine schedule={schedule} showLocation={viewport === 'desktop'} />
+        <TimezoneLine schedule={timeLocal} showLocation={viewport === 'desktop'} />
         <i className="transition-all">
           <IconCaretDownFilled size={15} />
         </i>

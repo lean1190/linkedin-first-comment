@@ -22,6 +22,9 @@ interface Props {
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
 }
 
+const isPosted = (post: PostDetail) =>
+  isPast(post.post_at_utc) || post.status === 'posted' || post.status === 'reposted';
+
 export default function Post({ post, profile }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<ContainerViewport>('desktop');
   const { isTiny: isTinyDevice } = useWindowSize();
@@ -89,9 +92,7 @@ export default function Post({ post, profile }: Props) {
       <FormSeparator size="lg" />
 
       <section>
-        <div className="text-sm">
-          {isPast(post.post_at_utc) ? 'Posted on' : 'Will be posted on'}
-        </div>
+        <div className="text-sm">{isPosted(post) ? 'Posted on' : 'Will be posted on'}</div>
         <div>
           <Timezone schedule={post.post_at_utc} viewport={selectedViewport} />
         </div>

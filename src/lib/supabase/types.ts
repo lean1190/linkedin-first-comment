@@ -13,6 +13,7 @@ export type Database = {
           post_at_utc: string | null;
           repost_at_utc: string | null;
           status: Database['public']['Enums']['post_status'];
+          urn: string | null;
         };
         Insert: {
           author?: string;
@@ -23,6 +24,7 @@ export type Database = {
           post_at_utc?: string | null;
           repost_at_utc?: string | null;
           status?: Database['public']['Enums']['post_status'];
+          urn?: string | null;
         };
         Update: {
           author?: string;
@@ -33,6 +35,7 @@ export type Database = {
           post_at_utc?: string | null;
           repost_at_utc?: string | null;
           status?: Database['public']['Enums']['post_status'];
+          urn?: string | null;
         };
         Relationships: [];
       };

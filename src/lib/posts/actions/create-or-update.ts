@@ -5,6 +5,7 @@ import { hasId } from '@/lib/supabase/id';
 import { flattenValidationErrors, returnValidationErrors } from 'next-safe-action';
 import { createOrUpdatePost } from '../database/create-or-update';
 import { postSchema } from '../schemas/post';
+import { mapFormPostToDatabase } from './map';
 import { validateSession } from './validation';
 
 export const createOrUpdatePostAction = actionClient
@@ -20,5 +21,8 @@ export const createOrUpdatePostAction = actionClient
       returnValidationErrors(postSchema, { id: { _errors: ['Id is required'] } });
     }
 
-    return createOrUpdatePost({ authorId: id, post });
+    return createOrUpdatePost({
+      authorId: id,
+      post: mapFormPostToDatabase(post)
+    });
   });

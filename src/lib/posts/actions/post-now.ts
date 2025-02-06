@@ -6,12 +6,13 @@ import { getEventUser } from '@/lib/inngest/user';
 import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
 import { actionClient } from '@/lib/server-actions/client';
 import { createServerActionError } from '@/lib/server-actions/errors';
+import { sleep } from '@/lib/timeout/sleep';
 import { flattenValidationErrors } from 'next-safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { findPostById } from '../database/find';
 import { PostEvent } from '../events';
-import { isCompletePost } from '../validations';
+import { isReadyPost } from '../validations';
 import { validateSession } from './validation';
 
 export const postNowAction = actionClient
@@ -27,7 +28,7 @@ export const postNowAction = actionClient
 
     const post = await findPostById(postId);
 
-    if (!isCompletePost(post)) {
+    if (!isReadyPost(post)) {
       throw createServerActionError({
         type: 'IncompletePost',
         message: 'The post misses required properties'
@@ -43,5 +44,6 @@ export const postNowAction = actionClient
       }
     });
 
+    await sleep(3000);
     revalidatePath(NavLink.Posts);
   });
