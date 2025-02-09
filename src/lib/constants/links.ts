@@ -7,4 +7,4 @@ export const aboutLink =
 export const limitationsLink =
   'https://utopian-milk-855.notion.site/Limitations-18da581976df80cfad15f36ce7247211?pvs=4';
 export const linkedinProfileLink = 'https://www.linkedin.com/in/leanvilas/';
-export const leanvilasLink = 'https://leanvilas.com/';
+export const firstCommentLink = 'https://linkedin-first-comment.vercel.app/';

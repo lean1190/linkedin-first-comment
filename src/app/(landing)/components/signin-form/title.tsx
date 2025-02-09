@@ -3,9 +3,9 @@ import { SparklesCore } from '@/components/ui/sparkles';
 export default function Title() {
   return (
     <div className="flex w-full flex-col items-center justify-center overflow-hidden rounded-md">
-      <h1 className="relative z-20 text-center text-5xl font-bold tracking-tighter md:text-7xl lg:text-9xl">
+      <h2 className="relative z-20 text-center text-6xl font-bold tracking-tighter md:text-7xl lg:text-9xl">
         Be always #1
-      </h1>
+      </h2>
       <div className="relative h-40 w-[40rem]">
         {/* Gradients */}
         <div className="absolute inset-x-20 top-0 h-[2px] w-3/4 bg-gradient-to-r from-transparent via-indigo-500 to-transparent blur-sm" />

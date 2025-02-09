@@ -1,6 +1,6 @@
 import {
   aboutLink,
-  leanvilasLink,
+  firstCommentLink,
   limitationsLink,
   linkedinProfileLink,
   privacyPolicyLink,
@@ -14,9 +14,12 @@ export default function Footer() {
   return (
     <footer className="bg-black">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <div className="md:flex md:justify-between">
+        <div className="flex flex-col items-center md:items-start md:flex-row md:justify-between">
           <div className="mb-6 md:mb-0">
-            <Link href={leanvilasLink} className="flex items-center">
+            <Link
+              href={firstCommentLink}
+              className="flex justify-center items-center mb-8 md:justify-start"
+            >
               <span className="flex items-center gap-2 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 <Image
                   alt="First Comment Logo"
@@ -29,7 +32,17 @@ export default function Footer() {
                 First Comment
               </span>
             </Link>
+            <div>
+              <script async src="https://js.stripe.com/v3/buy-button.js" />
+
+              {/* @ts-ignore */}
+              <stripe-buy-button
+                buy-button-id="buy_btn_1QqczT2LfrmtpsIEXY9TFi9D"
+                publishable-key="pk_live_51POihY2LfrmtpsIEqMfAPZ08aSZdHz2NuUxzOw9eldu0fybYH8OaLdeHfD1HR56RKYdi8vjRj4G2vjSG5geGwWDy00f31L3D4d"
+              />
+            </div>
           </div>
+
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
@@ -57,18 +70,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                Follow us
-              </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                <li className="mb-4">
-                  <Link target="_blank" href={linkedinProfileLink} className="hover:underline ">
-                    LinkedIn
-                  </Link>
-                </li>
-              </ul>
-            </div>
+
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Legal
@@ -86,13 +88,26 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
+
+            <div>
+              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                Follow us
+              </h2>
+              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                <li className="mb-4">
+                  <Link target="_blank" href={linkedinProfileLink} className="hover:underline ">
+                    LinkedIn
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © {new Date().getFullYear()}{' '}
-            <Link target="_blank" href={leanvilasLink} className="hover:underline">
+            <Link target="_blank" href={firstCommentLink} className="hover:underline">
               First Comment™
             </Link>
             . All Rights Reserved.

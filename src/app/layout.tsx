@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { leanvilasLink } from '@/lib/constants/links';
+import { firstCommentLink } from '@/lib/constants/links';
 import { getVercelUrl } from '@/lib/environments/is-dev';
 
 const geistSans = localFont({
@@ -18,13 +18,14 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Be Always #1',
+  title: 'First Comment on LinkedIn',
   description: 'Schedule the First Comment on LinkedIn',
   icons: { icon: '/favicon.ico' },
   metadataBase: new URL(getVercelUrl()),
+  keywords: 'linkedin, first, comment, schedule, plan, content, post',
   openGraph: {
     images: ['/favicon.ico'],
-    url: leanvilasLink,
+    url: firstCommentLink,
     locale: 'en_US',
     type: 'website'
   },
