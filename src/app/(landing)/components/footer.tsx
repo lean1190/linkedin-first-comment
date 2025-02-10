@@ -1,3 +1,4 @@
+import StripeSupportButton from '@/components/ui/stripe-support-button';
 import {
   aboutLink,
   firstCommentLink,
@@ -32,15 +33,8 @@ export default function Footer() {
                 First Comment
               </span>
             </Link>
-            <div>
-              <script async src="https://js.stripe.com/v3/buy-button.js" />
 
-              {/* @ts-ignore */}
-              <stripe-buy-button
-                buy-button-id="buy_btn_1QqczT2LfrmtpsIEXY9TFi9D"
-                publishable-key="pk_live_51POihY2LfrmtpsIEqMfAPZ08aSZdHz2NuUxzOw9eldu0fybYH8OaLdeHfD1HR56RKYdi8vjRj4G2vjSG5geGwWDy00f31L3D4d"
-              />
-            </div>
+            <StripeSupportButton />
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
