@@ -13,7 +13,9 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-black">
+    // The markup for regions and roles is redundant, but this is a transition period, and this markup is the most robust.
+    // biome-ignore lint/a11y/useSemanticElements: https://dequeuniversity.com/rules/axe/4.9/landmark-one-main?application=Vercel%20Toolbar
+    <footer className="bg-black" role="contentinfo">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="flex flex-col items-center md:items-start md:flex-row md:justify-between">
           <div className="mb-6 md:mb-0">
