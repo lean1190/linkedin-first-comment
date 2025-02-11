@@ -79,7 +79,7 @@ export default function ActionsByStatus({ post }: Props) {
     <>
       {readItem}
       {post.urn ? (
-        <li>
+        <li className={actionStyles}>
           <Link
             target="_blank"
             href={`https://www.linkedin.com/feed/update/${post.urn}`}

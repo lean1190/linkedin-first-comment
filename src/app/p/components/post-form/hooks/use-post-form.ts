@@ -26,10 +26,8 @@ export default function usePostForm() {
   };
 
   const resetForm = useCallback(() => {
-    const id = form.getValues().id;
-    form.reset();
-    redirect(`${NavLink.Posts}/${id}`);
-  }, [form.reset, form.getValues]);
+    redirect(`${NavLink.Posts}/${form.getValues().id}`);
+  }, [form.getValues]);
 
   const submitPost = useCallback(async (formData: z.infer<typeof formSchema>) => {
     try {

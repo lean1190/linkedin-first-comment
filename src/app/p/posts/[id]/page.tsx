@@ -3,6 +3,7 @@ import { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import { findPostById } from '@/lib/posts/database/find';
 import { isCompletedPost } from '@/lib/posts/validations';
 import { redirect } from 'next/navigation';
+import { NavLink } from '../../components/nav/items';
 import Post from './components/post';
 
 export default async function ReadPage({
@@ -15,7 +16,7 @@ export default async function ReadPage({
   const post = await findPostById(postId);
 
   if (!isCompletedPost(post)) {
-    redirect('/posts');
+    redirect(NavLink.Posts);
   }
 
   return <Post post={post} profile={profile} />;
