@@ -80,12 +80,17 @@ export default function PostForm({ post, profile }: Props) {
           <div className="mr-2">{statusLine({ isPending, hasSucceeded, hasErrored })}</div>
 
           <div className="hidden sm:flex items-center gap-1">
-            <div className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
+            <div
+              className={viewportStyle('mobile')}
+              onClick={() => setSelectedViewport('mobile')}
+              onKeyDown={() => setSelectedViewport('mobile')}
+            >
               <IconDeviceMobile size={20} />
             </div>
             <div
               className={viewportStyle('desktop')}
               onClick={() => setSelectedViewport('desktop')}
+              onKeyDown={() => setSelectedViewport('desktop')}
             >
               <IconDeviceDesktop size={20} />
             </div>

@@ -1,4 +1,8 @@
-import { pageContainerWidthDesktop, pageContainerWidthMobile } from '@/lib/constants/containers';
+import {
+  pageContainerBgColor,
+  pageContainerWidthDesktop,
+  pageContainerWidthMobile
+} from '@/lib/constants/containers';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 import type { ContainerViewport } from '../types';
@@ -14,7 +18,7 @@ export default function usePostStyles(viewport: ContainerViewport) {
 
   const containerStyle = useMemo(
     () =>
-      clsx('mx-auto rounded-xl bg-[#1b1f23] px-4 pb-6 transition-all', {
+      clsx('mx-auto rounded-xl px-4 pb-6 transition-all', pageContainerBgColor, {
         [pageContainerWidthDesktop]: viewport === 'desktop',
         [pageContainerWidthMobile]: viewport === 'mobile'
       }),

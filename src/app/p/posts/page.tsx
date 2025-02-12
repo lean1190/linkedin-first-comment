@@ -1,5 +1,9 @@
 import { getServerUser } from '@/lib/auth/session/server';
-import { pageContainerWidthDesktop, pageContainerWidthMobile } from '@/lib/constants/containers';
+import {
+  pageContainerBgColor,
+  pageContainerWidthDesktop,
+  pageContainerWidthMobile
+} from '@/lib/constants/containers';
 import { findPostsByAuthor } from '@/lib/posts/database/find';
 import { hasId } from '@/lib/supabase/id';
 import NoPosts from './components/no-posts';
@@ -15,7 +19,7 @@ export default async function PostsPage() {
 
   return (
     <article
-      className={`size-full mx-auto rounded-xl bg-[#1b1f23] p-8 w-full ${pageContainerWidthMobile} ${pageContainerWidthDesktop}`}
+      className={`size-full mx-auto rounded-xl ${pageContainerBgColor} p-8 w-full ${pageContainerWidthMobile} ${pageContainerWidthDesktop}`}
     >
       <h2 className="text-3xl mb-8">{!posts?.length ? 'No posts yet' : 'Your posts'}</h2>
       <section>
