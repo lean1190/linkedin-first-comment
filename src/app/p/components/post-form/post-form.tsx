@@ -34,7 +34,7 @@ export default function PostForm({ post, profile }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<ContainerViewport>('desktop');
   const { isTiny: isTinyDevice } = useWindowSize();
   const { containerStyle, viewportStyle, statusLine } = usePostStyles(selectedViewport);
-  const { createOrUpdateDraft, isPending, hasSucceeded } = useDraft();
+  const { createOrUpdateDraft, isPending, hasSucceeded, hasErrored } = useDraft();
   const { submitPost, resetForm, scheduleValidation, submitPostError, form } = usePostForm();
 
   const {
@@ -77,7 +77,7 @@ export default function PostForm({ post, profile }: Props) {
     <>
       <form onSubmit={handleSubmit(submitPost)} className={containerStyle}>
         <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light text-linkedin-low-emphasis">
-          <div className="mr-2">{statusLine({ isPending, hasSucceeded })}</div>
+          <div className="mr-2">{statusLine({ isPending, hasSucceeded, hasErrored })}</div>
 
           <div className="hidden sm:flex items-center gap-1">
             <div className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>

@@ -35,6 +35,7 @@ export default function useDraft() {
   return {
     createOrUpdateDraft,
     isPending: createOrUpdateDraftAction.isPending,
-    hasSucceeded: createOrUpdateDraftAction.hasSucceeded
+    hasSucceeded: createOrUpdateDraftAction.hasSucceeded,
+    hasErrored: createOrUpdateDraftAction.hasErrored
   };
 }

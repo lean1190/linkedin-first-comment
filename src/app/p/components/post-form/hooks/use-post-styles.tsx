@@ -1,5 +1,4 @@
 import { pageContainerWidthDesktop, pageContainerWidthMobile } from '@/lib/constants/containers';
-import { IconCircleCheck, IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 import type { ContainerViewport } from '../types';
@@ -25,35 +24,33 @@ export default function usePostStyles(viewport: ContainerViewport) {
   const statusLine = useCallback(
     ({
       isPending,
-      hasSucceeded
+      hasSucceeded,
+      hasErrored
     }: {
       isPending: boolean;
       hasSucceeded: boolean;
+      hasErrored: boolean;
     }) => {
+      const Line = ({ text, dotColor }: { text: string; dotColor: string }) => (
+        <span className="flex items-center gap-1">
+          <span className={`rounded-full h-2 w-2 ${dotColor}`}>{''}</span>
+          <span className="text-xs">{text}</span>
+        </span>
+      );
+
+      if (hasErrored) {
+        return <Line text="Try again" dotColor="bg-red-300" />;
+      }
+
       if (hasSucceeded) {
-        return (
-          <span className="flex items-center gap-1">
-            <IconCircleCheck size={18} />
-            <span className="text-xs">Draft saved</span>
-          </span>
-        );
+        return <Line text="Draft saved" dotColor="bg-green-300" />;
       }
 
       if (isPending) {
-        return (
-          <span className="flex items-center gap-1">
-            <IconRefresh size={18} className="animate-spin" />
-            <span className="text-xs">Saving...</span>
-          </span>
-        );
+        return <Line text="Draft saved..." dotColor="bg-green-300" />;
       }
 
-      return (
-        <span className="flex items-center gap-1">
-          <IconCircleCheck size={18} />
-          <span className="text-xs">Ready to write</span>
-        </span>
-      );
+      return <Line text="Ready to write" dotColor="bg-green-300" />;
     },
     []
   );
