@@ -27,11 +27,11 @@ export default function ActionsByStatus({ post }: Props) {
   const { execute: cancelPost } = useAction(cancelPostAction);
   const { execute: postNow } = useAction(postNowAction);
 
-  const readItem = useMemo(
+  const previewItem = useMemo(
     () => (
       <li className={actionStyles}>
         <Link href={`${NavLink.Posts}/${post.id}`} className={linkStyles}>
-          <IconBook size={18} /> Read
+          <IconBook size={18} /> Preview
         </Link>
       </li>
     ),
@@ -55,6 +55,7 @@ export default function ActionsByStatus({ post }: Props) {
             <IconPencil size={18} /> Edit draft
           </Link>
         </li>
+        {previewItem}
         {postNowItem}
         <li onClick={() => deletePost(post.id)} className={onlyActionStyles}>
           <IconTrashX size={18} /> Delete draft
@@ -66,7 +67,7 @@ export default function ActionsByStatus({ post }: Props) {
   if (post.status === 'scheduled') {
     return (
       <>
-        {readItem}
+        {previewItem}
         {postNowItem}
         <li onClick={() => cancelPost(post.id)} className={onlyActionStyles}>
           <IconTrashX size={18} /> Cancel post
@@ -77,7 +78,7 @@ export default function ActionsByStatus({ post }: Props) {
 
   return (
     <>
-      {readItem}
+      {previewItem}
       {post.urn ? (
         <li className={actionStyles}>
           <Link

@@ -25,7 +25,7 @@ export default function usePostForm() {
     max: formatDateForInput(add(now, { days: 7 }))
   };
 
-  const resetForm = useCallback(() => {
+  const previewPost = useCallback(() => {
     redirect(`${NavLink.Posts}/${form.getValues().id}`);
   }, [form.getValues]);
 
@@ -46,7 +46,7 @@ export default function usePostForm() {
 
   return {
     submitPost,
-    resetForm,
+    previewPost,
     form,
     scheduleValidation,
     submitPostError

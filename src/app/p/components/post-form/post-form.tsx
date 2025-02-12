@@ -35,7 +35,7 @@ export default function PostForm({ post, profile }: Props) {
   const { isTiny: isTinyDevice } = useWindowSize();
   const { containerStyle, viewportStyle, statusLine } = usePostStyles(selectedViewport);
   const { createOrUpdateDraft, isPending, hasSucceeded, hasErrored } = useDraft();
-  const { submitPost, resetForm, scheduleValidation, submitPostError, form } = usePostForm();
+  const { submitPost, previewPost, scheduleValidation, submitPostError, form } = usePostForm();
 
   const {
     register,
@@ -201,7 +201,7 @@ export default function PostForm({ post, profile }: Props) {
         profile={profile}
         post={formData as z.infer<typeof formSchema>}
         show={isSubmitSuccessful && !submitPostError}
-        onClose={resetForm}
+        onClose={previewPost}
       />
     </>
   );

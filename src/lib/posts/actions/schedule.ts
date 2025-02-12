@@ -1,13 +1,10 @@
 'use server';
-
-import { NavLink } from '@/app/p/components/nav/items';
 import { inngest } from '@/lib/inngest/client';
 import { getEventUser } from '@/lib/inngest/user';
 import { extractLinkedInAccessToken } from '@/lib/linkedin/user/extract';
 import { actionClient } from '@/lib/server-actions/client';
 import { hasId } from '@/lib/supabase/id';
 import { flattenValidationErrors, returnValidationErrors } from 'next-safe-action';
-import { revalidatePath } from 'next/cache';
 import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
 import { postSchema } from '../schemas/post';
@@ -45,6 +42,4 @@ export const schedulePostAction = actionClient
         status: 'scheduled'
       }
     });
-
-    revalidatePath(NavLink.Platform);
   });

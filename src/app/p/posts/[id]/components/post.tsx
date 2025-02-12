@@ -23,7 +23,9 @@ interface Props {
 }
 
 const isPosted = (post: PostDetail) =>
-  isPast(post.post_at_utc) || post.status === 'posted' || post.status === 'reposted';
+  !post.post_at_utc
+    ? false
+    : isPast(post.post_at_utc) || post.status === 'posted' || post.status === 'reposted';
 
 export default function Post({ post, profile }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<ContainerViewport>('desktop');
@@ -91,12 +93,14 @@ export default function Post({ post, profile }: Props) {
 
       <FormSeparator size="lg" />
 
-      <section>
-        <div className="text-sm">{isPosted(post) ? 'Posted on' : 'Will be posted on'}</div>
-        <div>
-          <Timezone schedule={post.post_at_utc} viewport={selectedViewport} />
-        </div>
-      </section>
+      {post.post_at_utc ? (
+        <section>
+          <div className="text-sm">{isPosted(post) ? 'Posted on' : 'Will be posted on'}</div>
+          <div>
+            <Timezone schedule={post.post_at_utc} viewport={selectedViewport} />
+          </div>
+        </section>
+      ) : null}
     </article>
   );
 }

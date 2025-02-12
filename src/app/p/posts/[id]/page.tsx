@@ -1,7 +1,7 @@
 import { getServerSession, getServerUser } from '@/lib/auth/session/server';
 import { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import { findPostById } from '@/lib/posts/database/find';
-import { isCompletedPost } from '@/lib/posts/validations';
+import { isDraftPost, isReadyPost } from '@/lib/posts/validations';
 import { redirect } from 'next/navigation';
 import { NavLink } from '../../components/nav/items';
 import Post from './components/post';
@@ -15,7 +15,7 @@ export default async function ReadPage({
   const postId = (await params).id as string;
   const post = await findPostById(postId);
 
-  if (!isCompletedPost(post)) {
+  if (!isReadyPost(post) && !isDraftPost(post)) {
     redirect(NavLink.Posts);
   }
 
