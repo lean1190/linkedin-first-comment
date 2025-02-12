@@ -1,6 +1,4 @@
 import { UTCDate } from '@date-fns/utc';
-import { format } from 'date-fns';
-
 import { format as dateFnsFormat, formatRelative, isMatch, parse } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
@@ -8,13 +6,24 @@ type StringOrDate = string | Date;
 
 const baseDateStringFormat = 'MM/dd/yyyy';
 
-const stringOrDateToDate = (theDate: StringOrDate) =>
-  typeof theDate === 'string' ? new Date(theDate) : theDate;
-const isFullDate = (stringDate: string) => isMatch(stringDate, baseDateStringFormat);
-const capitalizeString = (stringDate: string) =>
-  `${stringDate.charAt(0).toUpperCase()}${stringDate.slice(1)}`;
-const invertMonthsAndDays = (theDate: string, relativeTo: Date) =>
-  dateFnsFormat(parse(theDate, baseDateStringFormat, relativeTo, { locale: enUS }), 'dd/MM/yyyy');
+export function stringOrDateToDate(theDate: StringOrDate) {
+  return typeof theDate === 'string' ? new Date(theDate) : theDate;
+}
+
+export function isFullDate(stringDate: string) {
+  return isMatch(stringDate, baseDateStringFormat);
+}
+
+export function capitalizeString(stringDate: string) {
+  return `${stringDate.charAt(0).toUpperCase()}${stringDate.slice(1)}`;
+}
+
+export function invertMonthsAndDays(theDate: string, relativeTo: Date) {
+  return dateFnsFormat(
+    parse(theDate, baseDateStringFormat, relativeTo, { locale: enUS }),
+    'dd/MM/yyyy'
+  );
+}
 
 export function getRelativeDate(theDate: StringOrDate, relativeTo: Date) {
   const dateToFormat = stringOrDateToDate(theDate);
@@ -45,15 +54,15 @@ export function dateInputToISOString(dateInput: string | undefined) {
 }
 
 export function formatDateForSchedule(date?: Date | string) {
-  const formatDate = !date ? new Date() : typeof date === 'string' ? new Date(date) : date;
+  const formatDate = !date ? new Date() : stringOrDateToDate(date);
 
-  return format(formatDate, 'EEE, MMM d, hh:mm a');
+  return dateFnsFormat(formatDate, 'EEE, MMM d, hh:mm a');
 }
 
 export function formatDateForInput(date?: Date | string) {
-  const formatDate = !date ? new Date() : typeof date === 'string' ? new Date(date) : date;
+  const formatDate = !date ? new Date() : stringOrDateToDate(date);
 
-  return format(formatDate, "yyyy-MM-dd'T'HH:mm");
+  return dateFnsFormat(formatDate, "yyyy-MM-dd'T'HH:mm");
 }
 
 export function toUtcISOStringDate(date?: Date | string) {
