@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { NavLink } from '../../components/nav/items';
 import Post from './components/post';
 
-export default async function ReadPage({
+export default async function PreviewPostPage({
   params
 }: {
   params: Promise<{ id: string }>;
