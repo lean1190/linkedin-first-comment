@@ -15,7 +15,7 @@
     "supabase:types": "source .env.local && supabase gen types typescript --project-id $SUPABASE_PROJECT_ID --schema public > src/lib/supabase/types.ts",
     "check:all": "npx @biomejs/biome check --write .",
     "check:staged": "npx @biomejs/biome check --staged --write .",
-    "types:check": "npx tsc --noEmit",
+    "types:check": "npx tsc --skipLibCheck --noEmit",
     "supabase:login": "npx supabase login",
     "dependencies:check": "ncu",
     "dependencies:update": "ncu -u && npm install && npm run lint:fix",

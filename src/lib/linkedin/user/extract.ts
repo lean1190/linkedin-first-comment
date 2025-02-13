@@ -5,7 +5,7 @@ export function extractLinkedInAccessToken(session: NullableSession) {
 }
 
 export function extractLinkedInId(user: NullableUser) {
-  return user?.identities?.[0].id;
+  return user?.identities?.[0]?.id;
 }
 
 export function extractLinkedInProfileImage(user: NullableUser) {
