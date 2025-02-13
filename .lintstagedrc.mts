@@ -9,7 +9,7 @@ export default {
     'npx biome check --write --organize-imports-enabled=false --no-errors-on-unmatched', // format and apply safe fixes
     'npx biome check --write --unsafe --no-errors-on-unmatched', // Format, sort imports, lints, apply safe/unsafe fixes
     'npx biome format --write --no-errors-on-unmatched', // Format
-    'npx biome lint --write --no-errors-on-unmatched', // Lint and apply safe fixes
+    'npx biome lint --write --no-errors-on-unmatched' // Lint and apply safe fixes
   ],
   '*.{ts,tsx}': [() => 'npm run types:check']
 };
