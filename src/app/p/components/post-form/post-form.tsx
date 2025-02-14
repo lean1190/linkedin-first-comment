@@ -151,9 +151,9 @@ export default function PostForm({ post, profile }: Props) {
         <FormSeparator size="lg" />
 
         <section
-          className={`${selectedViewport === 'desktop' ? 'flex-row gap-8' : 'flex-col'} flex transition-all`}
+          className={`${selectedViewport === 'desktop' ? 'flex-row gap-8' : 'flex-col gap-4'} flex transition-all`}
         >
-          <LabelInputContainer className="mb-4 w-full">
+          <LabelInputContainer className="w-full">
             <Label htmlFor="schedule" className="text-sm">
               Publish post at
             </Label>
@@ -168,7 +168,7 @@ export default function PostForm({ post, profile }: Props) {
             />
           </LabelInputContainer>
 
-          <LabelInputContainer className="mb-4 w-full">
+          <LabelInputContainer className="w-full">
             <Label htmlFor="repost" className="text-sm text-linkedin-low-emphasis">
               Repost at (optional)
             </Label>
