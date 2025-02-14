@@ -13,8 +13,12 @@ export default function Actions({ post }: Props) {
       <PopoverTrigger>
         <IconDotsVertical size={18} className="cursor-pointer text-linkedin-low-emphasis" />
       </PopoverTrigger>
-      <PopoverContent align="end" sideOffset={8} className="text-sm">
-        <ul className="bg-neutral-900 rounded border-neutral-600 shadow-2xl border text-linkedin-low-emphasis">
+      <PopoverContent
+        align="end"
+        sideOffset={8}
+        className="p-0 text-sm w-fit bg-neutral-900 rounded border-neutral-600 shadow-2xl text-linkedin-low-emphasis"
+      >
+        <ul>
           <ActionsByStatus post={post} />
         </ul>
       </PopoverContent>
