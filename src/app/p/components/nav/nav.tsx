@@ -19,7 +19,7 @@ interface Props {
 }
 
 const highlight = (
-  <span className="absolute w-full mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-400 to-transparent h-[1.5px]" />
+  <span className="absolute w-full mx-auto -bottom-px bg-linear-to-r from-transparent via-blue-400 to-transparent h-[1.5px]" />
 );
 
 export default function Nav({ items, className }: Props) {

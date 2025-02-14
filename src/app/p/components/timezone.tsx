@@ -78,7 +78,7 @@ export default function Timezone({ schedule, viewport }: Props) {
   );
 
   return (
-    <details className="text-sm text-linkedin-low-emphasis transition-all [&_i]:open:-rotate-180">
+    <details className="text-sm text-linkedin-low-emphasis transition-all open:[&_i]:-rotate-180">
       <summary className="flex cursor-pointer items-center gap-1">
         <TimezoneLine schedule={timeLocal} showLocation={viewport === 'desktop'} />
         <i className="transition-all">

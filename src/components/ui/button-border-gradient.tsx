@@ -67,7 +67,7 @@ export function ButtonBorderGradient({
       onMouseEnter={(_event: React.MouseEvent<HTMLDivElement>) => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        'relative flex rounded-full border content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px decoration-clone w-fit',
+        'relative cursor-pointer flex rounded-full border content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px box-decoration-clone w-fit',
         containerClassName,
         'disabled:opacity-50'
       )}
