@@ -38,6 +38,20 @@ describe('getTimeZoneDetails', () => {
     expect(details.timeZoneIdentifier).toBe('Invalid/Timezone');
     expect(details.timeZoneName).toBe('Unknown Timezone');
   });
+
+  it('should return "Unknown Timezone" if timeZoneName is missing from formatToParts result', () => {
+    vi.spyOn(Intl.DateTimeFormat.prototype, 'formatToParts').mockReturnValue([
+      { type: 'year', value: '2025' }
+      // No timeZoneName in the array
+    ]);
+
+    const result = getTimeZoneDetails('America/New_York');
+
+    expect(result).toEqual({
+      timeZoneIdentifier: 'America/New_York',
+      timeZoneName: 'Unknown Timezone'
+    });
+  });
 });
 
 describe('transformDateToTimezone', () => {
