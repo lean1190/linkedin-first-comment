@@ -5,42 +5,54 @@ export default function PreviewPostLoading() {
     <article
       className={`${pageContainerWidthDesktop} animate-pulse mx-auto rounded-xl ${pageContainerBgColor} px-4 pb-6`}
     >
-      <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light">
-        <div className="mr-2 h-4 bg-neutral-700 rounded w-1/8" />
-
+      <section className="w-full pt-3 pb-2 max-w-full justify-end items-center flex">
         <div className="hidden sm:flex items-center gap-1">
           <div className="h-5 w-5 bg-neutral-700 rounded" />
           <div className="h-5 w-5 bg-neutral-700 rounded" />
         </div>
       </section>
 
-      <section className="mb-2 pr-9 h-10 bg-neutral-700 rounded" />
+      <section className="mb-2 flex items-center gap-2">
+        <div className="h-12 w-12 rounded-full bg-neutral-700" />
+        <div>
+          <div className="h-3 mb-1 w-62 max-w-full bg-neutral-700 rounded-lg" />
+          <div className="h-2 mb-1 w-62 max-w-full bg-neutral-700 rounded-lg" />
+          <div className="h-2 mb-1 w-12 max-w-full bg-neutral-700 rounded-lg" />
+        </div>
+      </section>
 
-      <section className="text-sm relative h-20 bg-neutral-700 rounded" />
+      <section>
+        <div className="h-4 mb-1 w-62 max-w-full bg-neutral-700 rounded-lg" />
+        <div className="h-4 mb-1 w-72 max-w-full bg-neutral-700 rounded-lg" />
+        <div className="h-4 w-72 max-w-full bg-neutral-700 rounded-lg" />
+      </section>
 
       <section className="flex items-center justify-between py-2">
         <div className="flex items-center gap-1">
           <div className="flex">
-            <div className="h-4 w-4 bg-neutral-700 rounded mr-1" />
-            <div className="h-4 w-4 bg-neutral-700 rounded mr-1" />
-            <div className="h-4 w-4 bg-neutral-700 rounded" />
+            <div className="h-4 w-4 bg-neutral-700 rounded-xl" />
+            <div className="h-4 w-4 bg-neutral-700 rounded-xl" />
+            <div className="h-4 w-4 bg-neutral-700 rounded-xl" />
           </div>
-          <div className="text-xs font-light text-linkedin-low-emphasis h-4 bg-neutral-700 rounded w-1/4" />
+          <div className="h-4 bg-neutral-700 rounded-lg w-1/4" />
         </div>
-        <div className="text-xs font-light text-linkedin-low-emphasis h-4 bg-neutral-700 rounded w-1/4" />
+        <div className="h-4 bg-neutral-700 rounded-lg w-1/4" />
       </section>
 
-      <div className="h-0.5 bg-neutral-700 rounded w-full my-2" />
+      <div className="h-0.5 bg-neutral-700 rounded-xl w-full my-2" />
 
-      <section className="w-full pr-4">
-        <div className="mb-2 flex items-start justify-between">
-          <div className="h-10 bg-neutral-700 rounded w-1/3" />
-          <div className="flex items-center gap-2 text-xs font-light text-linkedin-low-emphasis">
-            <span className="h-4 bg-neutral-700 rounded w-1/4" />
-            <span className="text-sm h-4 bg-neutral-700 rounded w-1/4" />
-          </div>
+      <section className="mb-2 flex items-center gap-2">
+        <div className="h-8 w-8 rounded-full bg-neutral-700" />
+        <div>
+          <div className="h-2 mb-1 w-62 max-w-full bg-neutral-700 rounded-lg" />
+          <div className="h-2 mb-1 w-62 max-w-full bg-neutral-700 rounded-lg" />
         </div>
-        <div className="pl-9 h-20 bg-neutral-700 rounded" />
+      </section>
+
+      <section>
+        <div className="h-2 mb-1 w-62 max-w-full bg-neutral-700 rounded-lg" />
+        <div className="h-2 mb-1 w-72 max-w-full bg-neutral-700 rounded-lg" />
+        <div className="h-2 w-72 max-w-full bg-neutral-700 rounded-lg" />
       </section>
     </article>
   );
