@@ -12,11 +12,11 @@ import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { PostDetail } from '@/lib/posts/database/types';
 import useWindowSize from '@/lib/screen/use-window-size';
 import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
-import clsx from 'clsx';
 import { isPast } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import useMoreButton from '../hooks/use-more-button';
 
 interface Props {
   post: Awaited<PostDetail>;
@@ -33,32 +33,7 @@ export default function Post({ post, profile }: Props) {
   const { isTiny: isTinyDevice } = useWindowSize();
   const { containerStyle, viewportStyle } = usePostStyles(selectedViewport);
 
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [shouldShowMore, setShouldShowMore] = useState(false);
-
-  const contentStyles = clsx(
-    'relative overflow-hidden transition-all text-sm break-words whitespace-pre-wrap',
-    { 'max-h-none': isExpanded },
-    { 'max-h-[4.5em]': !isExpanded }
-  );
-
-  useEffect(() => {
-    if (contentRef.current) {
-      const lineHeight = Number.parseInt(getComputedStyle(contentRef.current).lineHeight, 10);
-      const maxHeight = lineHeight * 3; // 3 lines of text
-
-      console.log('--->', {
-        lineHeight,
-        maxHeight,
-        condition: contentRef.current.scrollHeight > maxHeight
-      });
-
-      if (contentRef.current.scrollHeight > maxHeight) {
-        setShouldShowMore(true);
-      }
-    }
-  }, []);
+  const { expandContent, contentRef, isExpanded, contentStyles, shouldShowMore } = useMoreButton();
 
   useEffect(() => {
     if (isTinyDevice) {
@@ -86,19 +61,19 @@ export default function Post({ post, profile }: Props) {
         <Author profile={profile} />
       </section>
 
-      <section className="max-w-full">
+      <section className="max-w-full relative">
         <div ref={contentRef} className={contentStyles}>
           {post.content}
-          {shouldShowMore && !isExpanded ? (
-            <button
-              type="button"
-              className="text-blue-300 inline text-sm hover:underline"
-              onClick={() => setIsExpanded(true)}
-            >
-              ...more
-            </button>
-          ) : null}
         </div>
+        {shouldShowMore && !isExpanded ? (
+          <button
+            type="button"
+            className="text-blue-300 pl-40 inline text-sm hover:underline absolute right-0 bottom-[2px] cursor-pointer bg-gradient-to-r from-transparent to-[#1b1f23]"
+            onClick={expandContent}
+          >
+            ...more
+          </button>
+        ) : null}
       </section>
 
       <section className="flex items-center justify-between py-2">
