@@ -31,6 +31,18 @@ export const TimezoneLine = ({
   </div>
 );
 
+const TimezoneRow = ({
+  schedule,
+  timezone
+}: Pick<Props, 'schedule'> & {
+  timezone?: string;
+}) => (
+  <tr className="border-b text-xs sm:text-sm">
+    <td className="py-2">{getTimeZoneDetails(timezone).timeZoneName}</td>
+    <td className="py-2 text-right">{formatDateForSchedule(schedule)}</td>
+  </tr>
+);
+
 export default function Timezone({ schedule, viewport }: Props) {
   const timeLocal = useMemo(
     () =>
@@ -85,24 +97,14 @@ export default function Timezone({ schedule, viewport }: Props) {
           <IconCaretDownFilled size={15} />
         </i>
       </summary>
-      <div className="py-4 font-thin">
-        <TimezoneLine
-          schedule={timeInPacific}
-          timezone="America/Los_Angeles"
-          showLocation={false}
-        />
-        <TimezoneLine
-          schedule={timeInArgentina}
-          timezone="America/Argentina/Buenos_Aires"
-          showLocation={false}
-        />
-        <TimezoneLine schedule={timeInBerlin} timezone="Europe/Berlin" showLocation={false} />
-        <TimezoneLine
-          schedule={timeInKualaLumpur}
-          timezone="Asia/Kuala_Lumpur"
-          showLocation={false}
-        />
-      </div>
+      <table className="my-4 font-thin w-full">
+        <tbody>
+          <TimezoneRow schedule={timeInPacific} timezone="America/Los_Angeles" />
+          <TimezoneRow schedule={timeInArgentina} timezone="America/Argentina/Buenos_Aires" />
+          <TimezoneRow schedule={timeInBerlin} timezone="Europe/Berlin" />
+          <TimezoneRow schedule={timeInKualaLumpur} timezone="Asia/Kuala_Lumpur" />
+        </tbody>
+      </table>
     </details>
   );
 }
