@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { findPostById } from '../database/find';
 import { updatePost } from '../database/update';
 import { PostEvent } from '../events';
-import { isReadyPost } from '../validations';
+import { isMinimumPost } from '../validations';
 import { validateSession } from './validation';
 
 export const postNowAction = actionClient
@@ -28,7 +28,7 @@ export const postNowAction = actionClient
 
     const post = await findPostById(postId);
 
-    if (!isReadyPost(post)) {
+    if (!isMinimumPost(post)) {
       throw createServerActionError({
         type: 'IncompletePost',
         message: 'The post misses required properties'

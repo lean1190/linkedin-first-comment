@@ -1,6 +1,42 @@
 import { describe, expect, it } from 'vitest';
 import type { DraftPost, Post, ReadyPost } from './database/types';
-import { isDraftPost, isReadyPost } from './validations';
+import { isDraftPost, isMinimumPost, isReadyPost } from './validations';
+
+describe('isMinimumPost', () => {
+  it('should return true for a valid minimum post', () => {
+    const post: ReadyPost = {
+      id: '123',
+      content: 'This is a ready post',
+      comment: 'This is a comment',
+      post_at_utc: null as unknown as string,
+      repost_at_utc: null,
+      status: 'scheduled',
+      author: 'author',
+      created_at: 'now',
+      urn: null
+    };
+
+    expect(isMinimumPost(post)).toBe(true);
+  });
+
+  it('should return false if post is undefined', () => {
+    expect(isMinimumPost(undefined)).toBe(false);
+  });
+
+  it('should return false if post is null', () => {
+    expect(isMinimumPost(null as unknown as Post)).toBe(false);
+  });
+
+  it('should return false if post has no content', () => {
+    const post = { comment: 'Missing content', post_at_utc: '2025-02-14T12:00:00Z' } as Post;
+    expect(isMinimumPost(post)).toBe(false);
+  });
+
+  it('should return false if post has no comment', () => {
+    const post = { content: 'Missing comment', post_at_utc: '2025-02-14T12:00:00Z' } as Post;
+    expect(isMinimumPost(post)).toBe(false);
+  });
+});
 
 describe('isReadyPost', () => {
   it('should return true for a valid ReadyPost', () => {

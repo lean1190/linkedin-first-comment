@@ -1,5 +1,9 @@
 import type { DraftPost, Post, ReadyPost } from './database/types';
 
+export function isMinimumPost(post?: Post): post is ReadyPost {
+  return !!post && !!post.content && !!post.comment;
+}
+
 export function isReadyPost(post?: Post): post is ReadyPost {
   return !!post && !!post.content && !!post.comment && !!post.post_at_utc;
 }
