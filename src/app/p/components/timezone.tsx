@@ -7,27 +7,22 @@ import {
   getTimeZoneDetails,
   transformDateToTimezone
 } from '@/lib/date/timezone';
-import type { ContainerViewport } from './post-form/types';
 
 interface Props {
   schedule?: string;
-  viewport: ContainerViewport;
 }
 
 export const TimezoneLine = ({
   schedule,
   timezone,
-  showLocation,
   className = ''
 }: Pick<Props, 'schedule'> & {
   timezone?: string;
-  showLocation: boolean;
   className?: string;
 }) => (
   <div className={className}>
     <span>{formatDateForSchedule(schedule)}</span>
     <span> {getTimeZoneDetails(timezone).timeZoneName}</span>
-    {showLocation ? <span>, based on your location</span> : null}
   </div>
 );
 
@@ -43,7 +38,7 @@ const TimezoneRow = ({
   </tr>
 );
 
-export default function Timezone({ schedule, viewport }: Props) {
+export default function Timezone({ schedule }: Props) {
   const timeLocal = useMemo(
     () =>
       transformDateToTimezone({
@@ -92,7 +87,7 @@ export default function Timezone({ schedule, viewport }: Props) {
   return (
     <details className="text-sm text-linkedin-low-emphasis transition-all open:[&_i]:-rotate-180">
       <summary className="flex cursor-pointer items-center gap-1">
-        <TimezoneLine schedule={timeLocal} showLocation={viewport === 'desktop'} />
+        <TimezoneLine schedule={timeLocal} />
         <i className="transition-all">
           <IconCaretDownFilled size={15} />
         </i>

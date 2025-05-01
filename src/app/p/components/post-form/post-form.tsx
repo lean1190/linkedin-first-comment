@@ -187,7 +187,7 @@ export default function PostForm({ post, profile }: Props) {
 
         <section className="flex flex-col items-center">
           <div className="mx-auto mb-4 w-fit">
-            <Timezone schedule={formData.schedule} viewport={selectedViewport} />
+            <Timezone schedule={formData.schedule} />
           </div>
 
           <ButtonBorderGradient type="submit" disabled={isSubmitting || !isValid}>

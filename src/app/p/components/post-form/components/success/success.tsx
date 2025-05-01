@@ -38,14 +38,14 @@ export default function Success({ profile, post, show, onClose }: Props) {
               {post?.schedule ? (
                 <div className="text-sm text-linkedin-low-emphasis">
                   <span className="mr-1">It will be posted on</span>
-                  <TimezoneLine schedule={post.schedule} showLocation={false} className="inline" />
+                  <TimezoneLine schedule={post.schedule} className="inline" />
                 </div>
               ) : null}
 
               {post?.reshare ? (
                 <div className="text-sm text-linkedin-low-emphasis">
                   <span className="mr-1">And reposted on</span>
-                  <TimezoneLine schedule={post.reshare} showLocation={false} className="inline" />
+                  <TimezoneLine schedule={post.reshare} className="inline" />
                 </div>
               ) : null}
 
