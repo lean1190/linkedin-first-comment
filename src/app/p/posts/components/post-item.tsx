@@ -1,6 +1,9 @@
 import type { Post } from '@/lib/posts/database/types';
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
+import Link from 'next/link';
+import { useMemo } from 'react';
+import { NavLink } from '../../components/nav/items';
 import Actions from './item-actions/actions';
 
 const statusBadgeStyles = (status: Post['status']) =>
@@ -17,14 +20,23 @@ interface Props {
 }
 
 export default function PostItem({ post }: Props) {
+  const actionLink = useMemo(() => {
+    return post.status === 'draft'
+      ? `${NavLink.Platform}?id=${post.id}`
+      : `${NavLink.Posts}/${post.id}`;
+  }, [post]);
+
   return (
     <div className="flex justify-between items-start gap-4 mb-2">
-      <div className="flex flex-col items-start gap-y-2 min-w-0 text-sm">
+      <Link
+        href={actionLink}
+        className="flex flex-col items-start gap-y-2 min-w-0 text-sm cursor-pointer"
+      >
         <div className="text-linkedin-low-emphasis">
           Created {formatRelative(post.created_at, new Date())}{' '}
         </div>
         <div className="truncate max-w-full">{post.content}</div>
-      </div>
+      </Link>
 
       <div className="flex items-center gap-1">
         <div className={`w-fit ${statusBadgeStyles(post.status)}`}>{post.status}</div>
