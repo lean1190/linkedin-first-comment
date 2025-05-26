@@ -4,7 +4,7 @@ import { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import { findPostById } from '@/lib/posts/database/find';
 import { newId } from '@/lib/supabase/id';
 import type { ServerSearchParams } from '@/lib/types';
-import PostForm from './components/post-form/post-form';
+import PlatformPageClient from './components/client';
 
 export default async function PlatformPage({
   searchParams
@@ -21,7 +21,7 @@ export default async function PlatformPage({
 
   return (
     <article className="size-full">
-      <PostForm profile={profile} post={post} />
+      <PlatformPageClient profile={profile} post={post} />
     </article>
   );
 }

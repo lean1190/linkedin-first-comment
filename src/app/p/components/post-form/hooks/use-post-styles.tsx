@@ -8,12 +8,14 @@ import { useCallback, useMemo } from 'react';
 import type { ContainerViewport } from '../types';
 
 export default function usePostStyles(viewport: ContainerViewport) {
+  const actionButtonStyle = clsx(
+    'cursor-pointer rounded p-1 transition text-xs',
+    'hover:bg-neutral-600'
+  );
+
   const viewportStyle = useCallback(
-    (v: ContainerViewport) =>
-      clsx('cursor-pointer rounded p-1 transition', 'hover:bg-neutral-600', {
-        'bg-black': v === viewport
-      }),
-    [viewport]
+    (v: ContainerViewport) => clsx(actionButtonStyle, { 'bg-black': v === viewport }),
+    [viewport, actionButtonStyle]
   );
 
   const containerStyle = useMemo(
@@ -59,5 +61,5 @@ export default function usePostStyles(viewport: ContainerViewport) {
     []
   );
 
-  return { viewportStyle, statusLine, containerStyle };
+  return { viewportStyle, statusLine, containerStyle, actionButtonStyle };
 }

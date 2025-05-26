@@ -28,7 +28,7 @@ export default function SigninButton({ loading }: Props) {
           )}
         </span>
         <span className="sm:text-lg font-extralight text-neutral-700 dark:text-neutral-300">
-          {loading || pending ? 'Loading...' : 'Sign in with LinkedIn'}
+          {loading || pending ? 'Getting in...' : 'Sign in with LinkedIn'}
         </span>
       </ButtonBorderGradient>
     </form>

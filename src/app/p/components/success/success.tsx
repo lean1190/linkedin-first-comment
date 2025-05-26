@@ -2,17 +2,17 @@
 
 import { Modal, ModalBody, ModalContent, ModalTrigger } from '@/components/ui/animated-modal';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
+import type { postSchema } from '@/lib/posts/schemas/post';
 import { random } from '@/lib/random/number';
 import Image from 'next/image';
 import type { z } from 'zod';
-import Author from '../../../author';
-import { TimezoneLine } from '../../../timezone';
-import type { formSchema } from '../../schemas';
+import Author from '../author';
+import { TimezoneLine } from '../timezone';
 import { BackgroundGradient } from './background-gradient';
 
 interface Props {
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
-  post: z.infer<typeof formSchema>;
+  post: z.infer<typeof postSchema> | null;
   show: boolean;
   onClose: VoidFunction;
 }
@@ -35,17 +35,17 @@ export default function Success({ profile, post, show, onClose }: Props) {
                 Your post and 🥇 comment have been scheduled 🥳🎉
               </p>
 
-              {post?.schedule ? (
+              {post?.scheduleUtc ? (
                 <div className="text-sm text-linkedin-low-emphasis">
                   <span className="mr-1">It will be posted on</span>
-                  <TimezoneLine schedule={post.schedule} className="inline" />
+                  <TimezoneLine schedule={post.scheduleUtc} className="inline" />
                 </div>
               ) : null}
 
-              {post?.reshare ? (
+              {post?.reshareScheduleUtc ? (
                 <div className="text-sm text-linkedin-low-emphasis">
                   <span className="mr-1">And reposted on</span>
-                  <TimezoneLine schedule={post.reshare} className="inline" />
+                  <TimezoneLine schedule={post.reshareScheduleUtc} className="inline" />
                 </div>
               ) : null}
 
