@@ -31,8 +31,12 @@ export default function Focus({ initialContent, onClose }: Props) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="text-right">
-        <button type="button" className="text-slate-500 cursor-pointer" onClick={onClose}>
+      <div className="text-right mb-4 sm:mb-0">
+        <button
+          type="button"
+          className="text-slate-500 cursor-pointer hover:text-white transition-colors"
+          onClick={onClose}
+        >
           <IconX size={20} />
         </button>
       </div>
@@ -41,7 +45,7 @@ export default function Focus({ initialContent, onClose }: Props) {
           value={content}
           onChange={(event) => onContentChanged(event.target.value)}
           placeholder="Distraction free typing here"
-          className="text-xl md:text-2xl md:p-6 bg-slate-900 border-none field-sizing-content resize-none outline-none w-full text-slate-300"
+          className="text-lg md:text-2xl md:p-6 bg-slate-900 border-none field-sizing-content resize-none outline-none w-full text-slate-300"
         />
       </div>
     </motion.article>

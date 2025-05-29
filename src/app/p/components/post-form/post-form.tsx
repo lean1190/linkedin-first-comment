@@ -114,9 +114,8 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusOpened
 
       <section className="text-sm relative">
         <Textarea
-          {...register('content')}
+          {...register('content', { required: true })}
           placeholder="Write your post here"
-          required
           disabled={isSubmitting}
         />
       </section>
@@ -151,9 +150,8 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusOpened
         </div>
         <LabelInputContainer className="pl-9">
           <Textarea
-            {...register('comment')}
+            {...register('comment', { required: true })}
             placeholder="📌 Your 1st comment goes here"
-            required
             disabled={isSubmitting}
           />
         </LabelInputContainer>
@@ -170,9 +168,8 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusOpened
           </Label>
           <Input
             id="schedule"
-            {...register('schedule')}
+            {...register('schedule', { required: true })}
             type="datetime-local"
-            required
             disabled={isSubmitting}
             min={scheduleValidation.min || undefined}
             max={scheduleValidation.max || undefined}

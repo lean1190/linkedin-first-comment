@@ -1,5 +1,6 @@
 'use client';
 import { cn } from '@/lib/styles/merge';
+import { IconX } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type React from 'react';
 import {
@@ -107,37 +108,32 @@ export const ModalBody = ({
             opacity: 0,
             backdropFilter: 'blur(0px)'
           }}
-          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full  flex items-center justify-center z-50"
+          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full flex items-center justify-center z-50"
         >
           <Overlay />
 
           <motion.div
             ref={modalRef}
             className={cn(
-              'min-h-[30%] max-h-[90%] max-w-full md:max-w-[40%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 rounded-3xl relative z-50 flex flex-col flex-1 overflow-hidden',
+              'min-h-[30%] max-h-[90%] max-w-full md:max-w-3xl bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 rounded-3xl relative z-50 flex flex-col flex-1 overflow-hidden',
               className
             )}
             initial={{
               opacity: 0,
-              scale: 0.5,
-              rotateX: 40,
-              y: 40
+              scale: 0.5
             }}
             animate={{
               opacity: 1,
-              scale: 1,
-              rotateX: 0,
-              y: 0
+              scale: 1
             }}
             exit={{
               opacity: 0,
-              scale: 0.8,
-              rotateX: 10
+              scale: 0.8
             }}
             transition={{
-              type: 'spring',
+              type: 'tween',
               stiffness: 260,
-              damping: 15
+              damping: 30
             }}
           >
             <CloseIcon />
@@ -195,25 +191,12 @@ const Overlay = ({ className }: { className?: string }) => {
 const CloseIcon = () => {
   const { setOpen } = useModal();
   return (
-    <button type="button" onClick={() => setOpen(false)} className="absolute top-4 right-4 group">
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="text-black dark:text-white h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M18 6l-12 12" />
-        <path d="M6 6l12 12" />
-      </svg>
+    <button
+      type="button"
+      onClick={() => setOpen(false)}
+      className="z-20 text-slate-500 cursor-pointer hover:text-white transition-colors absolute top-4 right-4"
+    >
+      <IconX size={20} />
     </button>
   );
 };
