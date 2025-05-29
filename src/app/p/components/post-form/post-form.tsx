@@ -24,8 +24,6 @@ import usePostForm from './hooks/use-post-form';
 import usePostStyles from './hooks/use-post-styles';
 import type { ContainerViewport } from './types';
 
-const focusEnabled = true;
-
 interface Props {
   post: Awaited<PostWithId>;
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
@@ -84,26 +82,27 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusOpened
       <section className="w-full pt-3 pb-2 max-w-full justify-between items-center flex font-light text-linkedin-low-emphasis">
         <div className="mr-2">{statusLine({ isPending, hasSucceeded, hasErrored })}</div>
 
-        <div className="hidden sm:flex items-center gap-1">
-          {!focusEnabled ? null : (
-            <Button size="xs" onClick={() => onFocusOpened()}>
-              <IconCircleDot size={20} />
-              Focus
-            </Button>
-          )}
-          <div
-            className={viewportStyle('mobile')}
-            onClick={() => setSelectedViewport('mobile')}
-            onKeyDown={() => setSelectedViewport('mobile')}
-          >
-            <IconDeviceMobile size={20} />
-          </div>
-          <div
-            className={viewportStyle('desktop')}
-            onClick={() => setSelectedViewport('desktop')}
-            onKeyDown={() => setSelectedViewport('desktop')}
-          >
-            <IconDeviceDesktop size={20} />
+        <div className="flex items-center gap-2">
+          <Button size="xs" onClick={() => onFocusOpened()}>
+            <IconCircleDot size={20} />
+            Focus
+          </Button>
+
+          <div className="hidden sm:flex items-center gap-1">
+            <div
+              className={viewportStyle('mobile')}
+              onClick={() => setSelectedViewport('mobile')}
+              onKeyDown={() => setSelectedViewport('mobile')}
+            >
+              <IconDeviceMobile size={20} />
+            </div>
+            <div
+              className={viewportStyle('desktop')}
+              onClick={() => setSelectedViewport('desktop')}
+              onKeyDown={() => setSelectedViewport('desktop')}
+            >
+              <IconDeviceDesktop size={20} />
+            </div>
           </div>
         </div>
       </section>
