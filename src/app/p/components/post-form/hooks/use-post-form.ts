@@ -1,27 +1,24 @@
 'use client';
-
-import { zodResolver } from '@hookform/resolvers/zod';
 import { add } from 'date-fns';
-import { useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useCallback, useContext, useState } from 'react';
 
 import { formatDateForInput } from '@/lib/date/format';
 import { schedulePostAction } from '@/lib/posts/actions/schedule';
-import type { postSchema } from '@/lib/posts/schemas/post';
 import { handleServerActionResult } from '@/lib/server-actions/errors';
-import type { z } from 'zod';
+import { FormContext } from '../../context/form';
+import type { FormPost, ScheduledPost } from '../../types';
 import { PostFormActionError } from '../lib/errors';
 import { mapFormToAction } from '../lib/map';
-import { formSchema } from '../schemas';
 
 export default function usePostForm({
   onPostScheduled
 }: {
-  onPostScheduled: (post: z.infer<typeof postSchema>) => void;
+  onPostScheduled: (post: ScheduledPost) => void;
 }) {
-  const form = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema) });
-  const [submitPostError, setSubmitPostError] = useState<string>('');
+  const form = useContext(FormContext);
+  if (!form) throw new Error('The form cannot be null');
 
+  const [submitPostError, setSubmitPostError] = useState<string>('');
   const now = new Date();
   const scheduleValidation = {
     min: formatDateForInput(now),
@@ -29,7 +26,7 @@ export default function usePostForm({
   };
 
   const submitPost = useCallback(
-    async (formData: z.infer<typeof formSchema>) => {
+    async (formData: FormPost) => {
       try {
         const post = {
           ...mapFormToAction(formData),

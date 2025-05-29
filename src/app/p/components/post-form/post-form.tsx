@@ -1,7 +1,7 @@
 'use client';
 
 import { Label } from '@radix-ui/react-label';
-import { IconDeviceDesktop, IconDeviceMobile, IconFocusCentered } from '@tabler/icons-react';
+import { IconCircleDot, IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useWatch } from 'react-hook-form';
 
@@ -14,27 +14,26 @@ import { Textarea } from '@/components/ui/textarea';
 import { formatDateForInput } from '@/lib/date/format';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { PostWithId } from '@/lib/posts/database/types';
-import type { postSchema } from '@/lib/posts/schemas/post';
 import useWindowSize from '@/lib/screen/use-window-size';
 import { useEffect, useState } from 'react';
-import type { z } from 'zod';
 import Author from '../author';
 import Timezone from '../timezone';
+import type { ScheduledPost } from '../types';
 import useDraft from './hooks/use-draft';
 import usePostForm from './hooks/use-post-form';
 import usePostStyles from './hooks/use-post-styles';
 import type { ContainerViewport } from './types';
 
-const focusEnabled = false;
+const focusEnabled = true;
 
 interface Props {
   post: Awaited<PostWithId>;
   profile: Awaited<ReturnType<typeof getLinkedInBasicProfile>>;
-  onPostScheduled: (post: z.infer<typeof postSchema>) => void;
-  onFocusModeChanged: (value: boolean) => void;
+  onPostScheduled: (post: ScheduledPost) => void;
+  onFocusOpened: () => void;
 }
 
-export default function PostForm({ post, profile, onPostScheduled, onFocusModeChanged }: Props) {
+export default function PostForm({ post, profile, onPostScheduled, onFocusOpened }: Props) {
   const [selectedViewport, setSelectedViewport] = useState<ContainerViewport>('desktop');
 
   const { isTiny: isTinyDevice } = useWindowSize();
@@ -87,8 +86,8 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusModeCh
 
         <div className="hidden sm:flex items-center gap-1">
           {!focusEnabled ? null : (
-            <Button size="xs" onClick={() => onFocusModeChanged(true)}>
-              <IconFocusCentered size={20} />
+            <Button size="xs" onClick={() => onFocusOpened()}>
+              <IconCircleDot size={20} />
               Focus
             </Button>
           )}
