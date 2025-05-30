@@ -2,7 +2,7 @@
 
 import { IconX } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { FormContext } from '../context/form';
 
 interface Props {
@@ -11,9 +11,16 @@ interface Props {
 }
 
 export default function Focus({ initialContent, onClose }: Props) {
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [content, setContent] = useState(initialContent);
   const form = useContext(FormContext);
   if (!form) throw new Error('The form cannot be null');
+
+  useEffect(() => {
+    if (textAreaRef?.current) {
+      setTimeout(() => textAreaRef?.current?.focus(), 100);
+    }
+  }, []);
 
   const onContentChanged = useCallback(
     (content: string) => {
@@ -42,6 +49,7 @@ export default function Focus({ initialContent, onClose }: Props) {
       </div>
       <div className="w-full h-full md:w-6xl mx-auto">
         <textarea
+          ref={textAreaRef}
           value={content}
           onChange={(event) => onContentChanged(event.target.value)}
           placeholder="Distraction free typing here"
