@@ -32,7 +32,7 @@ export default function Focus({ initialContent, onClose }: Props) {
 
   return (
     <motion.article
-      className="absolute top-0 bottom-0 right-0 left-0 h-screen w-screen transition-opacity bg-slate-900 p-4 md:p-12"
+      className="absolute top-0 bottom-0 right-0 left-0 h-screen w-screen bg-slate-900 p-4 md:p-12"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

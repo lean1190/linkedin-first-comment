@@ -3,6 +3,7 @@
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { PostWithId } from '@/lib/posts/database/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 import { redirect } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -31,12 +32,14 @@ export default function PlatformPageClient({ post, profile }: Props) {
 
   return (
     <FormContext.Provider value={form}>
-      <PostForm
-        profile={profile}
-        post={post}
-        onPostScheduled={(post) => setScheduledPost(post)}
-        onFocusOpened={() => setIsFocusMode(true)}
-      />
+      <div className={clsx('transition', { block: !isFocusMode, hidden: isFocusMode })}>
+        <PostForm
+          profile={profile}
+          post={post}
+          onPostScheduled={(post) => setScheduledPost(post)}
+          onFocusOpened={() => setIsFocusMode(true)}
+        />
+      </div>
 
       <Success
         profile={profile}
