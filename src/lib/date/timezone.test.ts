@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { getCurrentTimezone, getTimeZoneDetails, transformDateToTimezone } from './timezone';
 
 describe('getCurrentTimezone', () => {
@@ -10,10 +10,6 @@ describe('getCurrentTimezone', () => {
 });
 
 describe('getTimeZoneDetails', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should return the correct timezone identifier and name for a given timezone', () => {
     const details = getTimeZoneDetails('America/New_York');
     expect(details.timeZoneIdentifier).toBe('America/New_York');

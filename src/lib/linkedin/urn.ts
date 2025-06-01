@@ -1,5 +1,5 @@
 export function getLinkedInAuthorUrn(id?: string) {
-  return `urn:li:person:${id}`;
+  return id ? `urn:li:person:${id}` : null;
 }
 
 export function getLinkedInUrnLastPart(urn: string) {

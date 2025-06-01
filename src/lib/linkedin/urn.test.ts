@@ -7,9 +7,9 @@ describe('getLinkedInAuthorUrn', () => {
     expect(urn).toBe('urn:li:person:12345');
   });
 
-  it('should return "urn:li:person:undefined" when no ID is provided', () => {
+  it('should return null when no ID is provided', () => {
     const urn = getLinkedInAuthorUrn();
-    expect(urn).toBe('urn:li:person:undefined');
+    expect(urn).toBeNull();
   });
 });
 

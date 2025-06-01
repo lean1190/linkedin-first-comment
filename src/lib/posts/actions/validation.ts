@@ -14,7 +14,7 @@ export async function validateSession() {
     throw unauthorized;
   }
 
-  const urn = getLinkedInAuthorUrn(extractLinkedInId(user)) as string;
+  const urn = getLinkedInAuthorUrn(extractLinkedInId(user));
 
   if (!urn) {
     throw new ServerActionError('The author urn could not be retrieved', 'UrnNotFound');
@@ -23,7 +23,6 @@ export async function validateSession() {
   return {
     user,
     session,
-    unauthorized,
     author: { urn, id: (user as User).id }
   };
 }

@@ -5,7 +5,13 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     clearMocks: true,
-    setupFiles: ['./src/lib/__mocks__/supabase.ts']
+    restoreMocks: true,
+    mockReset: true,
+    setupFiles: [
+      './src/lib/__mocks__/supabase.ts',
+      './src/lib/__mocks__/server-actions.ts',
+      './src/lib/__mocks__/inngest.ts'
+    ]
   },
   resolve: {
     alias: {

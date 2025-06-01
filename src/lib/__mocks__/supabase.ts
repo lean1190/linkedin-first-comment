@@ -1,4 +1,13 @@
+import type { User } from '@supabase/supabase-js';
 import { vi } from 'vitest';
+
+export const getFakeSupabaseUser = (user?: Partial<User>) => ({
+  id: '123',
+  email: 'linkedin-user@example.com',
+  identities: [{ id: 'fake-linkedin-id' }],
+  user_metadata: { picture: 'fake-picture' },
+  ...user
+});
 
 export const createFakeSupabaseClient = () => {
   const fakeUsers: { id: string; email: string }[] = [];
@@ -11,7 +20,7 @@ export const createFakeSupabaseClient = () => {
           return { data: null, error: { message: 'Unsupported provider' } };
         }
 
-        const user = { id: '123', email: 'linkedin-user@example.com' };
+        const user = getFakeSupabaseUser();
         if (!fakeUsers.some((u) => u.email === user.email)) {
           fakeUsers.push(user); // Simulate user creation on first sign-in
         }
@@ -31,8 +40,18 @@ export const createFakeSupabaseClient = () => {
           data: {
             session: {
               access_token: 'fake-token',
+              provider_token: 'fake-linkedin-token',
               user: fakeUsers[0] || null
             }
+          },
+          error: null
+        };
+      }),
+
+      getUser: vi.fn(async () => {
+        return {
+          data: {
+            user: fakeUsers[0] || null
           },
           error: null
         };
@@ -106,11 +125,13 @@ export const createFakeSupabaseClient = () => {
   };
 };
 
+const fakeClient = createFakeSupabaseClient();
+
 vi.mock('@/lib/supabase/server', async () => ({
-  createClient: createFakeSupabaseClient
+  createClient: async () => fakeClient
 }));
 
 vi.mock('@/lib/supabase/client', async () => ({
-  supabaseClient: createFakeSupabaseClient(),
-  createClient: createFakeSupabaseClient
+  supabaseClient: fakeClient,
+  createClient: () => fakeClient
 }));

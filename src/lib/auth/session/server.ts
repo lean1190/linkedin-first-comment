@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '../../supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import type { CurrentUserSession } from './types';
 
 export async function getServerSession() {
