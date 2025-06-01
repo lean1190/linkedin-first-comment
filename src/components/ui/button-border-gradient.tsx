@@ -69,7 +69,7 @@ export function ButtonBorderGradient({
       className={cn(
         'relative cursor-pointer flex rounded-full content-center bg-black/20 hover:bg-black/10 transition duration-500 dark:bg-white/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px box-decoration-clone w-fit',
         containerClassName,
-        'disabled:opacity-50'
+        'disabled:opacity-50 disabled:cursor-default'
       )}
       disabled={disabled}
       {...props}
