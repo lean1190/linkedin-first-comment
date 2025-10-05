@@ -5,7 +5,7 @@ import type { postScheduledEvent } from '@/lib/posts/schemas/scheduled';
 
 import { linkedInHeaders } from '../headers';
 
-type Post = z.infer<typeof postScheduledEvent>['data']['post'];
+type Post = z.infer<typeof postScheduledEvent>['post'];
 
 export async function publishLinkedInPost({
   post,
