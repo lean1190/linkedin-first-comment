@@ -1,4 +1,7 @@
-import { supabaseClient } from '../supabase/client';
+'use server';
+
+import { redirect } from 'next/navigation';
+import { createClient } from '../supabase/server';
 
 const getURL = () => {
   const url =
@@ -14,7 +17,7 @@ const getURL = () => {
 
 export async function signInWithLinkedIn() {
   const url = getURL();
-  await supabaseClient.auth.signInWithOAuth({
+  const { data } = await (await createClient()).auth.signInWithOAuth({
     provider: 'linkedin_oidc',
     options: {
       scopes:
@@ -25,4 +28,8 @@ export async function signInWithLinkedIn() {
       }
     }
   });
+
+  if (data.url) {
+    redirect(data.url); // use the redirect API for your server framework
+  }
 }

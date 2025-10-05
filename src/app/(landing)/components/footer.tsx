@@ -1,4 +1,3 @@
-import StripeSupportButton from '@/components/ui/stripe-support-button';
 import {
   aboutLink,
   firstCommentLink,
@@ -35,8 +34,6 @@ export default function Footer() {
                 First Comment
               </span>
             </Link>
-
-            <StripeSupportButton />
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
