@@ -9,7 +9,6 @@ describe('getVercelUrl', () => {
   });
 
   it('should return localhost with the specified PORT when VERCEL_URL is not defined', () => {
-    // biome-ignore lint/performance/noDelete:
     delete process.env.VERCEL_URL;
     process.env.PORT = '4000';
     const url = getVercelUrl();
@@ -17,9 +16,7 @@ describe('getVercelUrl', () => {
   });
 
   it('should return localhost with default port 3000 when VERCEL_URL and PORT are not defined', () => {
-    // biome-ignore lint/performance/noDelete:
     delete process.env.VERCEL_URL;
-    // biome-ignore lint/performance/noDelete:
     delete process.env.PORT;
     const url = getVercelUrl();
     expect(url).toBe('http://localhost:3000');
@@ -43,7 +40,6 @@ describe('isDevEnvironment', () => {
   });
 
   it('should return true when NEXT_PUBLIC_VERCEL_ENV is undefined', () => {
-    // biome-ignore lint/performance/noDelete:
     delete process.env.NEXT_PUBLIC_VERCEL_ENV;
     expect(isDevEnvironment()).toBe(true);
   });

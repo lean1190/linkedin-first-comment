@@ -69,7 +69,7 @@ export const createFakeSupabaseClient = () => {
     },
 
     from: (table: string) => ({
-      select: vi.fn(async (columns: string) => {
+      select: vi.fn(async () => {
         const data = fakeDB[table] || [];
         return { data, error: null };
       }),

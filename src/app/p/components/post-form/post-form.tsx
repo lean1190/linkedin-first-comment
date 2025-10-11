@@ -3,8 +3,8 @@
 import { Label } from '@radix-ui/react-label';
 import { IconCircleDot, IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
-
 import { Button } from '@/components/ui/button';
 import { ButtonBorderGradient } from '@/components/ui/button-border-gradient';
 import { FormSeparator } from '@/components/ui/form-separator';
@@ -15,7 +15,6 @@ import { formatDateForInput } from '@/lib/date/format';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { PostWithId } from '@/lib/posts/database/types';
 import useWindowSize from '@/lib/screen/use-window-size';
-import { useEffect, useState } from 'react';
 import Author from '../author';
 import Timezone from '../timezone';
 import type { ScheduledPost } from '../types';
@@ -89,20 +88,22 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusOpened
           </Button>
 
           <div className="hidden sm:flex items-center gap-1">
-            <div
+            <button
+              type="button"
               className={viewportStyle('mobile')}
               onClick={() => setSelectedViewport('mobile')}
               onKeyDown={() => setSelectedViewport('mobile')}
             >
               <IconDeviceMobile size={20} />
-            </div>
-            <div
+            </button>
+            <button
+              type="button"
               className={viewportStyle('desktop')}
               onClick={() => setSelectedViewport('desktop')}
               onKeyDown={() => setSelectedViewport('desktop')}
             >
               <IconDeviceDesktop size={20} />
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -165,6 +166,7 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusOpened
           <Label htmlFor="schedule" className="text-sm">
             Publish post at
           </Label>
+          {/** biome-ignore lint/correctness/useUniqueElementIds: No need for unique ids */}
           <Input
             id="schedule"
             {...register('schedule', { required: true })}
@@ -179,6 +181,7 @@ export default function PostForm({ post, profile, onPostScheduled, onFocusOpened
           <Label htmlFor="repost" className="text-sm text-linkedin-low-emphasis">
             Repost at (optional)
           </Label>
+          {/** biome-ignore lint/correctness/useUniqueElementIds: No need for unique ids */}
           <Input
             id="repost"
             {...register('reshare')}

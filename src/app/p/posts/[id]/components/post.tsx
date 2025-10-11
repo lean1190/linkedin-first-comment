@@ -1,5 +1,10 @@
 'use client';
 
+import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
+import { isPast } from 'date-fns';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import Author from '@/app/p/components/author';
 import { NavLink } from '@/app/p/components/nav/items';
 import usePostStyles from '@/app/p/components/post-form/hooks/use-post-styles';
@@ -11,11 +16,6 @@ import { LabelInputContainer } from '@/components/ui/label-input-container';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { PostDetail } from '@/lib/posts/database/types';
 import useWindowSize from '@/lib/screen/use-window-size';
-import { IconDeviceDesktop, IconDeviceMobile } from '@tabler/icons-react';
-import { isPast } from 'date-fns';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import useMoreButton from '../hooks/use-more-button';
 
 interface Props {
@@ -48,12 +48,20 @@ export default function Post({ post, profile }: Props) {
           <ArrowButton text="Back" right={false} />
         </Link>
         <div className="hidden sm:flex items-center gap-1">
-          <div className={viewportStyle('mobile')} onClick={() => setSelectedViewport('mobile')}>
+          <button
+            type="button"
+            className={viewportStyle('mobile')}
+            onClick={() => setSelectedViewport('mobile')}
+          >
             <IconDeviceMobile size={20} />
-          </div>
-          <div className={viewportStyle('desktop')} onClick={() => setSelectedViewport('desktop')}>
+          </button>
+          <button
+            type="button"
+            className={viewportStyle('desktop')}
+            onClick={() => setSelectedViewport('desktop')}
+          >
             <IconDeviceDesktop size={20} />
-          </div>
+          </button>
         </div>
       </section>
 

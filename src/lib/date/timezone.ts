@@ -20,7 +20,7 @@ export function getTimeZoneDetails(timeZone = getCurrentTimezone()) {
       timeZoneIdentifier: timeZone,
       timeZoneName: timeZoneName || 'Unknown Timezone'
     };
-  } catch (error) {
+  } catch (_) {
     return {
       timeZoneIdentifier: timeZone,
       timeZoneName: 'Unknown Timezone'
