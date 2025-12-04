@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ServerActionError, createServerActionError, handleServerActionResult } from './errors';
+import { createServerActionError, handleServerActionResult, ServerActionError } from './errors';
 
 describe('createServerActionError', () => {
   it('should create a ServerActionError with the given type and message', () => {

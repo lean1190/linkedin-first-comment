@@ -1,17 +1,17 @@
 'use client';
-import { cn } from '@/lib/styles/merge';
 import { IconX } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type React from 'react';
 import {
+  createContext,
   type ReactNode,
   type RefObject,
-  createContext,
   useContext,
   useEffect,
   useRef,
   useState
 } from 'react';
+import { cn } from '@/lib/styles/merge';
 
 interface ModalContextType {
   open: boolean;

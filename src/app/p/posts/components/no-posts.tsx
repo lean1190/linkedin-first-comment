@@ -1,5 +1,5 @@
-import { ArrowButton } from '@/components/ui/arrow-button';
 import Link from 'next/link';
+import { ArrowButton } from '@/components/ui/arrow-button';
 import { NavLink } from '../../components/nav/items';
 
 export default function NoPosts() {

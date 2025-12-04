@@ -8,7 +8,7 @@ export default {
     'npx biome check --write --unsafe --no-errors-on-unmatched', // Format, sort imports, lints, apply safe/unsafe fixes
     'npx biome format --write --no-errors-on-unmatched', // Format
     'npx biome lint --write --no-errors-on-unmatched', // Lint and apply safe fixes
-    'npx biome check --files-ignore-unknown=true', // Check formatting and lint
+    'npx biome check --files-ignore-unknown=true' // Check formatting and lint
   ],
   '*.{ts,tsx}': [() => 'npm run types:check']
 };

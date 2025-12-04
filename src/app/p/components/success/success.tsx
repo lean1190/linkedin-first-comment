@@ -1,11 +1,11 @@
 'use client';
 
+import Image from 'next/image';
+import type { z } from 'zod';
 import { Modal, ModalBody, ModalContent, ModalTrigger } from '@/components/ui/animated-modal';
 import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
 import type { postSchema } from '@/lib/posts/schemas/post';
 import { random } from '@/lib/random/number';
-import Image from 'next/image';
-import type { z } from 'zod';
 import Author from '../author';
 import { TimezoneLine } from '../timezone';
 import { BackgroundGradient } from './background-gradient';

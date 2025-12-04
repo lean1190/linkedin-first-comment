@@ -1,8 +1,8 @@
-import type { Post } from '@/lib/posts/database/types';
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
 import Link from 'next/link';
 import { useMemo } from 'react';
+import type { Post } from '@/lib/posts/database/types';
 import { NavLink } from '../../components/nav/items';
 import Actions from './item-actions/actions';
 

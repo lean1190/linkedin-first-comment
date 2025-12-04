@@ -1,5 +1,5 @@
-import type { WithRequired } from '@/lib/types';
 import type { z } from 'zod';
+import type { WithRequired } from '@/lib/types';
 import type { postSchema } from '../schemas/post';
 
 function isValueOrNull<T>(value: T) {

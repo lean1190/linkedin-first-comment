@@ -1,10 +1,9 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-
 import { cn } from '@/lib/styles/merge';
-import { motion } from 'framer-motion';
 
 type Direction = 'TOP' | 'LEFT' | 'BOTTOM' | 'RIGHT';
 

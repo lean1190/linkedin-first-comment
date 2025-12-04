@@ -1,8 +1,6 @@
-import { NonRetriableError, RetryAfterError } from 'inngest';
-
-import { publishLinkedInFirstComment, publishLinkedInPost } from '@/lib/linkedin/posts/write';
-
 import { UTCDate } from '@date-fns/utc';
+import { NonRetriableError, RetryAfterError } from 'inngest';
+import { publishLinkedInFirstComment, publishLinkedInPost } from '@/lib/linkedin/posts/write';
 import { inngest } from '../../inngest/client';
 import { updatePost } from '../database/update';
 import { PostEvent } from '../events';

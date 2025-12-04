@@ -1,7 +1,7 @@
 'use client';
 
-import { AuthenticationErrorType } from '@/lib/auth/errors/unauthorized';
 import { useSearchParams } from 'next/navigation';
+import { AuthenticationErrorType } from '@/lib/auth/errors/unauthorized';
 
 const errorStyle =
   'text-xs sm:text-sm text-red-300 mt-8 border-red-300 px-4 py-1 rounded-full text-center';

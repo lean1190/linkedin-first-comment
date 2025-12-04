@@ -1,8 +1,8 @@
 'use server';
 
+import { flattenValidationErrors, returnValidationErrors } from 'next-safe-action';
 import { actionClient } from '@/lib/server-actions/client';
 import { hasId } from '@/lib/supabase/id';
-import { flattenValidationErrors, returnValidationErrors } from 'next-safe-action';
 import { createOrUpdatePost } from '../database/create-or-update';
 import { postSchema } from '../schemas/post';
 import { mapFormPostToDatabase } from './map';

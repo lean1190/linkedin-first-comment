@@ -1,9 +1,9 @@
+import type { User } from '@supabase/supabase-js';
 import { checkUnauthorized } from '@/lib/auth/errors/unauthorized';
 import { getServerSession, getServerUser } from '@/lib/auth/session/server';
 import { getLinkedInAuthorUrn } from '@/lib/linkedin/urn';
 import { extractLinkedInId } from '@/lib/linkedin/user/extract';
 import { ServerActionError } from '@/lib/server-actions/errors';
-import type { User } from '@supabase/supabase-js';
 
 export async function validateSession() {
   const user = await getServerUser();

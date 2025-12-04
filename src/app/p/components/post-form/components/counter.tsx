@@ -1,5 +1,5 @@
-import { countCharacters, countWords } from '@/lib/posts/words';
 import { useMemo } from 'react';
+import { countCharacters, countWords } from '@/lib/posts/words';
 
 interface Props {
   content: string;

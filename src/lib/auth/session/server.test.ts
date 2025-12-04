@@ -1,7 +1,7 @@
-import { getFakeSupabaseUser } from '@/lib/__mocks__/supabase';
-import { createClient } from '@/lib/supabase/server';
 import type {} from '@supabase/supabase-js';
 import { describe, expect, it } from 'vitest';
+import { getFakeSupabaseUser } from '@/lib/__mocks__/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { getServerCurrentUserSession, getServerSession, getServerUser } from './server';
 
 describe('auth/session/server', () => {

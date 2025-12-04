@@ -1,6 +1,6 @@
+import { IconDotsVertical } from '@tabler/icons-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { Post } from '@/lib/posts/database/types';
-import { IconDotsVertical } from '@tabler/icons-react';
 import ActionsByStatus from './actions-by-status';
 
 interface Props {

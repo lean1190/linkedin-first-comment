@@ -1,6 +1,6 @@
-import { cn } from '@/lib/styles/merge';
 import { motion } from 'framer-motion';
 import type React from 'react';
+import { cn } from '@/lib/styles/merge';
 
 export const BackgroundGradient = ({
   children,

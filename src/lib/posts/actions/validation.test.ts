@@ -1,10 +1,10 @@
+import type { User } from '@supabase/supabase-js';
+import { describe, expect, it, vi } from 'vitest';
 import { getFakeSupabaseUser } from '@/lib/__mocks__/supabase';
 import * as unauthorizedModule from '@/lib/auth/errors/unauthorized';
 import * as serverModule from '@/lib/auth/session/server';
 import { ServerActionError } from '@/lib/server-actions/errors';
 import { createClient } from '@/lib/supabase/server';
-import type { User } from '@supabase/supabase-js';
-import { describe, expect, it, vi } from 'vitest';
 import { validateSession } from './validation';
 
 describe('validateSession', () => {

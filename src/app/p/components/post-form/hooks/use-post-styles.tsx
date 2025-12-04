@@ -1,10 +1,10 @@
+import clsx from 'clsx';
+import { useCallback, useMemo } from 'react';
 import {
   pageContainerBgColor,
   pageContainerWidthDesktop,
   pageContainerWidthMobile
 } from '@/lib/constants/containers';
-import clsx from 'clsx';
-import { useCallback, useMemo } from 'react';
 import type { ContainerViewport } from '../types';
 
 export default function usePostStyles(viewport: ContainerViewport) {

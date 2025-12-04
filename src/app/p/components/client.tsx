@@ -1,13 +1,13 @@
 'use client';
 
-import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
-import type { PostWithId } from '@/lib/posts/database/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 import { redirect } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import type { getLinkedInBasicProfile } from '@/lib/linkedin/user/server';
+import type { PostWithId } from '@/lib/posts/database/types';
 import { FormContext } from './context/form';
 import Focus from './focus/focus';
 import { NavLink } from './nav/items';

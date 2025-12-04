@@ -1,5 +1,5 @@
-import { privacyPolicyLink, termsAndConditionsLink } from '@/lib/constants/links';
 import Link from 'next/link';
+import { privacyPolicyLink, termsAndConditionsLink } from '@/lib/constants/links';
 
 export default function Terms() {
   return (

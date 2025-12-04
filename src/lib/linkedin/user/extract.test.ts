@@ -1,6 +1,6 @@
-import type { NullableSession, NullableUser } from '@/lib/auth/session/types';
 import type { UserIdentity } from '@supabase/supabase-js';
 import { describe, expect, it } from 'vitest';
+import type { NullableSession, NullableUser } from '@/lib/auth/session/types';
 import {
   extractLinkedInAccessToken,
   extractLinkedInId,

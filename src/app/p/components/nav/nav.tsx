@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { signOut } from '@/lib/auth/signout';
-import { cn } from '@/lib/styles/merge';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { JSX } from 'react';
+import { Button } from '@/components/ui/button';
+import { signOut } from '@/lib/auth/signout';
+import { cn } from '@/lib/styles/merge';
 
 interface NavItem {
   name: string;
