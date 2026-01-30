@@ -1,7 +1,7 @@
 'use server';
 
 import { handleDatabaseResponse } from '@/lib/supabase/response-handler';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createPrivilegedClient } from '@/lib/supabase/server';
 
 export async function findPostById(id: string) {
   const result = await (await createClient()).from('Posts').select().eq('id', id);
@@ -17,6 +17,12 @@ export async function findPostsByAuthor(id: string) {
     .select()
     .eq('author', id)
     .order('created_at', { ascending: false });
+
+  return handleDatabaseResponse(result);
+}
+
+export async function findAllPosts() {
+  const result = await (await createPrivilegedClient()).from('Posts').select();
 
   return handleDatabaseResponse(result);
 }

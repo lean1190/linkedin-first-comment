@@ -9,8 +9,11 @@ import {
   privacyPolicyLink,
   termsAndConditionsLink
 } from '@/lib/constants/links';
+import { findAllPosts } from '@/lib/posts/database/find';
 
-export default function Footer() {
+export default async function Footer() {
+  await findAllPosts();
+
   return (
     // The markup for regions and roles is redundant, but this is a transition period, and this markup is the most robust.
     // biome-ignore lint/a11y/useSemanticElements: https://dequeuniversity.com/rules/axe/4.9/landmark-one-main?application=Vercel%20Toolbar
